@@ -134,3 +134,49 @@ main {
 [data-key='Backspace'] {
     width: 4rem;
 }
+
+[data-status='filled'] {border: 1px solid var(--color-gray-light);  background: var(--color-gray-light);}
+[data-status='valid'] {border: 1px solid var(--color-green);  background: var(--color-green);}
+[data-status='invalid'] { border: 1px solid var(--color-yellow); background: var(--color-yellow);}
+[data-status='none'] {border: 1px solid var(--color-gray-dark);  background: var(--color-gray-dark);}
+
+[data-animation='pop'] {animation: PopIn 100ms;}
+
+@keyframes PopIn {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    40% {
+        transform: scale(1.1);
+        opacity: 1;
+    }
+}
+
+[data-animation='invalid'] {animation: Shake 600ms;}
+
+@keyframes Shake {
+    10%, 90% {
+        transform: translateX(-1px);
+    }
+    20%, 80% {
+        transform: translateX(2px);
+    }
+    30%, 50%, 70% {
+        transform: translateX(-4px);
+    }
+}
+
+[data-animation='flip'] {animation: Flip .50s ease-in;}
+
+@keyframes Flip {
+    from {
+        transform: rotateX(0);
+    }
+    50% {
+        transform: rotateX(-90deg);
+    }
+    to {
+        transform: rotateX(0);
+    }
+}
