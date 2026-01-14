@@ -2,33 +2,50 @@
 
 const BACKSPACE_KEY = 'Backspace';
 const ENTER_KEY = 'Enter';
+/*
 const WORD_LIST = [
     'SHAKE', 'PASTA', 'PANIC',
     'SKILL', 'ARROW', 'BIRDS'
 ];
 const WORD_OF_THE_DAY = WORD_LIST[0];
+*/
 
+//Game state variables
+let gameOver = false;
+let gameWon = false;
+let WORD_LIST = [];
+let WORD_OF_THE_DAY = '';
+let currentWord = '';
+let WORD_LENGTH = 0;
+let DAILY_ENTRY = null;
+let cluesRevealed = 0;
+let CATEGORY_COUNT = 0;
+
+//Constants
 const MAX_NUMBER_OF_ATTEMPTS = 6;
 const history = [];
-let currentWord = '';
+const input = document.querySelector('#guess-input');
+const suggestions = document.querySelector('#suggestions');
 
+const normalizeClue = (value) =>
+    value.toString().trim().toLowerCase();
 
-const init = () => {
+const init = async () => {
     console.log('welcome to Super Fandle!');
+    
 
-    const KEYBOARD_KEYS = ['QWERTYUIOP','ASDFGHJKL','ZXCVBNM']
-    //Grab the gameboard
+    await loadWordsFromCSV();
+
     const gameBoard = document.querySelector('#board');
-    const keyboard = document.querySelector('#keyboard');
 
-    generateBoard(gameBoard);
-    generateBoard(keyboard, 3, 10, KEYBOARD_KEYS, true);
+    generateBoard(gameBoard, MAX_NUMBER_OF_ATTEMPTS, CATEGORY_COUNT);
 
-    document.addEventListener('keydown', event => onKeyDown(event.key));
-    keyboard.addEventListener('click', onKeyboardButtonClick);
+    initClues();
+    
     gameBoard.addEventListener('animationend', event => {
         event.target.setAttribute('data-animation', 'idle');
     });
+
 }
 
 const generateBoard = (board, rows = 6, columns = 5, keys = [], keyboard = false) => {
@@ -69,65 +86,6 @@ const generateBoard = (board, rows = 6, columns = 5, keys = [], keyboard = false
     }
 };
 
-const onKeyboardButtonClick = (event) => {
-    if (event.target.nodeName === 'LI') {
-        onKeyDown(event.target.getAttribute('data-key'));
-    }
-}
-
-const onKeyDown = (key) => {
-    //Limit guesses to 6
-    if (history.length >= MAX_NUMBER_OF_ATTEMPTS) return;
-
-    const currentRow = document.querySelector(`#board ul[data-row='${history.length}']`);
-
-    let targetColumn = currentRow.querySelector('[data-status="empty"]');
-
-    if (key === BACKSPACE_KEY) {
-        if (targetColumn === null) {
-            targetColumn = currentRow.querySelector('li:last-child');
-        } else {
-            targetColumn = targetColumn.previousElementSibling ?? targetColumn;
-        }
-
-        targetColumn.textContent = '';
-        targetColumn.setAttribute('data-status', 'empty');
-
-        currentWord = currentWord.slice(0, -1);
-
-        return;
-    }
-
-    if (key === ENTER_KEY) {
-        console.log(currentWord.length);
-        if (currentWord.length < 5) {
-            showMessage('Too short');
-            return;
-        }
-
-        if (currentWord.length === 5 && WORD_LIST.includes(currentWord)) {
-            checkGuess(currentWord, WORD_OF_THE_DAY);
-        } else {
-            currentRow.setAttribute('data-animation', 'invalid');
-            showMessage('Not a valid word');
-        }
-
-        return;
-    }
-
-    if (currentWord.length >= 5) return;
-
-    const upperCaseLetter = key.toUpperCase();
-
-    if (/^[A-Z]$/.test(upperCaseLetter)) {
-        currentWord += upperCaseLetter;
-
-        targetColumn.textContent = upperCaseLetter;
-        targetColumn.setAttribute('data-status', 'filled');
-        targetColumn.setAttribute('data-animation', 'pop');
-    }
-}
-
 const showMessage = (message) => {
     const toast = document.createElement('li');
 
@@ -135,69 +93,204 @@ const showMessage = (message) => {
     toast.className = 'toast';
 
     document.querySelector('.toaster ul').prepend(toast);
-    setTimeout(() => toast.classList.add('fade'), 1000);
+    setTimeout(() => toast.classList.add('fade'), 2000);
 
     toast.addEventListener('transitionend', (event) => event.target.remove());
 }
 
-const checkGuess = (guess, word) => {
-    const guessLetters = guess.split('');
-    const wordLetters = word.split('');
-    const remainingWordLetters = [];
-    const remainingGuessLetters = [];
-    //Find the active row
-    const currentRow = document.querySelector(`#board ul[data-row='${history.length}']`);
+const loadWordsFromCSV = async () => {
+    const response = await fetch('names.csv');
+    const text = await response.text();
 
-    //Give all columns in current row base values
-    currentRow.querySelectorAll('li').forEach((element, index) => {
-        element.setAttribute('data-status', 'none');
-        element.setAttribute('data-animation', 'flip');
+    const entries = text
+        .split('\n')
+        .map(line => line.trim())
+        .filter(Boolean)
+        .map(line => {
+            const [name, ...clues] = line.split(',');
 
-        element.style.animationDelay = `${index * 300}ms`;
-        element.style.transitiondelay = `${index *400}ms`;
+            return {
+                display: name.trim(),
+                answer: name.toUpperCase().replace(/[^A-Z]/g, ''),
+                clues: clues.map(c => c.trim())
+            };
+        })
+        .filter(entry => entry.answer.length > 0);
+
+    // ✅ WORD_LIST = ALL possible answers (names only)
+    WORD_LIST = entries;
+
+    // ✅ Pick daily deterministic entry (with clues)
+    DAILY_ENTRY = getDailyWord(entries);
+
+    CATEGORY_COUNT = DAILY_ENTRY.clues.length;
+
+    WORD_OF_THE_DAY = DAILY_ENTRY.answer;
+    WORD_LENGTH = WORD_OF_THE_DAY.length;
+
+    console.log('Name of the Day:', WORD_OF_THE_DAY);
+}
+
+
+
+const getDailyWord = (words) => {
+    const startDate = new Date('2024-01-01');
+    const today = new Date();
+
+    startDate.setHours(0,0,0,0);
+    today.setHours(0,0,0,0);
+
+    const daysSinceStart =
+        Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
+
+    return words[daysSinceStart % words.length];
+}
+
+const initClues = () => {
+    const cluesContainer = document.querySelector('#clues');
+    cluesContainer.innerHTML = '';
+
+    DAILY_ENTRY.clues.forEach(clue => {
+        const tile = document.createElement('div');
+        tile.className = 'clue-tile';
+        tile.dataset.clue = clue;
+        tile.textContent = '???';
+        cluesContainer.appendChild(tile);
     });
+}
 
-    //Find all valid letters and create list of leftover letters
-    wordLetters.forEach((letter, index) => {
-        if (guessLetters[index] === letter) {
-            currentRow.querySelector(`li:nth-child(${index + 1})`).setAttribute('data-status', 'valid');
-            document.querySelector(`[data-key='${letter}']`).setAttribute('data-status', 'valid');
+input.addEventListener('input', () => {
+    const value = input.value.toLowerCase();
+    suggestions.innerHTML = '';
 
-            remainingWordLetters.push(false);
-            remainingGuessLetters.push(false);
+    if (!value) return;
+
+    WORD_LIST
+        .filter(entry =>
+            entry.display.toLowerCase().includes(value)
+        )
+        .slice(0, 5)
+        .forEach(entry => {
+            const li = document.createElement('li');
+            li.textContent = entry.display;
+
+            li.addEventListener('click', () => {
+                submitGuess(entry);
+            });
+
+            suggestions.appendChild(li);
+        });
+});
+
+const submitGuess = (entry) => {
+    if (gameOver) return;
+
+    checkGuess(entry, DAILY_ENTRY);
+
+    input.value = '';
+    suggestions.innerHTML = '';
+}
+
+input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+        const match = WORD_LIST.find(
+            entry =>
+                entry.display.toLowerCase() === input.value.toLowerCase()
+        );
+
+        if (match) {
+            submitGuess(match);
         } else {
-            remainingWordLetters.push(letter);
-            remainingGuessLetters.push(guessLetters[index]);
+            showMessage('Not a valid character');
         }
+    }
+})
+
+const revealNextClue = () => {
+    const clueTiles = document.querySelectorAll('.clue-tile');
+
+    if (cluesRevealed < clueTiles.length) {
+        const tile = clueTiles[cluesRevealed];
+        tile.textContent = tile.dataset.clue;
+        tile.classList.add('revealed');
+        cluesRevealed++;
+    }
+}
+
+const revealAllClues = () => {
+    document.querySelectorAll('.clue-tile').forEach(tile => {
+        tile.textContent = tile.dataset.clue;
+        tile.classList.add('revealed');
     });
+}
 
-    //Find all misplaced letters
-    remainingWordLetters.forEach(letter => {
-        if (letter === false) return;
+const renderGuessToBoard = (guess) => {
+    const rowIndex = history.length;
+    const currentRow = document.querySelector(
+        `#board ul[data-row='${rowIndex}']`
+    );
 
-        if (remainingGuessLetters.indexOf(letter) !== -1) {
-            const column = currentRow.querySelector(`li:nth-child(${remainingGuessLetters.indexOf(letter) + 1})`);
-            column.setAttribute('data-status', 'invalid');
+    const letters = guess.split('');
 
-            const keyboardKey = document.querySelector(`[data-key='${letter}']`);
+    currentRow.querySelectorAll('li').forEach((tile, index) => {
+        tile.textContent = letters[index] ?? '';
+        tile.setAttribute('data-status', 'filled');
+        tile.setAttribute('data-animation', 'pop');
+    });
+}
 
-            if (keyboardKey.getAttribute('data-status') !== 'valid') {
-                keyboardKey.setAttribute('data-status', 'invalid');
-            }
+const checkGuess = (guessEntry, answerEntry) => {
+    const rowIndex = history.length;
+    const currentRow = document.querySelector(
+        `#board ul[data-row='${rowIndex}']`
+    );
+
+    const tiles = currentRow.querySelectorAll('li');
+
+    for (let index = 0; index < CATEGORY_COUNT; index++) {
+        const tile = tiles[index];
+
+        const guessClue = guessEntry.clues[index];
+        const answerClue = answerEntry.clues[index];
+
+        tile.textContent = guessClue;
+
+        if (
+            normalizeClue(guessClue) === normalizeClue(answerClue)
+        ) {
+            tile.setAttribute('data-status', 'valid');
+        } else {
+            tile.setAttribute('data-status', 'none');
         }
-    });
 
-    //Find all letters on the keyboard that are absent from the word
-    guessLetters.forEach(letter => {
-        const keyboardKey = document.querySelector(`[data-key='${letter}']`);
+        tile.setAttribute('data-animation', 'flip');
+        tile.style.animationDelay = `${index * 200}ms`;
+    }
 
-        if (keyboardKey.getAttribute('data-status' === 'empty')) {
-            keyboardKey.setAttribute('data-status', 'none');
-        }
-    });
+    history.push(guessEntry.answer);
 
-    history.push(currentWord);
-    currentWord = '';
+    if (guessEntry.answer === answerEntry.answer) {
+        gameWon = true;
+        gameOver = true;
+        showEndScreen(true);
+        return;
+    }
+
+    if (history.length === MAX_NUMBER_OF_ATTEMPTS) {
+        gameOver = true;
+        showEndScreen(false);
+    }
+};
+
+
+
+const showEndScreen = (won) => {
+    const message = won
+        ? `🎉 You Win!`
+        : `💀 Game Over`;
+
+    showMessage(message);
+    showMessage(`The word was ${WORD_OF_THE_DAY}`);
 }
 
 //Call the initilaization function when the DOM is loaded to get

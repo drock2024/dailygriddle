@@ -59,6 +59,20 @@ main {
     margin: 0;
 }
 
+/* Category-based board tiles */
+#board li {
+    font-size: clamp(0.6rem, 1.8vw, 0.85rem);        /* Smaller than Wordle letters */
+    line-height: 1.1;
+    text-align: center;
+    padding: 0.25rem;
+    word-break: break-word;      /* Allow long words to wrap */
+    white-space: normal;         /* Enable wrapping */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
 [data-status],
 [data-key] {
     border: 2px solid var(--color-gray-dark);
@@ -70,8 +84,8 @@ main {
     align-items: center;
     justify-content: center;
 
-    height: 4rem;
-    width: 4rem;
+    height: 5rem;
+    width: 5rem;
 
     user-select: none;
 }
@@ -107,6 +121,79 @@ main {
 
 .fade { opacity: 0;}
 
+.clues-row {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+}
+
+.clue-tile {
+    background: var(--color-gray-dark);
+    color: var(--color-white);
+    border-radius: 6px;
+    padding: 0.6rem 0.9rem;
+    font-weight: bold;
+    font-size: 0.85rem;
+    opacity: 0.25;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.clue-tile.revealed {
+    opacity: 1;
+    transform: translateY(-2px);
+}
+
+.guess-input-wrapper {
+    width: 100%;
+    max-width: 420px;
+    margin: 0 auto 1rem;
+    position: relative;
+}
+
+#guess-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    border-radius: 6px;
+    border: none;
+    outline: none;
+}
+
+#suggestions {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    width: 100%;
+    background: var(--color-gray-dark);
+    border-radius: 6px;
+    z-index: 10;
+}
+
+#suggestions li {
+    padding: 0.6rem 1rem;
+    cursor: pointer;
+}
+
+#suggestions li:hover {
+    background: var(--color-gray-light);
+}
+
+.category-labels {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+    max-width: 420px;
+    margin-bottom: 0.5rem;
+    font-size: 0.75rem;
+    text-align: center;
+    opacity: 0.75;
+}
+
+
+/*Animations*/
 #keyboard {
     gap: 8px;
     padding-bottom: 10px;
@@ -136,9 +223,9 @@ main {
 }
 
 [data-status='filled'] {border: 1px solid var(--color-gray-light);  background: var(--color-gray-light);}
-[data-status='valid'] {border: 1px solid var(--color-green);  background: var(--color-green);}
+[data-status='valid'] {background: var(--color-green); border-color: var(--color-green);}
 [data-status='invalid'] { border: 1px solid var(--color-yellow); background: var(--color-yellow);}
-[data-status='none'] {border: 1px solid var(--color-gray-dark);  background: var(--color-gray-dark);}
+[data-status='none'] {background: var(--color-gray-dark); border-color: var(--color-gray-dark); color: var(--color-white);}
 
 [data-animation='pop'] {animation: PopIn 100ms;}
 

@@ -11,20 +11,37 @@
         <header>
             <h1>Super Fandle</h1>
         </header>
-        <main>
-            <section id="board">
+    <main>
+        <div class="game-layout">
+            <section id="clues" class="clues-row"></section>
 
-            </section>
-        </main>
+            <!-- NEW INPUT -->
+            <div class="guess-input-wrapper">
+                <input
+                    id="guess-input"
+                    type="text"
+                    placeholder="Type a character name…"
+                    autocomplete="off"
+                    aria-label="Character guess"
+                />
+                <ul id="suggestions"></ul>
+            </div>
+            
+            <div class="category-labels">
+                <span>Age</span>
+                <span>Height</span>
+                <span>Village</span>
+                <span>Rank</span>
+                <span>Nature</span>
+            </div>
+
+            <section id="board"></section>
+        </div>
+    </main>
         <div class="toaster">
             <ul>
             </ul>
         </div>
-        <footer>
-            <section id="keyboard">
-
-            </section>
-        </footer>
         <script type="text/javascript" src="index.js"></script>
     </body>
 </html>
