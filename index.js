@@ -40,7 +40,7 @@ const init = async () => {
 
     generateBoard(gameBoard, MAX_NUMBER_OF_ATTEMPTS, CATEGORY_COUNT);
 
-    initClues();
+    //initClues();
     
     gameBoard.addEventListener('animationend', event => {
         event.target.setAttribute('data-animation', 'idle');
