@@ -5,6 +5,7 @@
     --color-yellow: #B59F3B;
     --color-gray-dark: #3A3A3C;
     --color-gray-light: #818384;
+    --tile-size: clamp(3rem, 12vw, 5rem);
 }
 
 html { box-sizing: border-box;}
@@ -77,15 +78,15 @@ main {
 [data-key] {
     border: 2px solid var(--color-gray-dark);
     font-weight: 700;
-    font-size: 2rem;
-    line-height: 2rem;
+    font-size: calc(var(--tile-size) * 0.38);
+    line-height: calc(var(--tile-size) * 0.38);
 
     display: inline-flex;
     align-items: center;
     justify-content: center;
 
-    height: 5rem;
-    width: 5rem;
+    height: var(--tile-size);
+    width: var(--tile-size);
 
     user-select: none;
 }
@@ -150,6 +151,17 @@ main {
     max-width: 420px;
     margin: 0 auto 1rem;
     position: relative;
+}
+
+/* Constrain main game elements for small screens */
+#board,
+#keyboard,
+.category-labels {
+    max-width: 420px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 0.5rem;
+    box-sizing: border-box;
 }
 
 #guess-input {
@@ -224,8 +236,16 @@ main {
 
 [data-status='filled'] {border: 1px solid var(--color-gray-light);  background: var(--color-gray-light);}
 [data-status='valid'] {background: var(--color-green); border-color: var(--color-green);}
-[data-status='invalid'] { border: 1px solid var(--color-yellow); background: var(--color-yellow);}
+[data-status='invalid'] { border: 1px solid var(--color-yellow); background: var(--color-yellow);} 
 [data-status='none'] {background: var(--color-gray-dark); border-color: var(--color-gray-dark); color: var(--color-white);}
+
+/* Show yellow for higher/lower hints (incorrect for age/height/rank) */
+[data-status='higher'],
+[data-status='lower'] {
+    background: var(--color-yellow);
+    border-color: var(--color-yellow);
+    color: var(--color-black);
+}
 
 [data-animation='pop'] {animation: PopIn 100ms;}
 

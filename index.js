@@ -255,11 +255,65 @@ const checkGuess = (guessEntry, answerEntry) => {
 
         tile.textContent = guessClue;
 
-        if (
-            normalizeClue(guessClue) === normalizeClue(answerClue)
-        ) {
+        // ensure animation/data-status will be set below
+
+        // Special handling for Age (index 0), Height (index 1) and Rank (index 3)
+        const ageIndex = 0;
+        const heightIndex = 1;
+        const rankIndex = 3;
+
+        const isExact = normalizeClue(guessClue) === normalizeClue(answerClue);
+
+        if (isExact) {
             tile.setAttribute('data-status', 'valid');
+        } else if (index === ageIndex || index === heightIndex) {
+            // numeric comparison for age/height
+            const parseNumber = (v) => {
+                if (!v) return NaN;
+                const n = parseInt(v.toString().replace(/[^0-9-]/g, ''), 10);
+                return Number.isFinite(n) ? n : NaN;
+            }
+
+            const guessNum = parseNumber(guessClue);
+            const answerNum = parseNumber(answerClue);
+
+            if (Number.isNaN(guessNum) || Number.isNaN(answerNum)) {
+                // fallback to generic incorrect if non-numeric
+                tile.setAttribute('data-status', 'invalid');
+            } else if (answerNum > guessNum) {
+                tile.setAttribute('data-status', 'higher');
+                tile.textContent = `${guessClue} ↑`;
+            } else if (answerNum < guessNum) {
+                tile.setAttribute('data-status', 'lower');
+                tile.textContent = `${guessClue} ↓`;
+            } else {
+                tile.setAttribute('data-status', 'valid');
+            }
+        } else if (index === rankIndex) {
+            // rank comparison using defined order (high -> low)
+            const rankOrder = ['kage', 'leader', 'missing-nin', 'jonin', 'chunin', 'genin'];
+
+            const g = normalizeClue(guessClue);
+            const a = normalizeClue(answerClue);
+
+            const gIdx = rankOrder.indexOf(g);
+            const aIdx = rankOrder.indexOf(a);
+
+            if (gIdx === -1 || aIdx === -1) {
+                // unknown rank values - fallback
+                tile.setAttribute('data-status', 'invalid');
+            } else if (aIdx < gIdx) {
+                // lower index == higher rank
+                tile.setAttribute('data-status', 'higher');
+                tile.textContent = `${guessClue} ↑`;
+            } else if (aIdx > gIdx) {
+                tile.setAttribute('data-status', 'lower');
+                tile.textContent = `${guessClue} ↓`;
+            } else {
+                tile.setAttribute('data-status', 'valid');
+            }
         } else {
+            // generic equality check for other categories
             tile.setAttribute('data-status', 'none');
         }
 
