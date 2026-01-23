@@ -20,6 +20,9 @@ let WORD_LENGTH = 0;
 let DAILY_ENTRY = null;
 let cluesRevealed = 0;
 let CATEGORY_COUNT = 0;
+let seriesRules = [];
+let currentSeries = 'Naruto';
+let currentSeriesRule = '';
 
 //Constants
 const MAX_NUMBER_OF_ATTEMPTS = 6;
@@ -38,7 +41,7 @@ const init = async () => {
 
     const gameBoard = document.querySelector('#board');
 
-    generateBoard(gameBoard, MAX_NUMBER_OF_ATTEMPTS, CATEGORY_COUNT);
+    generateBoard(gameBoard, MAX_NUMBER_OF_ATTEMPTS, CATEGORY_COUNT + 1);
 
     //initClues();
     
@@ -46,6 +49,44 @@ const init = async () => {
         event.target.setAttribute('data-animation', 'idle');
     });
 
+    // Add question mark button
+    const guessWrapper = document.querySelector('.guess-input-wrapper');
+    const helpButton = document.createElement('button');
+    helpButton.id = 'help-button';
+    helpButton.textContent = '?';
+    helpButton.setAttribute('aria-label', 'Help');
+    guessWrapper.insertAdjacentElement('beforebegin', helpButton);
+
+    // Add modal
+    const modal = document.createElement('div');
+    modal.id = 'rules-modal';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>How to Play: </h2>
+            <p>Guess the character based on the clues provided.
+            After each guess, the clues will be marked to indicate how close your guess is to the correct answer.
+            For clues with numerical values, hints will indicate if the correct value is higher or lower.</p>
+            <h2>${currentSeries} Rules</h2>
+            <p>${currentSeriesRule}</p>
+        </div>
+    `;
+    document.body.appendChild(modal);
+
+    // Event listeners for modal
+    helpButton.addEventListener('click', () => {
+        modal.style.display = 'block';
+    });
+
+    modal.querySelector('.close').addEventListener('click', () => {
+        modal.style.display = 'none';
+    });
+
+    window.addEventListener('click', (event) => {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
 }
 
 const generateBoard = (board, rows = 6, columns = 5, keys = [], keyboard = false) => {
@@ -93,13 +134,13 @@ const showMessage = (message) => {
     toast.className = 'toast';
 
     document.querySelector('.toaster ul').prepend(toast);
-    setTimeout(() => toast.classList.add('fade'), 2000);
+    setTimeout(() => toast.classList.add('fade'), 4000);
 
     toast.addEventListener('transitionend', (event) => event.target.remove());
 }
 
 const loadWordsFromCSV = async () => {
-    const response = await fetch('names.csv');
+    const response = await fetch('naruto.csv');
     const text = await response.text();
 
     const entries = text
@@ -129,6 +170,28 @@ const loadWordsFromCSV = async () => {
     WORD_LENGTH = WORD_OF_THE_DAY.length;
 
     console.log('Name of the Day:', WORD_OF_THE_DAY);
+
+    // Load series rules
+    const rulesResponse = await fetch('seriesrules.csv');
+    const rulesText = await rulesResponse.text();
+
+    seriesRules = rulesText
+        .split('\n')
+        .map(line => line.trim())
+        .filter(Boolean)
+        .map(line => {
+            const parts = line.split(',', 2);
+            const series = parts[0].trim();
+            const rule = parts[1] ? parts[1].trim() : '';
+            return {
+                series,
+                rule
+            };
+        });
+
+    // Find rule for current series
+    const ruleEntry = seriesRules.find(r => r.series.toLowerCase() === currentSeries.toLowerCase());
+    currentSeriesRule = ruleEntry ? ruleEntry.rule : 'No rules available for this series.';
 }
 
 
@@ -247,17 +310,26 @@ const checkGuess = (guessEntry, answerEntry) => {
 
     const tiles = currentRow.querySelectorAll('li');
 
-    for (let index = 0; index < CATEGORY_COUNT; index++) {
+    for (let index = 0; index < CATEGORY_COUNT + 1; index++) {
         const tile = tiles[index];
 
-        const guessClue = guessEntry.clues[index];
-        const answerClue = answerEntry.clues[index];
+        if (index === 0) {
+            // Name column
+            tile.textContent = guessEntry.display;
+            tile.setAttribute('data-status', 'name');
+            tile.setAttribute('data-animation', 'pop');
+            continue;
+        }
+
+        const clueIndex = index - 1; // Adjust for name column
+        const guessClue = guessEntry.clues[clueIndex];
+        const answerClue = answerEntry.clues[clueIndex];
 
         tile.textContent = guessClue;
 
         // ensure animation/data-status will be set below
 
-        // Special handling for Age (index 0), Height (index 1) and Rank (index 3)
+        // Special handling for Age (clueIndex 0), Height (clueIndex 1) and Rank (clueIndex 3)
         const ageIndex = 0;
         const heightIndex = 1;
         const rankIndex = 3;
@@ -266,7 +338,7 @@ const checkGuess = (guessEntry, answerEntry) => {
 
         if (isExact) {
             tile.setAttribute('data-status', 'valid');
-        } else if (index === ageIndex || index === heightIndex) {
+        } else if (clueIndex === ageIndex || clueIndex === heightIndex) {
             // numeric comparison for age/height
             const parseNumber = (v) => {
                 if (!v) return NaN;

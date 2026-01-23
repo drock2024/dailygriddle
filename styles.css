@@ -78,8 +78,8 @@ main {
 [data-key] {
     border: 2px solid var(--color-gray-dark);
     font-weight: 700;
-    font-size: calc(var(--tile-size) * 0.38);
-    line-height: calc(var(--tile-size) * 0.38);
+    font-size: calc(var(--tile-size) * 0.25);
+    line-height: calc(var(--tile-size) * 0.25);
 
     display: inline-flex;
     align-items: center;
@@ -153,11 +153,65 @@ main {
     position: relative;
 }
 
+#help-button {
+    display: block;
+    margin: 0 auto 1rem;
+    background: var(--color-gray-dark);
+    color: var(--color-white);
+    border: none;
+    border-radius: 50%;
+    width: 2rem;
+    height: 2rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+#help-button:hover {
+    background: var(--color-gray-light);
+}
+
+/* Modal styles */
+#rules-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: var(--color-white);
+    color: var(--color-black);
+    margin: 15% auto;
+    padding: 20px;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 500px;
+    position: relative;
+}
+
+.close {
+    color: var(--color-gray-dark);
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: var(--color-black);
+}
+
 /* Constrain main game elements for small screens */
 #board,
 #keyboard,
 .category-labels {
-    max-width: 420px;
+    max-width: 600px;
     width: 100%;
     margin: 0 auto;
     padding: 0 0.5rem;
@@ -195,9 +249,9 @@ main {
 
 .category-labels {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(6, 1fr);
     gap: 6px;
-    max-width: 420px;
+    max-width: 600px;
     margin-bottom: 0.5rem;
     font-size: 0.75rem;
     text-align: center;
