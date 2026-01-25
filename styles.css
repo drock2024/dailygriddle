@@ -341,3 +341,99 @@ main {
         transform: rotateX(0);
     }
 }
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background-color: var(--color-black);
+    color: var(--color-white);
+    margin: 15% auto;
+    padding: 2rem;
+    border: 2px solid var(--color-gray-dark);
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.modal-content h2 {
+    margin-top: 0;
+    color: var(--color-green);
+}
+
+#share-stats {
+    margin: 1.5rem 0;
+    text-align: left;
+}
+
+#share-stats p {
+    margin: 0.5rem 0;
+    font-size: 1.1rem;
+}
+
+#emoji-grid {
+    margin: 1rem 0;
+    font-family: monospace;
+    font-size: 1.2rem;
+    line-height: 1.4;
+    white-space: pre;
+    background: var(--color-gray-dark);
+    padding: 1rem;
+    border-radius: 5px;
+    overflow-x: auto;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 1.5rem;
+}
+
+.modal-buttons button {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+#share-button {
+    background-color: var(--color-green);
+    color: var(--color-black);
+}
+
+#share-button:hover {
+    background-color: #4a7c45;
+}
+
+#close-modal {
+    background-color: var(--color-gray-dark);
+    color: var(--color-white);
+}
+
+#close-modal:hover {
+    background-color: var(--color-gray-light);
+}
+
+/* Add style for name tiles */
+[data-status='name'] {
+    background: var(--color-gray-light);
+    border-color: var(--color-gray-light);
+    color: var(--color-black);
+    font-weight: bold;
+}

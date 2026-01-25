@@ -4,12 +4,12 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Fandle</title>
+        <title>Super Fandle</title>
         <link rel="stylesheet" type="text/css" href="styles.css" />
     </head>
     <body>
         <header>
-            <h1>Fandle</h1>
+            <h1>Super Fandle</h1>
         </header>
     <main>
         <div class="game-layout">
@@ -42,6 +42,23 @@
             <ul>
             </ul>
         </div>
+        
+        <!-- Share Modal -->
+        <div id="share-modal" class="modal">
+            <div class="modal-content">
+                <h2>🎉 You Won!</h2>
+                <div id="share-stats">
+                    <p><strong>Date:</strong> <span id="game-date"></span></p>
+                    <p><strong>Guesses:</strong> <span id="guess-count"></span></p>
+                    <div id="emoji-grid"></div>
+                </div>
+                <div class="modal-buttons">
+                    <button id="share-button">📋 Copy to Clipboard</button>
+                    <button id="close-modal">Close</button>
+                </div>
+            </div>
+        </div>
+        
         <script type="text/javascript" src="index.js"></script>
     </body>
 </html>

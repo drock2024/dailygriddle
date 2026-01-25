@@ -64,9 +64,9 @@ const init = async () => {
         <div class="modal-content">
             <span class="close">&times;</span>
             <h2>How to Play: </h2>
-            <p>Guess the character based on the clues provided.
-            After each guess, the clues will be marked to indicate how close your guess is to the correct answer.
-            For clues with numerical values, hints will indicate if the correct value is higher or lower.</p>
+            <p>Guess the character in ${MAX_NUMBER_OF_ATTEMPTS} tries!</p>
+            <p>After each guess, the clues will be marked to indicate whether they match the correct answer.
+            For clues with hierarchical values, hints will indicate if the correct value is higher or lower.</p>
             <h2>${currentSeries} Rules</h2>
             <p>${currentSeriesRule}</p>
         </div>
@@ -140,7 +140,7 @@ const showMessage = (message) => {
 }
 
 const loadWordsFromCSV = async () => {
-    const response = await fetch('naruto.csv');
+    const response = await fetch('series/naruto.csv');
     const text = await response.text();
 
     const entries = text
@@ -361,7 +361,7 @@ const checkGuess = (guessEntry, answerEntry) => {
             } else {
                 tile.setAttribute('data-status', 'valid');
             }
-        } else if (index === rankIndex) {
+        } else if (clueIndex === rankIndex) {
             // rank comparison using defined order (high -> low)
             const rankOrder = ['kage', 'leader', 'missing-nin', 'jonin', 'chunin', 'genin'];
 
@@ -385,8 +385,12 @@ const checkGuess = (guessEntry, answerEntry) => {
                 tile.setAttribute('data-status', 'valid');
             }
         } else {
-            // generic equality check for other categories
-            tile.setAttribute('data-status', 'none');
+            // generic equality check for other categories (village, nature)
+            if (isExact) {
+                tile.setAttribute('data-status', 'valid');
+            } else {
+                tile.setAttribute('data-status', 'none');
+            }
         }
 
         tile.setAttribute('data-animation', 'flip');
@@ -410,6 +414,105 @@ const checkGuess = (guessEntry, answerEntry) => {
 
 
 
+const showShareModal = () => {
+    const modal = document.getElementById('share-modal');
+    const gameDate = document.getElementById('game-date');
+    const guessCount = document.getElementById('guess-count');
+    const emojiGrid = document.getElementById('emoji-grid');
+    
+    // Set date
+    const today = new Date();
+    gameDate.textContent = today.toLocaleDateString('en-US', { 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+    });
+    
+    // Set guess count
+    guessCount.textContent = history.length;
+    
+    // Generate emoji grid
+    emojiGrid.textContent = generateEmojiGrid();
+    
+    // Show modal
+    modal.style.display = 'block';
+    
+    // Add event listeners
+    document.getElementById('share-button').onclick = () => copyToClipboard();
+    document.getElementById('close-modal').onclick = () => closeModal();
+    
+    // Close modal when clicking outside
+    modal.onclick = (event) => {
+        if (event.target === modal) {
+            closeModal();
+        }
+    };
+    
+    // Close modal on Escape key
+    document.addEventListener('keydown', handleEscapeKey);
+}
+
+const generateEmojiGrid = () => {
+    const emojiMap = {
+        'valid': '🟢',
+        'invalid': '🟡',
+        'none': '🔘',
+        'higher': '🟡',
+        'lower': '🟡',
+        'name': '🔵'
+    };
+    
+    let grid = '';
+    
+    // Generate grid for each guess
+    for (let row = 0; row < history.length; row++) {
+        const rowElement = document.querySelector(`#board ul[data-row='${row}']`);
+        const tiles = rowElement.querySelectorAll('li');
+        
+        for (let col = 0; col < tiles.length; col++) {
+            const status = tiles[col].getAttribute('data-status');
+            grid += emojiMap[status] || '⚫';
+        }
+        grid += '\n';
+    }
+    
+    return grid.trim();
+}
+
+const copyToClipboard = async () => {
+    const gameDate = document.getElementById('game-date').textContent;
+    const guessCount = document.getElementById('guess-count').textContent;
+    const emojiGrid = document.getElementById('emoji-grid').textContent;
+    
+    const shareText = `Super Fandle - ${gameDate}\nGuesses: ${guessCount}/6\n\n${emojiGrid}\n\nPlay at: [Your Game URL]`;
+    
+    try {
+        await navigator.clipboard.writeText(shareText);
+        showMessage('Copied to clipboard!');
+    } catch (err) {
+        // Fallback for older browsers
+        const textArea = document.createElement('textarea');
+        textArea.value = shareText;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        showMessage('Copied to clipboard!');
+    }
+}
+
+const closeModal = () => {
+    const modal = document.getElementById('share-modal');
+    modal.style.display = 'none';
+    document.removeEventListener('keydown', handleEscapeKey);
+}
+
+const handleEscapeKey = (event) => {
+    if (event.key === 'Escape') {
+        closeModal();
+    }
+}
+
 const showEndScreen = (won) => {
     const message = won
         ? `🎉 You Win!`
@@ -417,6 +520,10 @@ const showEndScreen = (won) => {
 
     showMessage(message);
     showMessage(`The word was ${WORD_OF_THE_DAY}`);
+    
+    if (won) {
+        showShareModal();
+    }
 }
 
 //Call the initilaization function when the DOM is loaded to get
