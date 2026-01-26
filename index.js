@@ -206,7 +206,23 @@ const getDailyWord = (words) => {
     const daysSinceStart =
         Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
 
-    return words[daysSinceStart % words.length];
+    if (!Array.isArray(words) || words.length === 0) return null;
+
+    const len = words.length;
+    // base index for today
+    let index = daysSinceStart % len;
+
+    // avoid picking the same entry two days in a row
+    if (len > 1) {
+        const prevIndex = ((daysSinceStart - 1) % len + len) % len;
+
+        if (words[prevIndex] && words[index] && words[prevIndex].answer === words[index].answer) {
+            // pick the next item to avoid repeat (wraparound safe)
+            index = (index + 1) % len;
+        }
+    }
+
+    return words[index];
 }
 
 const initClues = () => {
