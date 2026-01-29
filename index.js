@@ -21,8 +21,17 @@ let DAILY_ENTRY = null;
 let cluesRevealed = 0;
 let CATEGORY_COUNT = 0;
 let seriesRules = [];
-let currentSeries = 'Naruto';
+let currentSeries = '';
+const SERIES = ['mcu', 'naruto', 'starwars'];
+let headers = [];
 let currentSeriesRule = '';
+let availableSeries = [];
+
+// Favorites storage key
+const FAVORITES_KEY = 'sf_favorites';
+
+// Stats storage key
+const STATS_KEY = 'sf_stats';
 
 //Constants
 const MAX_NUMBER_OF_ATTEMPTS = 6;
@@ -41,6 +50,9 @@ const init = async () => {
 
     const gameBoard = document.querySelector('#board');
 
+    const categoryLabels = document.querySelector('.category-labels');
+    categoryLabels.innerHTML = headers.map(h => `<span>${h}</span>`).join('');
+
     generateBoard(gameBoard, MAX_NUMBER_OF_ATTEMPTS, CATEGORY_COUNT + 1);
 
     //initClues();
@@ -55,7 +67,20 @@ const init = async () => {
     helpButton.id = 'help-button';
     helpButton.textContent = '?';
     helpButton.setAttribute('aria-label', 'Help');
-    guessWrapper.insertAdjacentElement('beforebegin', helpButton);
+    
+    // Create a container for help button and series label
+    const helpContainer = document.createElement('div');
+    helpContainer.className = 'help-container';
+    helpContainer.appendChild(helpButton);
+    
+    // Add series label
+    const seriesLabel = document.createElement('span');
+    seriesLabel.id = 'series-label';
+    seriesLabel.className = 'series-label';
+    seriesLabel.textContent = `${currentSeries} Characters`;
+    helpContainer.appendChild(seriesLabel);
+    
+    guessWrapper.insertAdjacentElement('beforebegin', helpContainer);
 
     // Add modal
     const modal = document.createElement('div');
@@ -87,6 +112,142 @@ const init = async () => {
             modal.style.display = 'none';
         }
     });
+    // Build Home and Stats UI
+    buildHomePanelUI();
+
+    const homeBtn = document.getElementById('home-button');
+    const statsBtn = document.getElementById('stats-button');
+    const homePanel = document.getElementById('home-panel');
+    const statsPanel = document.getElementById('stats-panel');
+
+    if (homeBtn) homeBtn.addEventListener('click', () => { if (homePanel) homePanel.style.display = 'block'; });
+    if (statsBtn) statsBtn.addEventListener('click', () => { updateStatsPanelUI(); if (statsPanel) statsPanel.style.display = 'block'; });
+
+    const closeHome = document.getElementById('close-home');
+    const closeStats = document.getElementById('close-stats');
+    if (closeHome) closeHome.addEventListener('click', () => { if (homePanel) homePanel.style.display = 'none'; });
+    if (closeStats) closeStats.addEventListener('click', () => { if (statsPanel) statsPanel.style.display = 'none'; });
+}
+
+// --- Favorites and Panels ---
+const loadFavorites = () => {
+    try {
+        const f = JSON.parse(localStorage.getItem(FAVORITES_KEY) || 'null');
+        if (Array.isArray(f)) return f;
+    } catch (e) {}
+    return availableSeries.map(s => s.id);
+}
+
+const saveFavorites = (favs) => {
+    localStorage.setItem(FAVORITES_KEY, JSON.stringify(favs));
+}
+
+const buildHomePanelUI = () => {
+    const list = document.getElementById('series-list');
+    if (!list) return;
+
+    list.innerHTML = '';
+    const favs = loadFavorites();
+
+    // local selection state (do not persist until Apply)
+    availableSeries.forEach(s => {
+        const li = document.createElement('li');
+        const id = s.id;
+        li.innerHTML = `
+            <label><input type="checkbox" data-id="${id}" ${favs.includes(id) ? 'checked' : ''}/> ${s.display}</label>
+        `;
+        list.appendChild(li);
+    });
+
+    const applyBtn = document.getElementById('apply-home');
+    const updateApplyState = () => {
+        const selected = Array.from(list.querySelectorAll('input[type="checkbox"]'))
+            .filter(i => i.checked)
+            .map(i => i.dataset.id);
+
+        if (applyBtn) applyBtn.disabled = selected.length === 0;
+    };
+
+    // hook up checkbox changes (update local state only)
+    list.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+        cb.addEventListener('change', () => {
+            updateApplyState();
+        });
+    });
+
+    const selectAllBtn = document.getElementById('select-all');
+    const deselectAllBtn = document.getElementById('deselect-all');
+    if (selectAllBtn) selectAllBtn.addEventListener('click', () => {
+        list.querySelectorAll('input[type="checkbox"]').forEach(i => i.checked = true);
+        updateApplyState();
+    });
+    if (deselectAllBtn) deselectAllBtn.addEventListener('click', () => {
+        list.querySelectorAll('input[type="checkbox"]').forEach(i => i.checked = false);
+        updateApplyState();
+    });
+
+    // Apply button — validate and persist
+    if (applyBtn) {
+        updateApplyState();
+        applyBtn.addEventListener('click', () => {
+            const selected = Array.from(list.querySelectorAll('input[type="checkbox"]'))
+                .filter(i => i.checked)
+                .map(i => i.dataset.id);
+
+            if (!selected || selected.length === 0) {
+                showMessage('Select at least one series before applying.');
+                return;
+            }
+
+            saveFavorites(selected);
+            // close panel and reload to pick new daily series
+            const homePanel = document.getElementById('home-panel');
+            if (homePanel) homePanel.style.display = 'none';
+            location.reload();
+        });
+    }
+}
+
+// --- Statistics ---
+const loadStats = () => {
+    try {
+        const s = JSON.parse(localStorage.getItem(STATS_KEY) || 'null');
+        if (s && typeof s === 'object') return s;
+    } catch (e) {}
+    return { gamesPlayed: 0, gamesWon: 0, totalGuessesForWins: 0 };
+}
+
+const saveStats = (stats) => {
+    localStorage.setItem(STATS_KEY, JSON.stringify(stats));
+}
+
+const updateStatsOnGameEnd = (won) => {
+    const stats = loadStats();
+    stats.gamesPlayed = (stats.gamesPlayed || 0) + 1;
+    if (won) {
+        stats.gamesWon = (stats.gamesWon || 0) + 1;
+        stats.totalGuessesForWins = (stats.totalGuessesForWins || 0) + history.length;
+    }
+    saveStats(stats);
+}
+
+const updateStatsPanelUI = () => {
+    const container = document.getElementById('stats-content');
+    const stats = loadStats();
+    if (!container) return;
+
+    if (!stats || stats.gamesPlayed === 0) {
+        container.textContent = 'No data yet, play a game first!';
+        return;
+    }
+
+    const avg = stats.gamesWon > 0 ? (stats.totalGuessesForWins / stats.gamesWon).toFixed(2) : 'N/A';
+
+    container.innerHTML = `
+        <div><strong>Games played:</strong> ${stats.gamesPlayed}</div>
+        <div><strong>Games won:</strong> ${stats.gamesWon}</div>
+        <div><strong>Avg guesses to win:</strong> ${avg}</div>
+    `;
 }
 
 const generateBoard = (board, rows = 6, columns = 5, keys = [], keyboard = false) => {
@@ -140,38 +301,7 @@ const showMessage = (message) => {
 }
 
 const loadWordsFromCSV = async () => {
-    const response = await fetch('series/naruto.csv');
-    const text = await response.text();
-
-    const entries = text
-        .split('\n')
-        .map(line => line.trim())
-        .filter(Boolean)
-        .map(line => {
-            const [name, ...clues] = line.split(',');
-
-            return {
-                display: name.trim(),
-                answer: name.toUpperCase().replace(/[^A-Z]/g, ''),
-                clues: clues.map(c => c.trim())
-            };
-        })
-        .filter(entry => entry.answer.length > 0);
-
-    // ✅ WORD_LIST = ALL possible answers (names only)
-    WORD_LIST = entries;
-
-    // ✅ Pick daily deterministic entry (with clues)
-    DAILY_ENTRY = getDailyWord(entries);
-
-    CATEGORY_COUNT = DAILY_ENTRY.clues.length;
-
-    WORD_OF_THE_DAY = DAILY_ENTRY.answer;
-    WORD_LENGTH = WORD_OF_THE_DAY.length;
-
-    console.log('Name of the Day:', WORD_OF_THE_DAY);
-
-    // Load series rules
+    // Load series rules first to get properly formatted series names
     const rulesResponse = await fetch('seriesrules.csv');
     const rulesText = await rulesResponse.text();
 
@@ -189,9 +319,75 @@ const loadWordsFromCSV = async () => {
             };
         });
 
-    // Find rule for current series
-    const ruleEntry = seriesRules.find(r => r.series.toLowerCase() === currentSeries.toLowerCase());
+    // Build availableSeries with ids that match CSV file names
+    availableSeries = seriesRules.map(r => ({
+        id: r.series.toLowerCase().replace(/\s+/g, ''),
+        display: r.series,
+        rule: r.rule
+    }));
+
+    // Load favorites from storage (default: all series selected)
+    let favorites = JSON.parse(localStorage.getItem(FAVORITES_KEY) || 'null');
+    if (!Array.isArray(favorites)) {
+        favorites = availableSeries.map(s => s.id);
+        localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites));
+    }
+
+    const startDate = new Date('2024-01-01');
+    const today = new Date();
+    startDate.setHours(0, 0, 0, 0);
+    today.setHours(0, 0, 0, 0);
+    const daysSinceStart = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
+
+    // Ensure we have at least one favorite
+    if (favorites.length === 0) {
+        favorites = availableSeries.map(s => s.id);
+        localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites));
+    }
+
+    // Pick the series for this user deterministically from their favorites
+    const seriesIndex = daysSinceStart % favorites.length;
+    const selectedSeriesId = favorites[seriesIndex];
+
+    const ruleEntry = availableSeries.find(a => a.id === selectedSeriesId) || availableSeries[0];
+    currentSeries = ruleEntry ? ruleEntry.display : selectedSeriesId;
     currentSeriesRule = ruleEntry ? ruleEntry.rule : 'No rules available for this series.';
+
+    const csvPath = `series/${selectedSeriesId}.csv`;
+    const response = await fetch(csvPath);
+    const text = await response.text();
+
+    const lines = text
+        .split('\n')
+        .map(line => line.trim())
+        .filter(Boolean);
+    if (lines.length < 2) return;
+    headers = lines[0].split(',').map(h => h.trim());
+    const dataLines = lines.slice(1);
+    const entries = dataLines
+        .map(line => {
+            const [name, ...clues] = line.split(',');
+
+            return {
+                display: name.trim(),
+                answer: name.toUpperCase().replace(/[^A-Z]/g, ''),
+                clues: clues.map(c => c.trim())
+            };
+        })
+        .filter(entry => entry.answer.length > 0);
+
+    // ✅ WORD_LIST = ALL possible answers (names only)
+    WORD_LIST = entries;
+
+    // ✅ Pick daily deterministic entry (with clues)
+    DAILY_ENTRY = getDailyWord(entries);
+
+    CATEGORY_COUNT = headers.length - 1;
+
+    WORD_OF_THE_DAY = DAILY_ENTRY.answer;
+    WORD_LENGTH = WORD_OF_THE_DAY.length;
+
+    console.log('Name of the Day:', WORD_OF_THE_DAY);
 }
 
 
@@ -530,13 +726,13 @@ const handleEscapeKey = (event) => {
 }
 
 const showEndScreen = (won) => {
-    const message = won
-        ? `🎉 You Win!`
-        : `💀 Game Over`;
+    // update persistent stats
+    updateStatsOnGameEnd(won);
 
+    const message = won ? `🎉 You Win!` : `💀 Game Over`;
     showMessage(message);
     showMessage(`The word was ${WORD_OF_THE_DAY}`);
-    
+
     if (won) {
         showShareModal();
     }

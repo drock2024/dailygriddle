@@ -30,6 +30,71 @@ header {
     border-bottom: 1px solid var(--color-gray-dark);
 }
 
+header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 0.5rem 0;
+}
+
+.header-left, .header-right {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* move buttons closer to center */
+.header-left { left: 40%; }
+.header-right { right: 40%; }
+
+/* Prevent overlap on small screens: move buttons to the edges */
+@media (max-width: 600px) {
+    .header-left { left: 1rem; }
+    .header-right { right: 1rem; }
+    #home-button, #stats-button { font-size: 1.25rem; }
+}
+
+#home-button, #stats-button {
+    background: transparent;
+    border: none;
+    font-size: 2.25rem;
+    cursor: pointer;
+    color: var(--color-white);
+}
+
+.panel {
+    position: fixed;
+    z-index: 1200;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem; /* keep content away from edges on small screens */
+    background-color: rgba(0,0,0,0.6);
+}
+
+.panel-content {
+    background: var(--color-black);
+    color: var(--color-white);
+    border: 2px solid var(--color-gray-dark);
+    padding: 1rem 1.25rem;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 520px;
+    text-align: left;
+    margin: 0 auto; /* ensure centered inside the panel */
+}
+
+.panel-actions { display:flex; gap:0.5rem; margin-bottom:0.75rem; }
+.panel-actions button { padding:0.4rem 0.6rem; cursor:pointer; }
+.panel-foot { margin-top:0.5rem; opacity:0.8; font-size:0.9rem; }
+.panel-content h2 { margin-top: 0; color: var(--color-green); }
+.panel-content button { margin-top: 0.75rem; }
+
 h1 {
     margin: 10px 0;
     padding: 0;
@@ -71,6 +136,7 @@ main {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex: 1;
 }
 
 
@@ -155,7 +221,7 @@ main {
 
 #help-button {
     display: block;
-    margin: 0 auto 1rem;
+    margin: 0;
     background: var(--color-gray-dark);
     color: var(--color-white);
     border: none;
@@ -166,10 +232,27 @@ main {
     font-weight: bold;
     cursor: pointer;
     transition: background 0.3s ease;
+    flex-shrink: 0;
 }
 
 #help-button:hover {
     background: var(--color-gray-light);
+}
+
+.help-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin: 0 auto 1rem;
+    flex-wrap: wrap;
+}
+
+.series-label {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--color-white);
+    letter-spacing: 0.05em;
 }
 
 /* Modal styles */
@@ -248,14 +331,17 @@ main {
 }
 
 .category-labels {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    display: flex;
     gap: 6px;
     max-width: 600px;
     margin-bottom: 0.5rem;
     font-size: 0.75rem;
     text-align: center;
     opacity: 0.75;
+}
+
+.category-labels span {
+    flex: 1;
 }
 
 
@@ -428,6 +514,35 @@ main {
 
 #close-modal:hover {
     background-color: var(--color-gray-light);
+}
+
+/* Mobile styles for horizontal scrolling */
+@media (max-width: 480px) {
+    .category-labels {
+        overflow-x: auto;
+        width: max-content;
+    }
+
+    .category-labels span {
+        flex-shrink: 0;
+        min-width: 4rem;
+        padding: 0.25rem;
+    }
+
+    #board {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    #board ul {
+        width: max-content;
+    }
+
+    #board li {
+        flex-shrink: 0;
+        min-width: 4rem;
+        flex-basis: 4rem;
+    }
 }
 
 /* Add style for name tiles */
