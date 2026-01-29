@@ -33,6 +33,9 @@ const FAVORITES_KEY = 'sf_favorites';
 // Stats storage key
 const STATS_KEY = 'sf_stats';
 
+// Daily submission tracking key
+const DAILY_SUBMISSION_KEY = 'sf_daily_submission_date';
+
 //Constants
 const MAX_NUMBER_OF_ATTEMPTS = 6;
 const history = [];
@@ -149,6 +152,17 @@ const buildHomePanelUI = () => {
     list.innerHTML = '';
     const favs = loadFavorites();
 
+    // Update daily submission notice
+    const notice = document.getElementById('daily-submission-notice');
+    if (notice) {
+        if (hasSubmittedToday()) {
+            notice.textContent = '⏸️ You\'ve already played today. Favorite changes will apply tomorrow.';
+            notice.style.display = 'block';
+        } else {
+            notice.style.display = 'none';
+        }
+    }
+
     // local selection state (do not persist until Apply)
     availableSeries.forEach(s => {
         const li = document.createElement('li');
@@ -199,6 +213,12 @@ const buildHomePanelUI = () => {
                 return;
             }
 
+            // Check if user has already submitted a guess today
+            if (hasSubmittedToday()) {
+                showMessage('You\'ve already played today. Changes will apply tomorrow.');
+                return;
+            }
+
             saveFavorites(selected);
             // close panel and reload to pick new daily series
             const homePanel = document.getElementById('home-panel');
@@ -220,6 +240,21 @@ const loadStats = () => {
 const saveStats = (stats) => {
     localStorage.setItem(STATS_KEY, JSON.stringify(stats));
 }
+
+const getDateString = () => {
+    const today = new Date();
+    return today.toISOString().split('T')[0]; // YYYY-MM-DD format
+};
+
+const hasSubmittedToday = () => {
+    const lastSubmissionDate = localStorage.getItem(DAILY_SUBMISSION_KEY);
+    const today = getDateString();
+    return lastSubmissionDate === today;
+};
+
+const markSubmittedToday = () => {
+    localStorage.setItem(DAILY_SUBMISSION_KEY, getDateString());
+};
 
 const updateStatsOnGameEnd = (won) => {
     const stats = loadStats();
@@ -610,6 +645,8 @@ const checkGuess = (guessEntry, answerEntry) => {
     }
 
     history.push(guessEntry.answer);
+
+    markSubmittedToday();
 
     if (guessEntry.answer === answerEntry.answer) {
         gameWon = true;
