@@ -166,12 +166,12 @@ main {
 
 /* Category-based board tiles */
 #board li {
-    font-size: clamp(0.6rem, 1.8vw, 0.85rem);        /* Smaller than Wordle letters */
-    line-height: 1.1;
+    font-size: clamp(0.5rem, 1.8vw, 0.75rem);        /* Smaller than Wordle letters */
+    line-height: 1.2;
     text-align: center;
     padding: 0.25rem;
-    word-break: break-word;      /* Allow long words to wrap */
-    white-space: normal;         /* Enable wrapping */
+    word-break: keep-all;        /* Keep words together */
+    white-space: normal;         /* Allow wrapping between words only */
     display: flex;
     align-items: center;
     justify-content: center;
