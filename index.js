@@ -36,6 +36,9 @@ const STATS_KEY = 'sf_stats';
 // Daily submission tracking key
 const DAILY_SUBMISSION_KEY = 'sf_daily_submission_date';
 
+// Daily board state storage key
+const DAILY_BOARD_STATE_KEY = 'sf_daily_board_state';
+
 //Constants
 const MAX_NUMBER_OF_ATTEMPTS = 6;
 const history = [];
@@ -57,6 +60,12 @@ const init = async () => {
     categoryLabels.innerHTML = headers.map(h => `<span>${h}</span>`).join('');
 
     generateBoard(gameBoard, MAX_NUMBER_OF_ATTEMPTS, CATEGORY_COUNT + 1);
+
+    // Try to restore board state from today
+    const savedState = loadBoardState();
+    if (savedState) {
+        restoreBoardState(savedState);
+    }
 
     //initClues();
     
@@ -234,7 +243,7 @@ const loadStats = () => {
         const s = JSON.parse(localStorage.getItem(STATS_KEY) || 'null');
         if (s && typeof s === 'object') return s;
     } catch (e) {}
-    return { gamesPlayed: 0, gamesWon: 0, totalGuessesForWins: 0 };
+    return { gamesPlayed: 0, gamesWon: 0, totalGuessesForWins: 0, consecutiveDaysPlayed: 0, lastPlayedDate: null };
 }
 
 const saveStats = (stats) => {
@@ -256,13 +265,101 @@ const markSubmittedToday = () => {
     localStorage.setItem(DAILY_SUBMISSION_KEY, getDateString());
 };
 
+const saveBoardState = () => {
+    const boardState = {
+        date: getDateString(),
+        gameOver: gameOver,
+        gameWon: gameWon,
+        history: [...history],
+        boardData: []
+    };
+
+    // Save the state of each tile
+    const rows = document.querySelectorAll('#board ul[data-row]');
+    rows.forEach(row => {
+        const rowData = [];
+        row.querySelectorAll('li').forEach(tile => {
+            rowData.push({
+                status: tile.getAttribute('data-status'),
+                textContent: tile.textContent
+            });
+        });
+        boardState.boardData.push(rowData);
+    });
+
+    localStorage.setItem(DAILY_BOARD_STATE_KEY, JSON.stringify(boardState));
+};
+
+const loadBoardState = () => {
+    try {
+        const state = JSON.parse(localStorage.getItem(DAILY_BOARD_STATE_KEY) || 'null');
+        if (state && state.date === getDateString()) {
+            return state;
+        }
+    } catch (e) {}
+    return null;
+};
+
+const restoreBoardState = (state) => {
+    if (!state) return false;
+
+    gameOver = state.gameOver;
+    gameWon = state.gameWon;
+    history.length = 0;
+    history.push(...state.history);
+
+    // Restore tile states
+    const rows = document.querySelectorAll('#board ul[data-row]');
+    rows.forEach((row, rowIndex) => {
+        const tiles = row.querySelectorAll('li');
+        if (state.boardData[rowIndex]) {
+            tiles.forEach((tile, colIndex) => {
+                const tileData = state.boardData[rowIndex][colIndex];
+                if (tileData) {
+                    tile.setAttribute('data-status', tileData.status);
+                    tile.textContent = tileData.textContent;
+                }
+            });
+        }
+    });
+
+    // Disable input
+    const input = document.querySelector('#guess-input');
+    if (input) input.disabled = true;
+
+    return true;
+};
+
 const updateStatsOnGameEnd = (won) => {
     const stats = loadStats();
+    const today = getDateString();
+    
     stats.gamesPlayed = (stats.gamesPlayed || 0) + 1;
     if (won) {
         stats.gamesWon = (stats.gamesWon || 0) + 1;
         stats.totalGuessesForWins = (stats.totalGuessesForWins || 0) + history.length;
     }
+    
+    // Update consecutive days
+    if (stats.lastPlayedDate) {
+        const lastDate = new Date(stats.lastPlayedDate);
+        const currentDate = new Date(today);
+        const diffDays = Math.floor((currentDate - lastDate) / (1000 * 60 * 60 * 24));
+        
+        if (diffDays === 1) {
+            // Consecutive day
+            stats.consecutiveDaysPlayed = (stats.consecutiveDaysPlayed || 0) + 1;
+        } else if (diffDays > 1 || diffDays < 0) {
+            // Streak broken
+            stats.consecutiveDaysPlayed = 1;
+        }
+        // If diffDays === 0, same day - don't increment
+    } else {
+        // First time playing
+        stats.consecutiveDaysPlayed = 1;
+    }
+    
+    stats.lastPlayedDate = today;
     saveStats(stats);
 }
 
@@ -277,11 +374,27 @@ const updateStatsPanelUI = () => {
     }
 
     const avg = stats.gamesWon > 0 ? (stats.totalGuessesForWins / stats.gamesWon).toFixed(2) : 'N/A';
+    const consecutiveDays = stats.consecutiveDaysPlayed || 0;
 
     container.innerHTML = `
-        <div><strong>Games played:</strong> ${stats.gamesPlayed}</div>
-        <div><strong>Games won:</strong> ${stats.gamesWon}</div>
-        <div><strong>Avg guesses to win:</strong> ${avg}</div>
+        <div class="stats-grid">
+            <div class="stat-tile">
+                <div class="stat-label">Games Played</div>
+                <div class="stat-value">${stats.gamesPlayed}</div>
+            </div>
+            <div class="stat-tile">
+                <div class="stat-label">Games Won</div>
+                <div class="stat-value">${stats.gamesWon}</div>
+            </div>
+            <div class="stat-tile">
+                <div class="stat-label">Avg Guesses</div>
+                <div class="stat-value">${avg}</div>
+            </div>
+            <div class="stat-tile">
+                <div class="stat-label">Days in a Row</div>
+                <div class="stat-value">${consecutiveDays}</div>
+            </div>
+        </div>
     `;
 }
 
@@ -651,12 +764,14 @@ const checkGuess = (guessEntry, answerEntry) => {
     if (guessEntry.answer === answerEntry.answer) {
         gameWon = true;
         gameOver = true;
+        saveBoardState();
         showEndScreen(true);
         return;
     }
 
     if (history.length === MAX_NUMBER_OF_ATTEMPTS) {
         gameOver = true;
+        saveBoardState();
         showEndScreen(false);
     }
 };

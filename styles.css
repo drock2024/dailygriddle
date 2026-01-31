@@ -44,15 +44,13 @@ header {
     transform: translateY(-50%);
 }
 
-/* move buttons closer to center */
-.header-left { left: 40%; }
-.header-right { right: 40%; }
+/* Align icon edges with game board edges */
+.header-left {
+    left: max(0.5rem, calc((100vw - 600px) / 2 + 3.0rem));
+}
 
-/* Prevent overlap on small screens: move buttons to the edges */
-@media (max-width: 600px) {
-    .header-left { left: 1rem; }
-    .header-right { right: 1rem; }
-    #home-button, #stats-button { font-size: 1.25rem; }
+.header-right {
+    right: max(0.5rem, calc((100vw - 600px) / 2 + 3.0rem));
 }
 
 #home-button, #stats-button {
@@ -94,6 +92,47 @@ header {
 .panel-foot { margin-top:0.5rem; opacity:0.8; font-size:0.9rem; }
 .panel-content h2 { margin-top: 0; color: var(--color-green); }
 .panel-content button { margin-top: 0.75rem; }
+
+/* Stats Grid Layout */
+#stats-content {
+    margin-bottom: 1.5rem;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.stat-tile {
+    background: var(--color-gray-dark);
+    border: 1px solid var(--color-gray-light);
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-align: center;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.stat-tile:hover {
+    transform: translateY(-2px);
+    border-color: var(--color-green);
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: var(--color-gray-light);
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 500;
+}
+
+.stat-value {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--color-green);
+}
 
 h1 {
     margin: 10px 0;
