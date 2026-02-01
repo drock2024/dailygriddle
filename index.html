@@ -10,7 +10,7 @@
     <body>
         <header>
             <div class="header-left">
-                <button id="home-button" aria-label="Home">🏠</button>
+                <button id="home-button" aria-label="Home">⭐</button>
             </div>
             <h1>Daily Griddle</h1>
             <div class="header-right">
@@ -88,6 +88,18 @@
                 <h2>Statistics</h2>
                 <div id="stats-content"></div>
                 <button id="close-stats">Close</button>
+            </div>
+        </div>
+        
+        <!-- Welcome Modal (first-time visitors) -->
+        <div id="welcome-modal" class="modal" style="display:none;">
+            <div class="modal-content welcome-content">
+                <button class="close-welcome" aria-label="Close">&times;</button>
+                <h2>Welcome to Daily Griddle!</h2>
+                <p>Daily Griddle is a daily trivia game that is tailored to your personal favorite book, movies, shows, etc. Each day a wordle or grid style game will be generated for you to play. Get started by choosing your favorite topics!</p>
+                <div class="modal-buttons">
+                    <button id="choose-favorites-button">Choose My Favorites</button>
+                </div>
             </div>
         </div>
         

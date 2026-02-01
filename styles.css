@@ -591,3 +591,34 @@ main {
     color: var(--color-black);
     font-weight: bold;
 }
+
+/* Welcome modal tweaks */
+.welcome-content h2 {
+    margin-top: 0;
+    color: var(--color-green);
+}
+.welcome-content p {
+    color: var(--color-white);
+    margin: 1rem 0 0.5rem;
+    line-height: 1.4;
+}
+.close-welcome {
+    position: absolute;
+    right: 1rem;
+    top: 0.5rem;
+    background: transparent;
+    border: none;
+    color: var(--color-white);
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+#choose-favorites-button {
+    background-color: var(--color-green);
+    color: var(--color-black);
+    padding: 0.75rem 1.25rem;
+    border-radius: 6px;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+}
+#choose-favorites-button:hover { filter: brightness(0.95); }

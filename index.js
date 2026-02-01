@@ -139,6 +139,40 @@ const init = async () => {
     const closeStats = document.getElementById('close-stats');
     if (closeHome) closeHome.addEventListener('click', () => { if (homePanel) homePanel.style.display = 'none'; });
     if (closeStats) closeStats.addEventListener('click', () => { if (statsPanel) statsPanel.style.display = 'none'; });
+
+    // Welcome modal for first-time visitors
+    const welcomeModal = document.getElementById('welcome-modal');
+    const SEEN_WELCOME_KEY = 'sf_seen_welcome';
+    if (welcomeModal) {
+        const seen = localStorage.getItem(SEEN_WELCOME_KEY);
+        if (!seen) {
+            welcomeModal.style.display = 'block';
+        }
+
+        const chooseBtn = document.getElementById('choose-favorites-button');
+        const closeWelcome = welcomeModal.querySelector('.close-welcome');
+
+        if (chooseBtn) chooseBtn.addEventListener('click', () => {
+            localStorage.setItem(SEEN_WELCOME_KEY, '1');
+            const homePanelEl = document.getElementById('home-panel');
+            if (homePanelEl) homePanelEl.style.display = 'block';
+            welcomeModal.style.display = 'none';
+            const list = document.getElementById('series-list');
+            if (list) list.querySelectorAll('input[type="checkbox"]')[0]?.focus();
+        });
+
+        if (closeWelcome) closeWelcome.addEventListener('click', () => {
+            localStorage.setItem(SEEN_WELCOME_KEY, '1');
+            welcomeModal.style.display = 'none';
+        });
+
+        window.addEventListener('click', (event) => {
+            if (event.target === welcomeModal) {
+                localStorage.setItem(SEEN_WELCOME_KEY, '1');
+                welcomeModal.style.display = 'none';
+            }
+        });
+    }
 }
 
 // --- Favorites and Panels ---
