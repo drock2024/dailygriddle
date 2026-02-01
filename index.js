@@ -357,9 +357,9 @@ const restoreBoardState = (state) => {
         }
     });
 
-    // Disable input
+    // Disable input only if game is over
     const input = document.querySelector('#guess-input');
-    if (input) input.disabled = true;
+    if (input && gameOver) input.disabled = true;
 
     return true;
 };
@@ -795,17 +795,18 @@ const checkGuess = (guessEntry, answerEntry) => {
 
     markSubmittedToday();
 
+    // Save board state after every guess for persistence across page refreshes
+    saveBoardState();
+
     if (guessEntry.answer === answerEntry.answer) {
         gameWon = true;
         gameOver = true;
-        saveBoardState();
         showEndScreen(true);
         return;
     }
 
     if (history.length === MAX_NUMBER_OF_ATTEMPTS) {
         gameOver = true;
-        saveBoardState();
         showEndScreen(false);
     }
 };
