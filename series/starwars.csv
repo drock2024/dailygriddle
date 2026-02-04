@@ -1,55 +1,100 @@
-Name, Age, Height, Allegiance, Force User, Birth Place
-Luke Skywalker, 19, 172cm, Rebel Alliance, Yes, Polis Massa
-Leia Organa, 19, 155cm, Rebel Alliance, Yes, Polis Massa
-Obi Wan Kenobi, 57, 179cm, Republic, Yes, Stewjon
-Han Solo, 32, 180cm, Rebel Alliance, No, Corellia
-Darth Vader, 45, 202cm, Empire, Yes, Tatooine
-Anakin Skywalker, 9, 135cm, Republic, Yes, Tatooine
-Yoda, 900, 66cm, Republic, Yes, Unknown
-Mace Windu, 53, 188cm, Republic, Yes, Haruun Kal
-Qui-Gon Jinn, 60, 193cm, Republic, Yes, Coruscant
-Padme Amidala, 14, 165cm, Republic, No, Naboo
-Boba Fett, 32, 183cm, Bounty Hunter, No, Kamino
-Jango Fett, 45, 183cm, Bounty Hunter, No, Concord Dawn
-Chewbacca, 200, 228cm, Rebel Alliance, No, Kashyyyk
-Lando Calrissian, 34, 177cm, Rebel Alliance, No, Socorro
-Palpatine, 82, 170cm, Empire, Yes, Naboo
-Rey, 19, 170cm, Resistance, Yes, Jakku
+Name, Birth Year, Height, Allegiance, Force User, Birth Place
+Luke Skywalker, 19 BBY, 172cm, Rebel Alliance, Yes, Polis Massa
+Leia Organa, 19 BBY, 155cm, Rebel Alliance, Yes, Polis Massa
+Obi-Wan Kenobi, 57 BBY, 179cm, Republic, Yes, Stewjon
+Han Solo, 32 BBY, 180cm, Rebel Alliance, No, Corellia
+Darth Vader, 41 BBY, 202cm, Empire, Yes, Tatooine
+Anakin Skywalker, 41 BBY, 135cm, Republic, Yes, Tatooine
+Yoda, 896 BBY, 66cm, Republic, Yes, Unknown
+Mace Windu, 72 BBY, 188cm, Republic, Yes, Haruun Kal
+Qui-Gon Jinn, 92 BBY, 193cm, Republic, Yes, Coruscant
+Padmé Amidala, 46 BBY, 165cm, Republic, No, Naboo
+Boba Fett, 32 BBY, 183cm, Bounty Hunter, No, Kamino
+Jango Fett, 66 BBY, 183cm, Bounty Hunter, No, Concord Dawn
+Chewbacca, 200 BBY, 228cm, Rebel Alliance, No, Kashyyyk
+Lando Calrissian, 31 BBY, 177cm, Rebel Alliance, No, Socorro
+Palpatine, 82 BBY, 170cm, Empire, Yes, Naboo
+Rey, 15 BBY, 170cm, Resistance, Yes, Jakku
 Finn, Unknown, 178cm, Resistance, Yes, Unknown
-Poe Dameron, 32, 183cm, Resistance, No, Yavin 4
-Kylo Ren, 23, 189cm, First Order, Yes, Chandrila
-Supreme Leader Snoke, Unknown, 216cm, First Order, Yes, Unknown
+Poe Dameron, 32 BBY, 183cm, Resistance, No, Yavin 4
+Kylo Ren, 5 ABY, 189cm, First Order, Yes, Chandrila
+Snoke, Unknown, 216cm, First Order, Yes, Unknown
 BB-8, Unknown, 67cm, Resistance, No, Unknown
-C-3PO, 112, 167cm, Rebel Alliance, No, Tatooine
-R2-D2, Unknown, 96cm, Rebel Alliance, No, Naboo
-Admiral Ackbar, 53, 183cm, Rebel Alliance, No, Mon Cala
-General Hux, 38, 180cm, First Order, No, Arkanis
-Captain Phasma, 33, 175cm, First Order, No, Parnassos
-Jabba the Hutt, 600, 430cm, Crime Syndicate, No, Nal Hutta
-Count Dooku, 90, 193cm, Separatists, Yes, Serenno
+C-3PO, 112 BBY, 167cm, Rebel Alliance, No, Tatooine
+R2-D2, 33 BBY, 96cm, Rebel Alliance, No, Naboo
+Admiral Ackbar, 57 BBY, 183cm, Rebel Alliance, No, Mon Cala
+General Hux, 2 ABY, 180cm, First Order, No, Arkanis
+Captain Phasma, 4 ABY, 175cm, First Order, No, Parnassos
+Jabba the Hutt, 600 BBY, 430cm, Crime Syndicate, No, Nal Hutta
+Count Dooku, 102 BBY, 193cm, Separatists, Yes, Serenno
 General Grievous, Unknown, 216cm, Separatists, No, Kalee
-Asajj Ventress, 40, 170cm, Separatists, Yes, Dathomir
-Ahsoka Tano, 17, 170cm, Republic, Yes, Shili
+Asajj Ventress, 50 BBY, 170cm, Separatists, Yes, Dathomir
+Ahsoka Tano, 36 BBY, 170cm, Republic, Yes, Shili
 Kit Fisto, Unknown, 185cm, Republic, Yes, Glee Anselm
-Plo Koon, Unknown, 183cm, Republic, Yes, Dorin
+Plo Koon, 44 BBY, 183cm, Republic, Yes, Dorin
 Shaak Ti, Unknown, 178cm, Republic, Yes, Shili
 Watto, Unknown, 135cm, Junk Dealer, No, Toydaria
-Greedo, Unknown, 173cm, Bounty Hunter, No, Rodia
-Wedge Antilles, 35, 177cm, Rebel Alliance, No, Corellia
-Mon Mothma, 54, 165cm, Rebel Alliance, No, Chandrila
-Tarkin, 64, 180cm, Empire, No, Eriadu
-Nien Nunb, 45, 170cm, Rebel Alliance, No, Sullust
+Greedo, 44 BBY, 173cm, Bounty Hunter, No, Rodia
+Wedge Antilles, 21 BBY, 177cm, Rebel Alliance, No, Corellia
+Mon Mothma, 48 BBY, 165cm, Rebel Alliance, No, Chandrila
+Tarkin, 64 BBY, 180cm, Empire, No, Eriadu
+Nien Nunb, Unknown, 170cm, Rebel Alliance, No, Sullust
 IG-88, Unknown, 200cm, Bounty Hunter, No, Unknown
-Bossk, 45, 200cm, Bounty Hunter, No, Trandosha
-Darth Maul, 30, 175cm, Sith, Yes, Dathomir
-Barriss Offee, 26, 167cm, Jedi, Yes, Mirial
-Ezra Bridger, 16, 167cm, Rebel Alliance, Yes, Lothal
-Kanan Jarrus, 30, 183cm, Rebel Alliance, Yes, Coruscant
-Hera Syndulla, 30, 170cm, Rebel Alliance, No, Ryloth
-Thrawn, 46, 178cm, Empire, No, Csilla
-Captain Rex, 33, 180cm, Rebel/Republic, No, Kamino
-Jyn Erso, 22, 165cm, Rebel Alliance, No, Unknown
-Cassian Andor, 28, 178cm, Rebel Alliance, No, Fest
+Bossk, 53 BBY, 200cm, Bounty Hunter, No, Trandosha
+Darth Maul, 54 BBY, 175cm, Sith, Yes, Dathomir
+Barriss Offee, 40 BBY, 167cm, Jedi, Yes, Mirial
+Ezra Bridger, 19 BBY, 167cm, Rebel Alliance, Yes, Lothal
+Kanan Jarrus, 33 BBY, 183cm, Rebel Alliance, Yes, Coruscant
+Hera Syndulla, 29 BBY, 170cm, Rebel Alliance, No, Ryloth
+Thrawn, 59 BBY, 178cm, Empire, No, Csilla
+Captain Rex, 32 BBY, 180cm, Rebel/Republic, No, Kamino
+Jyn Erso, 21 BBY, 165cm, Rebel Alliance, No, Unknown
+Cassian Andor, 26 BBY, 178cm, Rebel Alliance, No, Fest
 K-2SO, Unknown, 198cm, Rebel Alliance, No, Imperial Factory
-Orson Krennic, 45, 176cm, Empire, No, Unknown
-Saw Gerrera, 50, 170cm, Partisans/Resistance, No, Onderon
+Orson Krennic, 51 BBY, 176cm, Empire, No, Unknown
+Saw Gerrera, 52 BBY, 170cm, Partisans/Resistance, No, Onderon
+Bo-Katan Kryze, Unknown, 170cm, Mandalorian, No, Mandalore
+Din Djarin, Unknown, 183cm, Mandalorian, No, Unknown
+Grogu, 41 BBY, 34cm, Jedi, Yes, Unknown
+Moff Gideon, Unknown, 178cm, Empire, No, Unknown
+Cara Dune, 26 BBY, 170cm, Rebel Alliance, No, Alderaan
+Fennec Shand, Unknown, 165cm, Bounty Hunter, No, Unknown
+Cad Bane, Unknown, 185cm, Bounty Hunter, No, Duro
+Zeb Orrelios, Unknown, 190cm, Rebel Alliance, No, Lasan
+Sabine Wren, 21 BBY, 170cm, Rebel Alliance, No, Mandalore
+Grand Inquisitor, Unknown, 198cm, Empire, Yes, Utapau
+Second Sister, Unknown, 170cm, Empire, Yes, Dathomir
+Fifth Brother, Unknown, 185cm, Empire, Yes, Unknown
+Paz Vizsla, Unknown, 190cm, Mandalorian, No, Mandalore
+Pre Vizsla, Unknown, 185cm, Death Watch, No, Mandalore
+Satine Kryze, 41 BBY, 170cm, Mandalorian, No, Mandalore
+Mother Talzin, Unknown, 180cm, Nightsisters, Yes, Dathomir
+Savage Opress, Unknown, 200cm, Sith, Yes, Dathomir
+Dexter Jettster, Unknown, 198cm, Civilian, No, Ojom
+Max Rebo, Unknown, 100cm, Musician, No, Orto Plutonia
+Bib Fortuna, Unknown, 180cm, Crime Syndicate, No, Ryloth
+Owen Lars, 52 BBY, 178cm, Civilian, No, Tatooine
+Beru Lars, 47 BBY, 165cm, Civilian, No, Tatooine
+Biggs Darklighter, 24 BBY, 183cm, Rebel Alliance, No, Tatooine
+Ponda Baba, Unknown, 180cm, Criminal, No, Unknown
+Doctor Aphra, Unknown, 170cm, Criminal, No, Unknown
+Triple Zero, Unknown, 180cm, Criminal, No, Unknown
+BT-1, Unknown, 120cm, Criminal, No, Unknown
+Maz Kanata, 973 BBY, 124cm, Neutral, No, Takodana
+Lor San Tekka, Unknown, 175cm, Resistance, No, Unknown
+Rose Tico, 11 BBY, 165cm, Resistance, No, Hays Minor
+Holdo, 29 BBY, 168cm, Resistance, No, Gatalenta
+DJ, Unknown, 175cm, Neutral, No, Unknown
+Bail Organa, 67 BBY, 180cm, Republic, No, Alderaan
+Cham Syndulla, Unknown, 178cm, Rebel Alliance, No, Ryloth
+Agent Kallus, 13 BBY, 180cm, Empire/Rebel, No, Coruscant
+Rukh, Unknown, 175cm, Empire, No, Honoghr
+Dryden Vos, Unknown, 180cm, Crime Syndicate, No, Unknown
+Qi’ra, 31 BBY, 170cm, Crimson Dawn, No, Corellia
+Beckett, Unknown, 180cm, Smuggler, No, Glee Anselm
+Val, Unknown, 170cm, Smuggler, No, Unknown
+Enfys Nest, Unknown, 165cm, Rebel Cell, No, Unknown
+Chancellor Valorum, Unknown, 178cm, Republic, No, Coruscant
+Mas Amedda, Unknown, 170cm, Empire, No, Coruscant
+Sio Bibble, Unknown, 175cm, Republic, No, Naboo
+Captain Panaka, Unknown, 180cm, Naboo Security, No, Naboo
