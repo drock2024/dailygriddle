@@ -93,7 +93,6 @@ const loadGridRules = async () => {
 // Setup the grid UI with random category selections
 const setupGridUI = () => {
     // Select random categories for rows and columns
-    // Ensure no mutually exclusive categories are used together
     const selectedCategories = selectValidCategories();
     const rowCategories = selectedCategories.slice(0, 3);
     const colCategories = selectedCategories.slice(3, 6);
@@ -106,16 +105,26 @@ const setupGridUI = () => {
     gridState.rowCategoryData = {};
     gridState.colCategoryData = {};
     
-    // Populate headers with random values
+    // Populate row headers with random values, ensuring no duplicate buckets
+    const usedRowValues = new Set();
     rowCategories.forEach((cat, idx) => {
         const header = document.querySelector(`#row-header-${idx}`);
-        const value = gridState.gridRules[cat][Math.floor(Math.random() * gridState.gridRules[cat].length)];
+        let value;
+        let attempts = 0;
+        // Keep trying until we find a value we haven't used yet
+        do {
+            value = gridState.gridRules[cat][Math.floor(Math.random() * gridState.gridRules[cat].length)];
+            attempts++;
+        } while (usedRowValues.has(value) && attempts < 100);
+        
+        usedRowValues.add(value);
         header.textContent = `${cat}: ${value}`;
         header.dataset.category = cat;
         header.dataset.value = value;
         gridState.rowCategoryData[idx] = { category: cat, value: value };
     });
     
+    // Populate column headers with random values
     colCategories.forEach((cat, idx) => {
         const header = document.querySelector(`#col-header-${idx}`);
         const value = gridState.gridRules[cat][Math.floor(Math.random() * gridState.gridRules[cat].length)];
@@ -126,32 +135,37 @@ const setupGridUI = () => {
     });
 };
 
-// Select valid categories ensuring no category appears on both rows and columns
+// Select valid categories with constraints:
+// Rows: Age and Nature only (3 total)
+// Columns: Height, Rank, Village only
 const selectValidCategories = () => {
-    const allCategories = Object.keys(gridState.gridRules);
+    // Column categories are fixed: Height, Rank, Village
+    const colCategories = ['Height', 'Rank', 'Village'];
     
-    // With only 5 categories and needing 6 slots (3 rows + 3 columns),
-    // we pick 3 unique categories for rows and 3 different categories for columns
-    // If we have fewer than 6 categories, we'll use what we have, ensuring no overlap
+    // Row categories must use Age and Nature
+    // We need 3 rows, so we'll pick either:
+    // - Age twice + Nature once, or
+    // - Nature twice + Age once
+    const rowCategories = [];
     
-    const selected = [];
+    // Randomly decide the split
+    const ageCount = Math.random() > 0.5 ? 2 : 1;
+    const natureCount = 3 - ageCount;
     
-    // Try to partition categories: 3 for rows, 3 for columns with no overlap
-    for (let cat of allCategories) {
-        if (selected.length >= 3) break;
-        selected.push(cat);
+    for (let i = 0; i < ageCount; i++) {
+        rowCategories.push('Age');
+    }
+    for (let i = 0; i < natureCount; i++) {
+        rowCategories.push('Nature');
     }
     
-    // For columns, pick from remaining categories if available
-    const remaining = allCategories.filter(cat => !selected.includes(cat));
-    for (let cat of remaining) {
-        if (selected.length >= 6) break;
-        selected.push(cat);
+    // Shuffle row categories
+    for (let i = rowCategories.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [rowCategories[i], rowCategories[j]] = [rowCategories[j], rowCategories[i]];
     }
     
-    // If we don't have 6 unique categories, use available ones
-    return selected.length >= 6 ? selected : allCategories.slice(0, Math.min(3, allCategories.length))
-        .concat(allCategories.slice(Math.max(0, allCategories.length - 3)));
+    return [...rowCategories, ...colCategories];
 };
 
 // Setup event listeners
