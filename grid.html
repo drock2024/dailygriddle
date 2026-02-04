@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Naruto Grid</title>
+        <link rel="stylesheet" type="text/css" href="styles.css" />
+    </head>
+    <body>
+        <header>
+            <div class="header-left">
+                <button id="home-button" aria-label="Home">⭐</button>
+            </div>
+            <h1>Naruto Grid</h1>
+            <div class="header-right">
+                <button id="help-button" aria-label="Help">?</button>
+            </div>
+        </header>
+        <main>
+            <div class="game-layout">
+                <!-- Grid Input Section -->
+                <div class="guess-input-wrapper">
+                    <input
+                        id="grid-guess-input"
+                        type="text"
+                        placeholder="Type a character name…"
+                        autocomplete="off"
+                        aria-label="Character guess"
+                    />
+                    <ul id="grid-suggestions"></ul>
+                </div>
+
+                <!-- 3x3 Grid with labels -->
+                <div class="grid-container">
+                    <div class="grid-wrapper">
+                        <!-- Column Headers -->
+                        <div class="grid-header-row">
+                            <div class="grid-corner"></div>
+                            <div class="grid-col-header" id="col-header-0"></div>
+                            <div class="grid-col-header" id="col-header-1"></div>
+                            <div class="grid-col-header" id="col-header-2"></div>
+                        </div>
+
+                        <!-- Grid Rows -->
+                        <div class="grid-row" id="grid-row-0">
+                            <div class="grid-row-header" id="row-header-0"></div>
+                            <div class="grid-cell" data-row="0" data-col="0"></div>
+                            <div class="grid-cell" data-row="0" data-col="1"></div>
+                            <div class="grid-cell" data-row="0" data-col="2"></div>
+                        </div>
+
+                        <div class="grid-row" id="grid-row-1">
+                            <div class="grid-row-header" id="row-header-1"></div>
+                            <div class="grid-cell" data-row="1" data-col="0"></div>
+                            <div class="grid-cell" data-row="1" data-col="1"></div>
+                            <div class="grid-cell" data-row="1" data-col="2"></div>
+                        </div>
+
+                        <div class="grid-row" id="grid-row-2">
+                            <div class="grid-row-header" id="row-header-2"></div>
+                            <div class="grid-cell" data-row="2" data-col="0"></div>
+                            <div class="grid-cell" data-row="2" data-col="1"></div>
+                            <div class="grid-cell" data-row="2" data-col="2"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Status Display -->
+                <div id="grid-status" class="grid-status"></div>
+            </div>
+        </main>
+
+        <div class="toaster">
+            <ul></ul>
+        </div>
+
+        <script src="grid.js"></script>
+    </body>
+</html>
