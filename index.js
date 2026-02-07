@@ -727,7 +727,19 @@ const checkGuess = (guessEntry, answerEntry) => {
         const ageIndex = 0;
         const heightIndex = 1;
         const rankIndex = 3;
-
+        if (currentSeries.toLowerCase() === 'naruto') {
+            ageIndex = 0;
+            heightIndex = 1;
+            rankIndex = 3;
+        } else if (currentSeries.toLowerCase() === 'onepiece') {
+            ageIndex = 0;
+            heightIndex = 1;
+            rankIndex = 4;
+        } else if (currentSeries.toLowerCase() === 'pokemon') {
+            ageIndex = 1;
+            heightIndex = 2;
+            rankIndex = 4;
+        }
         const isExact = normalizeClue(guessClue) === normalizeClue(answerClue);
 
         if (isExact) {
@@ -755,7 +767,7 @@ const checkGuess = (guessEntry, answerEntry) => {
             } else {
                 tile.setAttribute('data-status', 'valid');
             }
-        } else if (clueIndex === rankIndex) {
+        } else if (clueIndex === rankIndex && currentSeries.toLowerCase() === 'naruto') {
             // rank comparison using defined order (high -> low)
             const rankOrder = ['kage', 'leader', 'missing-nin', 'jonin', 'chunin', 'genin'];
 
