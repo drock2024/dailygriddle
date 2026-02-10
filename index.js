@@ -470,14 +470,14 @@ const generateBoard = (board, rows = 6, columns = 5, keys = [], keyboard = false
     }
 };
 
-const showMessage = (message) => {
+const showMessage = (message, timeoutLength=4000) => {
     const toast = document.createElement('li');
 
     toast.textContent = message;
     toast.className = 'toast';
 
     document.querySelector('.toaster ul').prepend(toast);
-    setTimeout(() => toast.classList.add('fade'), 4000);
+    setTimeout(() => toast.classList.add('fade'), timeoutLength);
 
     toast.addEventListener('transitionend', (event) => event.target.remove());
 }
@@ -724,9 +724,9 @@ const checkGuess = (guessEntry, answerEntry) => {
         // ensure animation/data-status will be set below
 
         // Special handling for Age (clueIndex 0), Height (clueIndex 1) and Rank (clueIndex 3)
-        const ageIndex = 0;
-        const heightIndex = 1;
-        const rankIndex = 3;
+        let ageIndex = 0;
+        let heightIndex = 1;
+        let rankIndex = -1;
         if (currentSeries.toLowerCase() === 'naruto') {
             ageIndex = 0;
             heightIndex = 1;
@@ -757,7 +757,7 @@ const checkGuess = (guessEntry, answerEntry) => {
 
             if (Number.isNaN(guessNum) || Number.isNaN(answerNum)) {
                 // fallback to generic incorrect if non-numeric
-                tile.setAttribute('data-status', 'invalid');
+                tile.setAttribute('data-status', 'none');
             } else if (answerNum > guessNum) {
                 tile.setAttribute('data-status', 'higher');
                 tile.textContent = `${guessClue} ↑`;
@@ -767,9 +767,12 @@ const checkGuess = (guessEntry, answerEntry) => {
             } else {
                 tile.setAttribute('data-status', 'valid');
             }
-        } else if (clueIndex === rankIndex && currentSeries.toLowerCase() === 'naruto') {
+        } else if (clueIndex === rankIndex && rankIndex >= 0) {
             // rank comparison using defined order (high -> low)
-            const rankOrder = ['kage', 'leader', 'missing-nin', 'jonin', 'chunin', 'genin'];
+            let rankOrder = [];
+            if (currentSeries.toLowerCase() === 'naruto') {
+                rankOrder = ['kage', 'leader', 'missing-nin', 'jonin', 'chunin', 'genin'];
+            }
 
             const g = normalizeClue(guessClue);
             const a = normalizeClue(answerClue);
@@ -829,6 +832,7 @@ const showShareModal = () => {
     const modal = document.getElementById('share-modal');
     const gameDate = document.getElementById('game-date');
     const guessCount = document.getElementById('guess-count');
+    const wotd = document.getElementById('word-of-the-day');
     const emojiGrid = document.getElementById('emoji-grid');
     
     // Set date
@@ -841,6 +845,9 @@ const showShareModal = () => {
     
     // Set guess count
     guessCount.textContent = history.length;
+    
+    // Set word of the day
+    wotd.textContent = WORD_OF_THE_DAY;
     
     // Generate emoji grid
     emojiGrid.textContent = generateEmojiGrid();
@@ -931,10 +938,7 @@ const showEndScreen = (won) => {
     const message = won ? `🎉 You Win!` : `💀 Game Over`;
     showMessage(message);
     showMessage(`The word was ${WORD_OF_THE_DAY}`);
-
-    if (won) {
-        showShareModal();
-    }
+    showShareModal();
 }
 
 //Call the initilaization function when the DOM is loaded to get
