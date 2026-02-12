@@ -727,6 +727,7 @@ const checkGuess = (guessEntry, answerEntry) => {
         let ageIndex = 0;
         let heightIndex = 1;
         let rankIndex = -1;
+        let debutIndex = -2;
         if (currentSeries.toLowerCase() === 'naruto') {
             ageIndex = 0;
             heightIndex = 1;
@@ -734,17 +735,17 @@ const checkGuess = (guessEntry, answerEntry) => {
         } else if (currentSeries.toLowerCase() === 'onepiece') {
             ageIndex = 0;
             heightIndex = 1;
-            rankIndex = 4;
+            debutIndex = 4;
         } else if (currentSeries.toLowerCase() === 'pokemon') {
             ageIndex = 1;
             heightIndex = 2;
-            rankIndex = 4;
+            debutIndex = 4;
         }
         const isExact = normalizeClue(guessClue) === normalizeClue(answerClue);
 
         if (isExact) {
             tile.setAttribute('data-status', 'valid');
-        } else if (clueIndex === ageIndex || clueIndex === heightIndex) {
+        } else if (clueIndex === ageIndex || clueIndex === heightIndex || clueIndex === debutIndex) {
             // numeric comparison for age/height
             const parseNumber = (v) => {
                 if (!v) return NaN;
@@ -834,6 +835,9 @@ const showShareModal = () => {
     const guessCount = document.getElementById('guess-count');
     const wotd = document.getElementById('word-of-the-day');
     const emojiGrid = document.getElementById('emoji-grid');
+    let winStatus = document.getElementById('win-status');
+
+    winStatus.textContent = gameWon ? '🎉 You Win!' : '💀 Game Over';
     
     // Set date
     const today = new Date();
@@ -938,6 +942,7 @@ const showEndScreen = (won) => {
     const message = won ? `🎉 You Win!` : `💀 Game Over`;
     showMessage(message);
     showMessage(`The word was ${WORD_OF_THE_DAY}`);
+    
     showShareModal();
 }
 
