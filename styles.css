@@ -562,7 +562,7 @@ main {
     .board-scroll-wrapper {
         overflow-x: scroll; /* force scrollbar so position is visible */
         -webkit-overflow-scrolling: touch;
-        max-width: calc(4 * var(--tile-size) + 12px + 1rem); /* three tiles + two gaps + horizontal padding */
+        max-width: 300px; /* three tiles + two gaps + horizontal padding */
         width: 100%;
         box-sizing: border-box;
         scrollbar-width: thin;
