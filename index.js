@@ -470,7 +470,7 @@ const generateBoard = (board, rows = 6, columns = 5, keys = [], keyboard = false
     }
 };
 
-const showMessage = (message, timeoutLength=4000) => {
+const showMessage = (message, timeoutLength=3000) => {
     const toast = document.createElement('li');
 
     toast.textContent = message;
@@ -830,7 +830,12 @@ const checkGuess = (guessEntry, answerEntry) => {
             if (isExact) {
                 tile.setAttribute('data-status', 'valid');
             } else {
-                tile.setAttribute('data-status', 'none');
+                if (normalizeClue(guessClue).toLowerCase() === 'unknown' || normalizeClue(answerClue).toLowerCase() === 'unknown') {
+                    tile.setAttribute('data-status', 'none');
+                } else {
+                    tile.setAttribute('data-status', 'wrong');
+                }
+                
             }
         }
 
