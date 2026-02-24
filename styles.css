@@ -330,6 +330,7 @@ main {
 }
 
 /* Constrain main game elements for small screens */
+.board-scroll-wrapper,
 #board,
 #keyboard,
 .category-labels {
@@ -555,10 +556,35 @@ main {
     background-color: var(--color-gray-light);
 }
 
-/* Mobile styles for horizontal scrolling */
-@media (max-width: 480px) {
-    .category-labels {
-        overflow-x: auto;
+/* Mobile styles for horizontal scrolling (show only three columns) */
+@media (max-width: 600px) {
+    /* wrap both labels and board in a scrollable container */
+    .board-scroll-wrapper {
+        overflow-x: scroll; /* force scrollbar so position is visible */
+        -webkit-overflow-scrolling: touch;
+        max-width: calc(4 * var(--tile-size) + 12px + 1rem); /* three tiles + two gaps + horizontal padding */
+        width: 100%;
+        box-sizing: border-box;
+        scrollbar-width: thin;
+        margin: 0 auto; /* keep centered like original #board */
+        padding: 0 0.5rem; /* match previous board padding */
+    }
+
+    /* scrollbar styles to improve visibility */
+    .board-scroll-wrapper::-webkit-scrollbar {
+        height: 8px;
+    }
+    .board-scroll-wrapper::-webkit-scrollbar-track {
+        background: var(--color-gray-dark);
+    }
+    .board-scroll-wrapper::-webkit-scrollbar-thumb {
+        background: var(--color-gray-light);
+        border-radius: 4px;
+    }
+
+    /* make contents take natural width so scrolling is necessary */
+    .board-scroll-wrapper > .category-labels,
+    .board-scroll-wrapper > #board {
         width: max-content;
     }
 
@@ -568,15 +594,13 @@ main {
         padding: 0.25rem;
     }
 
+    /* board rows and cells shouldn't shrink inside the wrapper */
     #board {
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
+        padding: 0; /* padding moved up to wrapper */
     }
-
     #board ul {
         width: max-content;
     }
-
     #board li {
         flex-shrink: 0;
         min-width: 4rem;

@@ -723,29 +723,36 @@ const checkGuess = (guessEntry, answerEntry) => {
 
         // ensure animation/data-status will be set below
 
-        // Special handling for Age (clueIndex 0), Height (clueIndex 1) and Rank (clueIndex 3)
+        // Special handling for Age (clueIndex 0), Height (clueIndex 1), Rank (clueIndex 3), and Debut (last clue for some series)
+        // default to values that will never match so we can selectively override per-series
         let ageIndex = 0;
         let heightIndex = 1;
-        let rankIndex = -1;
-        let debutIndex = -2;
-        if (currentSeries.toLowerCase() === 'naruto') {
+        let rankIndex = -1;   // Naruto has a rank column, others do not
+        let debutIndex = -2;  // Debut is uncommon; keep negative unless explicitly set
+
+        // normalize the series string to a key without spaces for reliable comparison
+        const seriesKey = currentSeries.toLowerCase().replace(/\s+/g, '');
+
+        if (seriesKey === 'naruto') {
             ageIndex = 0;
             heightIndex = 1;
             rankIndex = 3;
-        } else if (currentSeries.toLowerCase() === 'onepiece') {
+        } else if (seriesKey === 'onepiece') {
+            //One Piece has a debut category
             ageIndex = 0;
             heightIndex = 1;
             debutIndex = 4;
-        } else if (currentSeries.toLowerCase() === 'pokemon') {
-            ageIndex = 1;
-            heightIndex = 2;
-            debutIndex = 4;
+        } else if (seriesKey === 'pokemon') {
+            // for pokémon the first clue is the Pokedex number, so treat other numeric
+            ageIndex = 1;      // height
+            heightIndex = 2;   // weight
+            debutIndex = 4;    // generation (treated like a debut year)
         }
         const isExact = normalizeClue(guessClue) === normalizeClue(answerClue);
 
         if (isExact) {
             tile.setAttribute('data-status', 'valid');
-        } else if (clueIndex === ageIndex || clueIndex === heightIndex || clueIndex === debutIndex) {
+        } else if (clueIndex === ageIndex || clueIndex === heightIndex) {
             // numeric comparison for age/height
             const parseNumber = (v) => {
                 if (!v) return NaN;
@@ -757,7 +764,29 @@ const checkGuess = (guessEntry, answerEntry) => {
             const answerNum = parseNumber(answerClue);
 
             if (Number.isNaN(guessNum) || Number.isNaN(answerNum)) {
-                // fallback to generic incorrect if non-numeric
+                tile.setAttribute('data-status', 'none');
+            } else if (answerNum > guessNum) {
+                tile.setAttribute('data-status', 'higher');
+                tile.textContent = `${guessClue} ↑`;
+            } else if (answerNum < guessNum) {
+                tile.setAttribute('data-status', 'lower');
+                tile.textContent = `${guessClue} ↓`;
+            } else {
+                tile.setAttribute('data-status', 'valid');
+            }
+        } else if (clueIndex === debutIndex && debutIndex >= 0) {
+            // numeric comparison for debut-style clues; these always have a number
+            // somewhere in the string ("Chapter 1", "Episode 5", etc.).
+            const parseNumber = (v) => {
+                if (!v) return NaN;
+                const n = parseInt(v.toString().replace(/[^0-9-]/g, ''), 10);
+                return Number.isFinite(n) ? n : NaN;
+            }
+
+            const guessNum = parseNumber(guessClue);
+            const answerNum = parseNumber(answerClue);
+
+            if (Number.isNaN(guessNum) || Number.isNaN(answerNum)) {
                 tile.setAttribute('data-status', 'none');
             } else if (answerNum > guessNum) {
                 tile.setAttribute('data-status', 'higher');
@@ -771,7 +800,9 @@ const checkGuess = (guessEntry, answerEntry) => {
         } else if (clueIndex === rankIndex && rankIndex >= 0) {
             // rank comparison using defined order (high -> low)
             let rankOrder = [];
-            if (currentSeries.toLowerCase() === 'naruto') {
+            // use the normalized series key here as well for consistency
+            const seriesKey = currentSeries.toLowerCase().replace(/\s+/g, '');
+            if (seriesKey === 'naruto') {
                 rankOrder = ['kage', 'leader', 'missing-nin', 'jonin', 'chunin', 'genin'];
             }
 
