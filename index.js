@@ -830,7 +830,9 @@ const checkGuess = (guessEntry, answerEntry) => {
             if (isExact) {
                 tile.setAttribute('data-status', 'valid');
             } else {
-                if (normalizeClue(guessClue).toLowerCase() === 'unknown' || normalizeClue(answerClue).toLowerCase() === 'unknown') {
+                if (normalizeClue(guessClue).toLowerCase() === 'unknown' || normalizeClue(answerClue).toLowerCase() === 'unknown'
+                || normalizeClue(guessClue).toLowerCase() === 'n/a' || normalizeClue(answerClue).toLowerCase() === 'n/a'
+                || normalizeClue(guessClue).toLowerCase() === 'none' || normalizeClue(answerClue).toLowerCase() === 'none') {
                     tile.setAttribute('data-status', 'none');
                 } else {
                     tile.setAttribute('data-status', 'wrong');
@@ -942,7 +944,7 @@ const copyToClipboard = async () => {
     const guessCount = document.getElementById('guess-count').textContent;
     const emojiGrid = document.getElementById('emoji-grid').textContent;
     
-    const shareText = `Super Fandle - ${gameDate}\nGuesses: ${guessCount}/6\n\n${emojiGrid}\n\nPlay at: [Your Game URL]`;
+    const shareText = `Daily Griddle - ${gameDate}\nGuesses: ${guessCount}/6\n\n${emojiGrid}\n\nPlay at: [Your Game URL]`;
     
     try {
         await navigator.clipboard.writeText(shareText);
