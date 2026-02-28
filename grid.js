@@ -7,27 +7,34 @@ let gridState = {
     categories: [],
     selectedCell: null,
     guesses: {}, // {row-col: character}
-    completed: false
+    completed: false,
+    currentSeries: '',
+    rowCategories: [],
+    colCategories: [],
+    invalidCombinations: new Set(), // Track {row}-{col} pairs with no valid matches
+    incorrectGuessesLeft: 3,
+    isLocked: false
 };
 
-const EXCLUDED_CATEGORIES = [
-    ['Age'],
-    ['Height'],
-    ['Rank'],
-    ['Village'],
-    ['Nature']
-];
+const FAVORITES_KEY = 'sf_favorites';
+const STATS_KEY = 'sf_stats';
+let seriesRules = [];
+let availableSeries = [];
 
 // Initialize the game
 const init = async () => {
-    console.log('Initializing Naruto Grid Game...');
-    
     try {
+        // Load series rules and select a series
+        await loadSeriesRules();
+        
         // Load character data
         await loadCharacterData();
         
         // Load grid rules
         await loadGridRules();
+        
+        // Update title
+        updatePageTitle();
         
         // Setup grid UI
         setupGridUI();
@@ -41,10 +48,71 @@ const init = async () => {
     }
 };
 
-// Load character data from naruto.csv
+// Load series rules and select a series for the day
+const loadSeriesRules = async () => {
+    try {
+        const rulesResponse = await fetch('seriesrules.csv');
+        const rulesText = await rulesResponse.text();
+
+        seriesRules = rulesText
+            .split('\n')
+            .map(line => line.trim())
+            .filter(Boolean)
+            .map(line => {
+                const parts = line.split(',', 2);
+                const series = parts[0].trim();
+                const rule = parts[1] ? parts[1].trim() : '';
+                return { series, rule };
+            });
+
+        // Build availableSeries with ids that match CSV file names
+        availableSeries = seriesRules.map(r => ({
+            id: r.series.toLowerCase().replace(/\s+/g, ''),
+            display: r.series,
+            rule: r.rule
+        }));
+
+        // Load favorites from storage (default: all series selected)
+        let favorites = JSON.parse(localStorage.getItem(FAVORITES_KEY) || 'null');
+        if (!Array.isArray(favorites)) {
+            favorites = availableSeries.map(s => s.id);
+            localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites));
+        }
+
+        // Ensure we have at least one favorite
+        if (favorites.length === 0) {
+            favorites = availableSeries.map(s => s.id);
+            localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites));
+        }
+
+        // Calculate day number for deterministic selection
+        const startDate = new Date('2024-01-01');
+        const today = new Date();
+        startDate.setHours(0, 0, 0, 0);
+        today.setHours(0, 0, 0, 0);
+        const daysSinceStart = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
+
+        // Pick a different series for grid game than the wordle game (offset by 1)
+        const gridSeriesIndex = (daysSinceStart + 1) % favorites.length;
+        const selectedSeriesId = favorites[gridSeriesIndex];
+
+        const ruleEntry = availableSeries.find(a => a.id === selectedSeriesId) || availableSeries[0];
+        gridState.currentSeries = ruleEntry ? ruleEntry.display : selectedSeriesId;
+        
+        console.log(`Selected series for grid game: ${gridState.currentSeries}`);
+        // Store the selected series ID for data loading
+        gridState.selectedSeriesId = selectedSeriesId;
+    } catch (error) {
+        console.error('Error loading series rules:', error);
+        throw error;
+    }
+};
+
+// Load character data for the selected series
 const loadCharacterData = async () => {
     try {
-        const response = await fetch('series/naruto.csv');
+        const csvPath = `series/${gridState.selectedSeriesId}.csv`;
+        const response = await fetch(csvPath);
         const text = await response.text();
         const lines = text.trim().split('\n');
         const headers = lines[0].split(',').map(h => h.trim());
@@ -58,17 +126,18 @@ const loadCharacterData = async () => {
             return char;
         }).filter(char => char.Name); // Filter out empty rows
         
-        console.log(`Loaded ${gridState.characters.length} characters`);
+        console.log(`Loaded ${gridState.characters.length} characters from ${gridState.currentSeries}`);
     } catch (error) {
         console.error('Error loading character data:', error);
         throw error;
     }
 };
 
-// Load grid rules from narutogrid.csv
+// Load grid rules for the selected series
 const loadGridRules = async () => {
     try {
-        const response = await fetch('gridrules/narutogrid.csv');
+        const csvPath = `gridrules/${gridState.selectedSeriesId}grid.csv`;
+        const response = await fetch(csvPath);
         const text = await response.text();
         const lines = text.trim().split('\n');
         
@@ -83,7 +152,7 @@ const loadGridRules = async () => {
             gridState.categories.push(category);
         });
         
-        console.log('Grid rules loaded:', gridState.gridRules);
+        console.log('Grid rules loaded for', gridState.currentSeries, ':', gridState.gridRules);
     } catch (error) {
         console.error('Error loading grid rules:', error);
         throw error;
@@ -93,9 +162,7 @@ const loadGridRules = async () => {
 // Setup the grid UI with random category selections
 const setupGridUI = () => {
     // Select random categories for rows and columns
-    const selectedCategories = selectValidCategories();
-    const rowCategories = selectedCategories.slice(0, 3);
-    const colCategories = selectedCategories.slice(3, 6);
+    const [rowCategories, colCategories] = selectValidCategories();
     
     // Store which categories are used
     gridState.rowCategories = rowCategories;
@@ -133,39 +200,34 @@ const setupGridUI = () => {
         header.dataset.value = value;
         gridState.colCategoryData[idx] = { category: cat, value: value };
     });
+    
+    // Validate all row-column combinations and track invalid ones
+    validateAllCombinations();
 };
 
-// Select valid categories with constraints:
-// Rows: Age and Nature only (3 total)
-// Columns: Height, Rank, Village only
+// Select valid categories: 3 for rows, 3 for columns, no overlap
 const selectValidCategories = () => {
-    // Column categories are fixed: Height, Rank, Village
-    const colCategories = ['Height', 'Rank', 'Village'];
-    
-    // Row categories must use Age and Nature
-    // We need 3 rows, so we'll pick either:
-    // - Age twice + Nature once, or
-    // - Nature twice + Age once
-    const rowCategories = [];
-    
-    // Randomly decide the split
-    const ageCount = Math.random() > 0.5 ? 2 : 1;
-    const natureCount = 3 - ageCount;
-    
-    for (let i = 0; i < ageCount; i++) {
-        rowCategories.push('Age');
-    }
-    for (let i = 0; i < natureCount; i++) {
-        rowCategories.push('Nature');
-    }
-    
-    // Shuffle row categories
-    for (let i = rowCategories.length - 1; i > 0; i--) {
+    // Shuffle all available categories
+    const allCategories = [...gridState.categories];
+    for (let i = allCategories.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
-        [rowCategories[i], rowCategories[j]] = [rowCategories[j], rowCategories[i]];
+        [allCategories[i], allCategories[j]] = [allCategories[j], allCategories[i]];
     }
     
-    return [...rowCategories, ...colCategories];
+    // Take first 3 for rows, next 3 for columns
+    const rowCategories = allCategories.slice(0, 3);
+    const colCategories = allCategories.slice(3, 6);
+    
+    // Shuffle both arrays for randomness
+    const shuffle = (arr) => {
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+    };
+    
+    return [rowCategories, colCategories];
 };
 
 // Setup event listeners
@@ -174,61 +236,138 @@ const setupEventListeners = () => {
     const suggestions = document.querySelector('#grid-suggestions');
     const cells = document.querySelectorAll('.grid-cell');
     const homeButton = document.querySelector('#home-button');
-    const helpButton = document.querySelector('#help-button');
+    const helpButton = document.querySelector('#grid-help-button');
+    const helpModal = document.querySelector('#grid-help-modal');
+    const closeBtn = helpModal ? helpModal.querySelector('.close') : null;
+    
+    if (!input || !suggestions) {
+        console.error('Input or suggestions element not found');
+        return;
+    }
     
     // Cell selection
     cells.forEach(cell => {
         cell.addEventListener('click', () => {
-            selectCell(cell);
+            if (!gridState.isLocked) {
+                selectCell(cell);
+            }
         });
     });
     
-    // Input handling
-    input.addEventListener('input', () => {
+    // Input handling - when text is typed in the input field
+    input.addEventListener('input', (e) => {
+        if (gridState.isLocked) {
+            input.value = '';
+            return;
+        }
+        
         const value = input.value.trim().toLowerCase();
         suggestions.innerHTML = '';
         
+        // Only show suggestions if a cell is selected and input has text
         if (value.length > 0 && gridState.selectedCell) {
             const matches = gridState.characters
-                .filter(char => char.Name.toLowerCase().includes(value))
+                .filter(char => {
+                    const charName = char.Name || '';
+                    return charName.toLowerCase().includes(value);
+                })
                 .slice(0, 5);
             
             matches.forEach(char => {
                 const li = document.createElement('li');
                 li.textContent = char.Name;
+                li.style.cursor = 'pointer';
                 li.addEventListener('click', () => {
-                    placeGuess(gridState.selectedCell, char);
-                    input.value = '';
-                    suggestions.innerHTML = '';
+                    if (gridState.selectedCell && !gridState.isLocked) {
+                        placeGuess(gridState.selectedCell, char);
+                        input.value = '';
+                        suggestions.innerHTML = '';
+                        input.focus();
+                    }
                 });
                 suggestions.appendChild(li);
             });
         }
     });
     
+    // Handle Enter key to place guess
     input.addEventListener('keypress', (e) => {
+        if (gridState.isLocked) {
+            return;
+        }
+        
         if (e.key === 'Enter' && gridState.selectedCell) {
             const charName = input.value.trim();
-            const character = gridState.characters.find(c => 
-                c.Name.toLowerCase() === charName.toLowerCase()
-            );
+            const character = gridState.characters.find(c => {
+                const cName = c.Name || '';
+                return cName.toLowerCase() === charName.toLowerCase();
+            });
             if (character) {
                 placeGuess(gridState.selectedCell, character);
                 input.value = '';
                 suggestions.innerHTML = '';
+            } else {
+                showToast('Character not found');
             }
         }
     });
     
     // Home button
-    homeButton.addEventListener('click', () => {
-        window.location.href = 'index.html';
-    });
+    if (homeButton) {
+        homeButton.addEventListener('click', () => {
+            window.location.href = 'index.html';
+        });
+    }
     
-    // Help button (show rules)
-    helpButton.addEventListener('click', () => {
-        showHelpModal();
-    });
+    // Help button - show/hide modal
+    if (helpButton && helpModal) {
+        helpButton.addEventListener('click', () => {
+            helpModal.style.display = 'block';
+        });
+    }
+    
+    // Close button in modal
+    if (closeBtn) {
+        closeBtn.addEventListener('click', () => {
+            if (helpModal) helpModal.style.display = 'none';
+        });
+    }
+    
+    // Close modal when clicking outside
+    if (helpModal) {
+        window.addEventListener('click', (event) => {
+            if (event.target === helpModal) {
+                helpModal.style.display = 'none';
+            }
+        });
+    }
+    
+    // Stats button and panel
+    const statsBtn = document.getElementById('stats-button');
+    const statsPanel = document.getElementById('stats-panel');
+    const closeStats = document.getElementById('close-stats');
+    
+    if (statsBtn && statsPanel) {
+        statsBtn.addEventListener('click', () => {
+            updateStatsPanelUI();
+            statsPanel.style.display = 'block';
+        });
+    }
+    
+    if (closeStats && statsPanel) {
+        closeStats.addEventListener('click', () => {
+            statsPanel.style.display = 'none';
+        });
+    }
+    
+    // Close stats panel when clicking outside
+    if (statsPanel) {
+        window.addEventListener('click', (event) => {
+            if (event.target === statsPanel) {
+                statsPanel.style.display = 'none';
+            }
+        });
+    }
 };
 
 // Select a cell for input
@@ -240,12 +379,27 @@ const selectCell = (cell) => {
     cell.classList.add('selected');
     gridState.selectedCell = cell;
     
-    // Focus on input
-    document.querySelector('#grid-guess-input').focus();
+    // Clear input and focus
+    const input = document.querySelector('#grid-guess-input');
+    if (input) {
+        input.value = '';
+        input.focus();
+        // Clear suggestions
+        const suggestions = document.querySelector('#grid-suggestions');
+        if (suggestions) {
+            suggestions.innerHTML = '';
+        }
+    }
 };
 
 // Place a guess in the selected cell
 const placeGuess = (cell, character) => {
+    // Check if locked
+    if (gridState.isLocked) {
+        showToast('You are locked out. Game Over!');
+        return;
+    }
+    
     const row = parseInt(cell.dataset.row);
     const col = parseInt(cell.dataset.col);
     
@@ -273,11 +427,59 @@ const placeGuess = (cell, character) => {
             showToast('🎉 Congratulations! You won!');
         }
     } else {
+        // Incorrect guess - decrement counter
+        gridState.incorrectGuessesLeft--;
+        updateIncorrectGuessesDisplay();
+        
         cell.classList.add('invalid');
-        showToast('✗ Character does not match');
+        showToast(`✗ Character does not match (${gridState.incorrectGuessesLeft} left)`);
         setTimeout(() => {
             cell.classList.remove('invalid');
         }, 600);
+        
+        // Check if out of guesses
+        if (gridState.incorrectGuessesLeft <= 0) {
+            gridState.isLocked = true;
+            showToast('❌ Game Over! No more guesses left.');
+            const input = document.querySelector('#grid-guess-input');
+            if (input) {
+                input.disabled = true;
+            }
+        }
+    }
+};
+
+// Validate all row-column combinations for valid characters
+const validateAllCombinations = () => {
+    gridState.invalidCombinations.clear();
+    
+    for (let row = 0; row < 3; row++) {
+        for (let col = 0; col < 3; col++) {
+            const rowData = gridState.rowCategoryData[row];
+            const colData = gridState.colCategoryData[col];
+            
+            // Check if any character matches both criteria
+            const hasValidMatch = gridState.characters.some(char => {
+                const charRowValue = char[rowData.category];
+                const charColValue = char[colData.category];
+                
+                if (!charRowValue || !charColValue) return false;
+                
+                const rowMatches = matchesValue(charRowValue, rowData.value, rowData.category);
+                const colMatches = matchesValue(charColValue, colData.value, colData.category);
+                
+                return rowMatches && colMatches;
+            });
+            
+            if (!hasValidMatch) {
+                gridState.invalidCombinations.add(`${row}-${col}`);
+                console.warn(`No valid character found for grid position (${row}, ${col}): ${rowData.category}=${rowData.value} AND ${colData.category}=${colData.value}`);
+            }
+        }
+    }
+    
+    if (gridState.invalidCombinations.size > 0) {
+        console.log(`Warning: ${gridState.invalidCombinations.size} position(s) have no valid character combinations. These will not be validated.`);
     }
 };
 
@@ -302,6 +504,23 @@ const isValidGuess = (character, rowCategory, rowValue, colCategory, colValue) =
 const matchesValue = (charValue, categoryValue, category) => {
     const charVal = charValue.toString().trim();
     const catVal = categoryValue.trim();
+    
+    // For Name: check if name's first letter falls in the bucket range
+    if (category === 'Name') {
+        if (!charVal) return false;
+        
+        const firstLetter = charVal.charAt(0).toUpperCase();
+        
+        // Parse bucket ranges like "First letter A-H", "First letter I-Q", "First letter R-Z"
+        if (catVal.includes('A-H')) {
+            return firstLetter >= 'A' && firstLetter <= 'H';
+        } else if (catVal.includes('I-Q')) {
+            return firstLetter >= 'I' && firstLetter <= 'Q';
+        } else if (catVal.includes('R-Z')) {
+            return firstLetter >= 'R' && firstLetter <= 'Z';
+        }
+        return false;
+    }
     
     // For Age: check if number falls in range
     if (category === 'Age') {
@@ -366,9 +585,30 @@ const checkWin = () => {
     return Object.keys(gridState.guesses).length === 9;
 };
 
+// Update incorrect guesses display
+const updateIncorrectGuessesDisplay = () => {
+    const counterSpan = document.querySelector('#incorrect-count');
+    if (counterSpan) {
+        counterSpan.textContent = gridState.incorrectGuessesLeft;
+        // Change color if running low
+        const counter = document.querySelector('#incorrect-guesses-counter');
+        if (counter) {
+            if (gridState.incorrectGuessesLeft <= 1) {
+                counter.style.color = 'var(--color-red)';
+            } else if (gridState.incorrectGuessesLeft <= 2) {
+                counter.style.color = 'var(--color-orange)';
+            }
+        }
+    }
+};
+
 // Show toast notification
 const showToast = (message) => {
     const toaster = document.querySelector('.toaster ul');
+    if (!toaster) {
+        console.error('Toaster element not found');
+        return;
+    }
     const toast = document.createElement('li');
     toast.className = 'toast';
     toast.textContent = message;
@@ -382,23 +622,64 @@ const showToast = (message) => {
     }, 2000);
 };
 
-// Show help modal
-const showHelpModal = () => {
-    const modal = document.createElement('div');
-    modal.className = 'modal';
-    modal.innerHTML = `
-        <div class="modal-content">
-            <h2>How to Play</h2>
-            <p>Fill each square with a character name that matches BOTH the row and column labels.</p>
-            <p><strong>Example:</strong> If a row says "15-19" (Age) and a column says "Leaf" (Village), you need a character who is 15-19 years old AND from the Leaf Village.</p>
-            <p>Complete the 3x3 grid to win!</p>
-            <button onclick="this.closest('.modal').remove()" style="padding: 0.75rem 1.5rem; background: var(--color-green); color: var(--color-black); border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">Got it!</button>
-        </div>
-    `;
-    document.body.appendChild(modal);
+// Update page title with series name
+const updatePageTitle = () => {
+    const titleElement = document.querySelector('title');
+    if (titleElement) {
+        titleElement.textContent = `${gridState.currentSeries} Grid`;
+    }
+    const h1 = document.querySelector('h1');
+    if (h1) {
+        h1.textContent = `${gridState.currentSeries} Grid`;
+    }
 };
 
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', () => {
     init();
 });
+
+// Update stats panel UI
+const updateStatsPanelUI = () => {
+    const container = document.getElementById('stats-content');
+    const stats = loadStats();
+    if (!container) return;
+
+    if (!stats || stats.gamesPlayed === 0) {
+        container.textContent = 'No data yet, play a game first!';
+        return;
+    }
+
+    const avg = stats.gamesWon > 0 ? (stats.totalGuessesForWins / stats.gamesWon).toFixed(2) : 'N/A';
+    const consecutiveDays = stats.consecutiveDaysPlayed || 0;
+
+    container.innerHTML = `
+        <div class="stats-grid">
+            <div class="stat-tile">
+                <div class="stat-label">Games Played</div>
+                <div class="stat-value">${stats.gamesPlayed}</div>
+            </div>
+            <div class="stat-tile">
+                <div class="stat-label">Games Won</div>
+                <div class="stat-value">${stats.gamesWon}</div>
+            </div>
+            <div class="stat-tile">
+                <div class="stat-label">Avg Guesses</div>
+                <div class="stat-value">${avg}</div>
+            </div>
+            <div class="stat-tile">
+                <div class="stat-label">Days in a Row</div>
+                <div class="stat-value">${consecutiveDays}</div>
+            </div>
+        </div>
+    `;
+};
+
+// Load stats from localStorage
+const loadStats = () => {
+    try {
+        const s = JSON.parse(localStorage.getItem(STATS_KEY) || 'null');
+        if (s && typeof s === 'object') return s;
+    } catch (e) {}
+    return { gamesPlayed: 0, gamesWon: 0, totalGuessesForWins: 0, consecutiveDaysPlayed: 0, lastPlayedDate: null };
+};

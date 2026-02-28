@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Naruto Grid</title>
+        <title>Daily Grid</title>
         <link rel="stylesheet" type="text/css" href="styles.css" />
     </head>
     <body>
@@ -12,9 +12,9 @@
             <div class="header-left">
                 <button id="home-button" aria-label="Home">⭐</button>
             </div>
-            <h1>Naruto Grid</h1>
+            <h1>Daily Grid</h1>
             <div class="header-right">
-                <button id="help-button" aria-label="Help">?</button>
+                <button id="stats-button" aria-label="Statistics">📊</button>
             </div>
         </header>
         <main>
@@ -28,7 +28,13 @@
                         autocomplete="off"
                         aria-label="Character guess"
                     />
+                    <button id="grid-help-button" aria-label="Help" style="margin-left: 8px; padding: 8px 12px; font-size: 16px; cursor: pointer; background: var(--color-yellow); border: 2px solid var(--color-border); border-radius: 4px;">?</button>
                     <ul id="grid-suggestions"></ul>
+                </div>
+
+                <!-- Incorrect Guesses Counter -->
+                <div id="incorrect-guesses-counter" style="text-align: center; margin-top: 12px; font-size: 16px; font-weight: bold;">
+                    Incorrect guesses remaining: <span id="incorrect-count">3</span>
                 </div>
 
                 <!-- 3x3 Grid with labels -->
@@ -73,6 +79,34 @@
 
         <div class="toaster">
             <ul></ul>
+        </div>
+
+        <!-- Help Modal -->
+        <div id="grid-help-modal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>How to Play Grid</h2>
+                <p>Fill each square with a character name that matches <strong>BOTH</strong> the row and column labels.</p>
+                <h3>Rules:</h3>
+                <ul>
+                    <li>Click on a square to select it</li>
+                    <li>Type a character name in the input field to search</li>
+                    <li>The character must match both the row category AND the column category</li>
+                    <li>Characters can be used multiple times</li>
+                    <li>You have 3 incorrect guesses before you're locked out</li>
+                    <li>Complete all 9 squares to win!</li>
+                </ul>
+                <p><strong>Example:</strong> If a row says "15-19" (Age) and a column says "Leaf" (Village), you need a character who is 15-19 years old AND from the Leaf Village.</p>
+            </div>
+        </div>
+
+        <!-- Stats Panel -->
+        <div id="stats-panel" class="panel" style="display:none;">
+            <div class="panel-content">
+                <h2>Statistics</h2>
+                <div id="stats-content"></div>
+                <button id="close-stats">Close</button>
+            </div>
         </div>
 
         <script src="grid.js"></script>

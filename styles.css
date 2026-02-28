@@ -6,6 +6,7 @@
     --color-gray-dark: #3A3A3C;
     --color-gray-light: #818384;
     --color-red: #c9382a;
+    --color-orange: #f59e0b;
     --tile-size: clamp(3rem, 12vw, 5rem);
 }
 
