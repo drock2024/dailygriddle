@@ -168,10 +168,34 @@ const setupGridUI = () => {
     gridState.rowCategories = rowCategories;
     gridState.colCategories = colCategories;
     
-    // Store the actual data for validation
-    gridState.rowCategoryData = {};
-    gridState.colCategoryData = {};
+    // Try up to 50 times to find a grid where all cells have valid character combinations
+    const maxAttempts = 50;
+    let gridFound = false;
     
+    for (let attempt = 0; attempt < maxAttempts; attempt++) {
+        // Reset category data for this attempt
+        gridState.rowCategoryData = {};
+        gridState.colCategoryData = {};
+        
+        // Populate headers with new random values
+        populateGridHeaders(rowCategories, colCategories);
+        
+        // Check if all combinations have valid characters
+        if (checkAllCombinationsValid()) {
+            gridFound = true;
+            gridState.invalidCombinations.clear();
+            break;
+        }
+    }
+    
+    // If no fully valid grid found after 10 attempts, use the last grid and validate with warnings
+    if (!gridFound) {
+        validateAllCombinations();
+    }
+};
+
+// Populate grid headers with random values for rows and columns
+const populateGridHeaders = (rowCategories, colCategories) => {
     // Populate row headers with random values, ensuring no duplicate buckets
     const usedRowValues = new Set();
     rowCategories.forEach((cat, idx) => {
@@ -200,9 +224,34 @@ const setupGridUI = () => {
         header.dataset.value = value;
         gridState.colCategoryData[idx] = { category: cat, value: value };
     });
-    
-    // Validate all row-column combinations and track invalid ones
-    validateAllCombinations();
+};
+
+// Check if all row-column combinations have at least one valid character
+const checkAllCombinationsValid = () => {
+    for (let row = 0; row < 3; row++) {
+        for (let col = 0; col < 3; col++) {
+            const rowData = gridState.rowCategoryData[row];
+            const colData = gridState.colCategoryData[col];
+            
+            // Check if any character matches both criteria
+            const hasValidMatch = gridState.characters.some(char => {
+                const charRowValue = char[rowData.category];
+                const charColValue = char[colData.category];
+                
+                if (!charRowValue || !charColValue) return false;
+                
+                const rowMatches = matchesValue(charRowValue, rowData.value, rowData.category);
+                const colMatches = matchesValue(charColValue, colData.value, colData.category);
+                
+                return rowMatches && colMatches;
+            });
+            
+            if (!hasValidMatch) {
+                return false;
+            }
+        }
+    }
+    return true;
 };
 
 // Select valid categories: 3 for rows, 3 for columns, no overlap

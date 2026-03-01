@@ -470,7 +470,7 @@ const generateBoard = (board, rows = 6, columns = 5, keys = [], keyboard = false
     }
 };
 
-const showMessage = (message, timeoutLength=3000) => {
+const showMessage = (message, timeoutLength=2500) => {
     const toast = document.createElement('li');
 
     toast.textContent = message;
