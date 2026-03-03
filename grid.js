@@ -18,8 +18,54 @@ let gridState = {
 
 const FAVORITES_KEY = 'sf_favorites';
 const STATS_KEY = 'sf_stats';
+const GRID_CONFIG_KEY = 'sf_grid_config';
+const GRID_GUESS_DATE_KEY = 'sf_grid_guess_date';
+const GRID_FAVORITES_KEY = 'sf_grid_favorites';
+const DAILY_SUBMISSION_KEY = 'sf_daily_submission_date'; // Track wordle submissions
 let seriesRules = [];
 let availableSeries = [];
+
+// Get today's date string (YYYY-MM-DD)
+const getDateString = () => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return today.toISOString().split('T')[0];
+};
+
+// Check if a guess was made today (to either wordle or grid game)
+const hasGuessBeenMadeToday = () => {
+    const today = getDateString();
+    // Check if grid guess was made today
+    const gridGuessDate = localStorage.getItem(GRID_GUESS_DATE_KEY);
+    // Check if wordle guess was made today
+    const wordleGuessDate = localStorage.getItem(DAILY_SUBMISSION_KEY);
+    
+    return gridGuessDate === today || wordleGuessDate === today;
+};
+
+// Seeded random number generator (xorshift32)
+const seededRandom = (() => {
+    let seed = 0;
+    
+    const setSeed = (s) => {
+        seed = s >>> 0; // Convert to unsigned 32-bit integer
+    };
+    
+    const next = () => {
+        seed ^= seed << 13;
+        seed ^= seed >> 17;
+        seed ^= seed << 5;
+        return (seed >>> 0) / 0x100000000; // Return number between 0 and 1
+    };
+    
+    return { setSeed, next };
+})();
+
+// Initialize seed based on day number and series
+const initDailySeed = (daysSinceStart, seriesId) => {
+    const seed = daysSinceStart * 73856093 ^ (seriesId.charCodeAt(0) << 16);
+    seededRandom.setSeed(seed);
+};
 
 // Initialize the game
 const init = async () => {
@@ -159,42 +205,152 @@ const loadGridRules = async () => {
     }
 };
 
+// Save grid configuration for today
+const saveGridConfig = (config) => {
+    const today = getDateString();
+    const dataToSave = {
+        date: today,
+        rowCategories: config.rowCategories,
+        colCategories: config.colCategories,
+        rowCategoryData: config.rowCategoryData,
+        colCategoryData: config.colCategoryData,
+        favorites: JSON.parse(localStorage.getItem(FAVORITES_KEY) || 'null')
+    };
+    localStorage.setItem(GRID_CONFIG_KEY, JSON.stringify(dataToSave));
+    console.log('Grid config saved for', today);
+};
+
+// Load grid configuration for today if it exists
+const loadGridConfig = () => {
+    const today = getDateString();
+    try {
+        const saved = localStorage.getItem(GRID_CONFIG_KEY);
+        if (!saved) return null;
+        
+        const config = JSON.parse(saved);
+        
+        // Return if it's from today (regardless of favorites, since a guess was made)
+        if (config.date === today) {
+            console.log('Loaded grid config from storage for', today);
+            return config;
+        }
+    } catch (e) {
+        console.error('Error loading grid config:', e);
+    }
+    return null;
+};
+
+// Mark that a guess was made today
+const markGuessDate = () => {
+    const today = getDateString();
+    localStorage.setItem(GRID_GUESS_DATE_KEY, today);
+};
+
 // Setup the grid UI with random category selections
 const setupGridUI = () => {
-    // Select random categories for rows and columns
-    const [rowCategories, colCategories] = selectValidCategories();
+    // Check if we should load a saved config or generate a new one
+    let loadedConfig = null;
+    let shouldUseSeed = false;
     
-    // Store which categories are used
-    gridState.rowCategories = rowCategories;
-    gridState.colCategories = colCategories;
-    
-    // Try up to 50 times to find a grid where all cells have valid character combinations
-    const maxAttempts = 50;
-    let gridFound = false;
-    
-    for (let attempt = 0; attempt < maxAttempts; attempt++) {
-        // Reset category data for this attempt
-        gridState.rowCategoryData = {};
-        gridState.colCategoryData = {};
-        
-        // Populate headers with new random values
-        populateGridHeaders(rowCategories, colCategories);
-        
-        // Check if all combinations have valid characters
-        if (checkAllCombinationsValid()) {
-            gridFound = true;
-            gridState.invalidCombinations.clear();
-            break;
+    if (hasGuessBeenMadeToday()) {
+        // A guess was already made today - try to load the saved config
+        loadedConfig = loadGridConfig();
+        if (loadedConfig) {
+            console.log('Using saved grid config because a guess was already made.');
+        } else {
+            // Fallback: generate with seed if saved config is missing
+            shouldUseSeed = true;
+            console.log('Saved config not found, falling back to seed generation.');
         }
+    } else {
+        // No guess made yet - generate fresh grid (possibly with new favorites)
+        shouldUseSeed = true;
     }
     
-    // If no fully valid grid found after 10 attempts, use the last grid and validate with warnings
-    if (!gridFound) {
+    if (shouldUseSeed) {
+        // Generate grid using seeded random
+        const startDate = new Date('2024-01-01');
+        const today = new Date();
+        startDate.setHours(0, 0, 0, 0);
+        today.setHours(0, 0, 0, 0);
+        const daysSinceStart = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
+        
+        initDailySeed(daysSinceStart, gridState.selectedSeriesId);
+        
+        // Select random categories for rows and columns
+        const [rowCategories, colCategories] = selectValidCategories();
+        
+        // Store which categories are used
+        gridState.rowCategories = rowCategories;
+        gridState.colCategories = colCategories;
+        
+        // Try up to 100 times to find a grid where all cells have valid character combinations
+        const maxAttempts = 100;
+        let gridFound = false;
+        
+        for (let attempt = 0; attempt < maxAttempts; attempt++) {
+            // Reset category data for this attempt
+            gridState.rowCategoryData = {};
+            gridState.colCategoryData = {};
+            
+            // Populate headers with new random values
+            populateGridHeaders(rowCategories, colCategories);
+            
+            // Check if all combinations have valid characters
+            if (checkAllCombinationsValid()) {
+                gridFound = true;
+                gridState.invalidCombinations.clear();
+                break;
+            }
+        }
+        
+        // If no fully valid grid found after attempts, use the last grid and validate with warnings
+        if (!gridFound) {
+            validateAllCombinations();
+        }
+        
+        // Save the generated config for later use
+        saveGridConfig({
+            rowCategories,
+            colCategories,
+            rowCategoryData: gridState.rowCategoryData,
+            colCategoryData: gridState.colCategoryData
+        });
+    } else if (loadedConfig) {
+        // Use the loaded config
+        gridState.rowCategories = loadedConfig.rowCategories;
+        gridState.colCategories = loadedConfig.colCategories;
+        gridState.rowCategoryData = loadedConfig.rowCategoryData;
+        gridState.colCategoryData = loadedConfig.colCategoryData;
+        gridState.invalidCombinations.clear();
+        
+        // Validate all combinations
         validateAllCombinations();
+        
+        // Restore grid headers from loaded config
+        loadedConfig.rowCategories.forEach((cat, idx) => {
+            const header = document.querySelector(`#row-header-${idx}`);
+            const data = loadedConfig.rowCategoryData[idx];
+            if (header && data) {
+                header.textContent = `${data.category}: ${data.value}`;
+                header.dataset.category = data.category;
+                header.dataset.value = data.value;
+            }
+        });
+        
+        loadedConfig.colCategories.forEach((cat, idx) => {
+            const header = document.querySelector(`#col-header-${idx}`);
+            const data = loadedConfig.colCategoryData[idx];
+            if (header && data) {
+                header.textContent = `${data.category}: ${data.value}`;
+                header.dataset.category = data.category;
+                header.dataset.value = data.value;
+            }
+        });
     }
 };
 
-// Populate grid headers with random values for rows and columns
+// Populate grid headers with random values for rows and columns (uses seeded RNG)
 const populateGridHeaders = (rowCategories, colCategories) => {
     // Populate row headers with random values, ensuring no duplicate buckets
     const usedRowValues = new Set();
@@ -204,7 +360,7 @@ const populateGridHeaders = (rowCategories, colCategories) => {
         let attempts = 0;
         // Keep trying until we find a value we haven't used yet
         do {
-            value = gridState.gridRules[cat][Math.floor(Math.random() * gridState.gridRules[cat].length)];
+            value = gridState.gridRules[cat][Math.floor(seededRandom.next() * gridState.gridRules[cat].length)];
             attempts++;
         } while (usedRowValues.has(value) && attempts < 100);
         
@@ -218,7 +374,7 @@ const populateGridHeaders = (rowCategories, colCategories) => {
     // Populate column headers with random values
     colCategories.forEach((cat, idx) => {
         const header = document.querySelector(`#col-header-${idx}`);
-        const value = gridState.gridRules[cat][Math.floor(Math.random() * gridState.gridRules[cat].length)];
+        const value = gridState.gridRules[cat][Math.floor(seededRandom.next() * gridState.gridRules[cat].length)];
         header.textContent = `${cat}: ${value}`;
         header.dataset.category = cat;
         header.dataset.value = value;
@@ -256,10 +412,10 @@ const checkAllCombinationsValid = () => {
 
 // Select valid categories: 3 for rows, 3 for columns, no overlap
 const selectValidCategories = () => {
-    // Shuffle all available categories
+    // Shuffle all available categories using seeded RNG
     const allCategories = [...gridState.categories];
     for (let i = allCategories.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
+        const j = Math.floor(seededRandom.next() * (i + 1));
         [allCategories[i], allCategories[j]] = [allCategories[j], allCategories[i]];
     }
     
@@ -267,10 +423,10 @@ const selectValidCategories = () => {
     const rowCategories = allCategories.slice(0, 3);
     const colCategories = allCategories.slice(3, 6);
     
-    // Shuffle both arrays for randomness
+    // Shuffle both arrays for randomness using seeded RNG
     const shuffle = (arr) => {
         for (let i = arr.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
+            const j = Math.floor(seededRandom.next() * (i + 1));
             [arr[i], arr[j]] = [arr[j], arr[i]];
         }
         return arr;
@@ -462,6 +618,9 @@ const placeGuess = (cell, character) => {
     }
     
     if (isValidGuess(character, rowData.category, rowData.value, colData.category, colData.value)) {
+        // Mark that a guess was made today (lock grid config for the day)
+        markGuessDate();
+        
         // Place the guess
         cell.textContent = character.Name;
         cell.classList.add('filled');
@@ -476,6 +635,9 @@ const placeGuess = (cell, character) => {
             showToast('🎉 Congratulations! You won!');
         }
     } else {
+        // Mark that a guess was made today (lock grid config for the day)
+        markGuessDate();
+        
         // Incorrect guess - decrement counter
         gridState.incorrectGuessesLeft--;
         updateIncorrectGuessesDisplay();

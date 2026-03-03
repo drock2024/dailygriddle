@@ -1,7 +1,7 @@
 # Daily Griddle
 
 ## Game Description
-Daily Girddle is a daily trivia game built to your personal favorites. Tell the game what series you like and it will generate you both a "wordle" style and "grid" style game where you test your knowledge on characters from that series.
+Daily Griddle is a daily trivia game built to your personal favorites. Tell the game what series you like and it will generate you both a "wordle" style and "grid" style game where you test your knowledge on characters from that series.
 
 ## General Rules
 Once a guess has been made, no updates to your favorites selection will reflect until the following day.
