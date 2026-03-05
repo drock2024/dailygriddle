@@ -759,6 +759,32 @@ const matchesValue = (charValue, categoryValue, category) => {
         }
     }
     
+    // For Birth Year: check if year falls in range
+    if (category === 'Birth Year') {
+        if (charVal.toLowerCase() === 'unknown') return false;
+        
+        const year = parseInt(charVal);
+        if (isNaN(year)) return false;
+        
+        // Parse the year range
+        if (catVal.includes('-')) {
+            const parts = catVal.split('-').map(p => p.trim());
+            if (parts[0] === '') {
+                // Format like "- 1950"
+                const max = parseInt(parts[1]);
+                return year <= max;
+            } else if (parts.length === 2) {
+                const min = parseInt(parts[0]);
+                const max = parseInt(parts[1]);
+                return year >= min && year <= max;
+            }
+        } else if (catVal.includes('+')) {
+            // Format like "1990+"
+            const min = parseInt(catVal.replace('+', ''));
+            return year >= min;
+        }
+    }
+    
     // For Height: check if height falls in range
     if (category === 'Height') {
         if (charVal.toLowerCase() === 'unknown') return false;
