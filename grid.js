@@ -761,10 +761,10 @@ const matchesValue = (charValue, categoryValue, category) => {
     
     // For Birth Year: check if year falls in range
     if (category === 'Birth Year') {
-        if (charVal.toLowerCase() === 'unknown') return false;
+        //if (charVal.toLowerCase() === 'unknown') return false;
         
         const year = parseInt(charVal);
-        if (isNaN(year)) return false;
+        //if (isNaN(year)) return false;
         
         // Parse the year range
         if (catVal.includes('-')) {
@@ -781,7 +781,11 @@ const matchesValue = (charValue, categoryValue, category) => {
         } else if (catVal.includes('+')) {
             // Format like "1990+"
             const min = parseInt(catVal.replace('+', ''));
-            return year >= min;
+            return (year >= min || year === 'Unknown');
+        } else if (catVal.includes('<')) {
+            //Format like "<0"
+            const max = parseInt(catVal.replace('<', '').trim());
+            return year <= max;
         }
     }
     
