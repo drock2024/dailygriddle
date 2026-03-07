@@ -19,6 +19,12 @@
         </header>
         <main>
             <div class="game-layout">
+                <!-- Game Mode Toggle -->
+                <div class="game-mode-toggle">
+                    <a href="grid.html" class="toggle-button toggle-left active">Grid</a>
+                    <a href="index.html" class="toggle-button toggle-right">-dle</a>
+                </div>
+
                 <!-- Grid Input Section -->
                 <div class="guess-input-wrapper">
                     <input
@@ -106,6 +112,24 @@
                 <h2>Statistics</h2>
                 <div id="stats-content"></div>
                 <button id="close-stats">Close</button>
+            </div>
+        </div>
+
+        <!-- Home Panel -->
+        <div id="home-panel" class="panel" style="display:none;">
+            <div class="panel-content">
+                <h2>Choose Favorite Series</h2>
+                <div class="panel-actions">
+                    <button id="select-all">Select All</button>
+                    <button id="deselect-all">Deselect All</button>
+                </div>
+                <ul id="series-list"></ul>
+                <div class="panel-foot">Choose at least one series. Changes apply when you click Apply.</div>
+                <div id="daily-submission-notice" class="panel-foot" style="display:none; color: #ff6b6b; margin-top:0.5rem;"></div>
+                <div class="panel-actions" style="margin-top:0.75rem;">
+                    <button id="apply-home">Apply</button>
+                    <button id="close-home">Close</button>
+                </div>
             </div>
         </div>
 

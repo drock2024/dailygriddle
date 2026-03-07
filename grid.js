@@ -584,10 +584,12 @@ const setupEventListeners = () => {
         }
     });
     
-    // Home button
+    // Home button - open favorites panel
     if (homeButton) {
         homeButton.addEventListener('click', () => {
-            window.location.href = 'index.html';
+            buildHomePanelUI();
+            const homePanel = document.getElementById('home-panel');
+            if (homePanel) homePanel.style.display = 'block';
         });
     }
     
@@ -614,6 +616,15 @@ const setupEventListeners = () => {
         });
     }
     
+    // Home panel close button
+    const closeHome = document.getElementById('close-home');
+    const homePanel = document.getElementById('home-panel');
+    if (closeHome) {
+        closeHome.addEventListener('click', () => {
+            if (homePanel) homePanel.style.display = 'none';
+        });
+    }
+
     // Stats button and panel
     const statsBtn = document.getElementById('stats-button');
     const statsPanel = document.getElementById('stats-panel');
@@ -910,6 +921,120 @@ const updateIncorrectGuessesDisplay = () => {
         }
     }
 };
+
+// --- Favorites and Panels ---
+const loadFavorites = () => {
+    try {
+        const f = JSON.parse(localStorage.getItem(FAVORITES_KEY) || 'null');
+        if (Array.isArray(f)) return f;
+    } catch (e) {}
+    return availableSeries.map(s => s.id);
+}
+
+const saveFavorites = (favs) => {
+    localStorage.setItem(FAVORITES_KEY, JSON.stringify(favs));
+}
+
+const buildHomePanelUI = () => {
+    const list = document.getElementById('series-list');
+    if (!list) return;
+
+    list.innerHTML = '';
+    const favs = loadFavorites();
+
+    // Update daily submission notice
+    const notice = document.getElementById('daily-submission-notice');
+    if (notice) {
+        if (hasSubmittedToday()) {
+            notice.textContent = '⏸️ You\'ve already played today. Favorite changes will apply tomorrow.';
+            notice.style.display = 'block';
+        } else {
+            notice.style.display = 'none';
+        }
+    }
+
+    // local selection state (do not persist until Apply)
+    availableSeries.forEach(s => {
+        const li = document.createElement('li');
+        const id = s.id;
+        li.innerHTML = `
+            <label><input type="checkbox" data-id="${id}" ${favs.includes(id) ? 'checked' : ''}/> ${s.display}</label>
+        `;
+        list.appendChild(li);
+    });
+
+    const applyBtn = document.getElementById('apply-home');
+    const updateApplyState = () => {
+        const selected = Array.from(list.querySelectorAll('input[type="checkbox"]'))
+            .filter(i => i.checked)
+            .map(i => i.dataset.id);
+
+        if (applyBtn) applyBtn.disabled = selected.length === 0;
+    };
+
+    // hook up checkbox changes (update local state only)
+    list.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+        cb.addEventListener('change', () => {
+            updateApplyState();
+        });
+    });
+
+    const selectAllBtn = document.getElementById('select-all');
+    const deselectAllBtn = document.getElementById('deselect-all');
+    if (selectAllBtn) selectAllBtn.addEventListener('click', () => {
+        list.querySelectorAll('input[type="checkbox"]').forEach(i => i.checked = true);
+        updateApplyState();
+    });
+    if (deselectAllBtn) deselectAllBtn.addEventListener('click', () => {
+        list.querySelectorAll('input[type="checkbox"]').forEach(i => i.checked = false);
+        updateApplyState();
+    });
+
+    // Apply button — validate and persist
+    if (applyBtn) {
+        updateApplyState();
+        applyBtn.addEventListener('click', () => {
+            const selected = Array.from(list.querySelectorAll('input[type="checkbox"]'))
+                .filter(i => i.checked)
+                .map(i => i.dataset.id);
+
+            if (!selected || selected.length === 0) {
+                showMessage('Select at least one series before applying.');
+                return;
+            }
+
+            // Check if user has already submitted a guess today
+            if (hasSubmittedToday()) {
+                showMessage('You\'ve already played today. Changes will apply tomorrow.');
+                return;
+            }
+
+            saveFavorites(selected);
+            // close panel and reload to pick new daily series
+            const homePanel = document.getElementById('home-panel');
+            if (homePanel) homePanel.style.display = 'none';
+            location.reload();
+        });
+    }
+}
+
+const hasSubmittedToday = () => {
+    const lastSubmissionDate = localStorage.getItem(DAILY_SUBMISSION_KEY);
+    const today = getDateString();
+    return lastSubmissionDate === today;
+};
+
+const showMessage = (message, timeoutLength=2500) => {
+    const toast = document.createElement('li');
+
+    toast.textContent = message;
+    toast.className = 'toast';
+
+    document.querySelector('.toaster ul').prepend(toast);
+    setTimeout(() => toast.classList.add('fade'), timeoutLength);
+
+    toast.addEventListener('transitionend', (event) => event.target.remove());
+}
 
 // Show toast notification
 const showToast = (message) => {

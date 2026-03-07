@@ -79,11 +79,14 @@ const init = async () => {
     helpButton.id = 'help-button';
     helpButton.textContent = '?';
     helpButton.setAttribute('aria-label', 'Help');
+    helpButton.setAttribute('style', 'margin-left: 8px; padding: 8px 12px; font-size: 16px; cursor: pointer; background: var(--color-yellow); border: 2px solid var(--color-border); border-radius: 4px;');
     
-    // Create a container for help button and series label
+    // Insert help button inside the input wrapper (next to input field)
+    guessWrapper.appendChild(helpButton);
+    
+    // Create a container for series label
     const helpContainer = document.createElement('div');
     helpContainer.className = 'help-container';
-    helpContainer.appendChild(helpButton);
     
     // Add series label
     const seriesLabel = document.createElement('span');
@@ -92,7 +95,7 @@ const init = async () => {
     seriesLabel.textContent = `${currentSeries} Characters`;
     helpContainer.appendChild(seriesLabel);
     
-    guessWrapper.insertAdjacentElement('beforebegin', helpContainer);
+    guessWrapper.insertAdjacentElement('afterend', helpContainer);
 
     // Add modal
     const modal = document.createElement('div');

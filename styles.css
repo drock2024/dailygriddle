@@ -276,20 +276,19 @@ main {
     display: block;
     margin: 0;
     background: var(--color-gray-dark);
-    color: var(--color-white);
+    color: var(--color-black);
     border: none;
     border-radius: 50%;
     width: 2rem;
     height: 2rem;
     font-size: 1.2rem;
-    font-weight: bold;
     cursor: pointer;
     transition: background 0.3s ease;
     flex-shrink: 0;
 }
 
 #help-button:hover {
-    background: var(--color-gray-light);
+    filter: brightness(0.85);
 }
 
 .help-container {
@@ -303,9 +302,54 @@ main {
 
 .series-label {
     font-size: 1rem;
-    font-weight: 500;
+    font-weight: bold;
+    padding-bottom: 1rem;
     color: var(--color-white);
     letter-spacing: 0.05em;
+}
+
+/* Game Mode Toggle */
+.game-mode-toggle {
+    display: flex;
+    width: 90%;
+    gap: 0;
+    margin: 0 auto 1.5rem;
+    border: 2px solid var(--color-gray-dark);
+    border-radius: 4px;
+    background: var(--color-black);
+}
+
+.toggle-button {
+    flex: 1;
+    padding: 0.75rem 1.5rem;
+    text-align: center;
+    text-decoration: none;
+    color: var(--color-white);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    background: var(--color-black);
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.toggle-button:hover {
+    background: var(--color-gray-dark);
+    color: var(--color-white);
+}
+
+.toggle-button.active {
+    background: var(--color-green);
+    color: var(--color-black);
+}
+
+.toggle-button.active:hover {
+    background: var(--color-green);
+    color: var(--color-black);
+}
+
+.toggle-left {
+    border-right: 2px solid var(--color-gray-dark);
 }
 
 /* Modal styles */
@@ -794,6 +838,10 @@ main {
 
 #grid-suggestions li:hover {
     background: var(--color-gray-light);
+}
+
+#grid-help-modal .modal-content ul {
+    text-align: left;
 }
 
 @media (max-width: 768px) {
