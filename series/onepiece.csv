@@ -1,29 +1,98 @@
 Name, Age, Height, Devil Fruit, Affiliation, Debut
-Monkey D. Luffy, 17, 174cm, Gomu Gomu no Mi, Straw Hat Pirates, Chapter 1
-Roronoa Zoro, 19, 181cm, None, Straw Hat Pirates, Chapter 3
-Nami, 18, 170cm, None, Straw Hat Pirates, Chapter 8
-Usopp, 17, 176cm, None, Straw Hat Pirates, Chapter 23
-Sanji, 19, 180cm, None, Straw Hat Pirates, Chapter 43
-Tony Tony Chopper, 15, 90cm, Hito Hito no Mi, Straw Hat Pirates, Chapter 134
-Nico Robin, 28, 188cm, Hana Hana no Mi, Straw Hat Pirates, Chapter 114
-Franky, 34, 240cm, None, Straw Hat Pirates, Chapter 329
-Brook, 88, 266cm, Yomi Yomi no Mi, Straw Hat Pirates, Chapter 442
-Jinbe, 44, 301cm, None, Straw Hat Pirates, Chapter 528
-Gol D. Roger, 53, 274cm, None, Roger Pirates, Chapter 1
-Shanks, 27, 199cm, None, Red Hair Pirates, Chapter 1
-Buggy, 27, 192cm, Bara Bara no Mi, Buggy Pirates, Chapter 9
-Marshall D. Teach, 38, 344cm, Yami Yami no Mi, Blackbeard Pirates, Chapter 234
-Portgas D. Ace, 20, 185cm, Mera Mera no Mi, Whitebeard Pirates, Chapter 154
-Edward Newgate, 72, 666cm, Gura Gura no Mi, Whitebeard Pirates, Chapter 234
-Trafalgar Law, 24, 191cm, Ope Ope no Mi, Heart Pirates, Chapter 498
-Eustass Kid, 23, 205cm, Jiki Jiki no Mi, Kid Pirates, Chapter 498
-Boa Hancock, 29, 191cm, Mero Mero no Mi, Kuja Pirates, Chapter 516
-Dracule Mihawk, 43, 198cm, None, None, Chapter 50
-Smoker, 34, 209cm, Moku Moku no Mi, Marines, Chapter 98
-Tashigi, 23, 170cm, None, Marines, Chapter 98
-Crocodile, 44, 253cm, Suna Suna no Mi, Baroque Works, Chapter 126
-Enel, 39, 266cm, Goro Goro no Mi, Skypiea, Chapter 254
-Donquixote Doflamingo, 38, 305cm, Ito Ito no Mi, Donquixote Pirates, Chapter 233
-Charlotte Linlin, 63, 880cm, Soru Soru no Mi, Big Mom Pirates, Chapter 651
-Kaido, 59, 710cm, Mythical Zoan, Beasts Pirates, Chapter 795
-Yamato, 28, 263cm, Mythical Zoan, Beasts Pirates, Chapter 971
+Monkey D. Luffy, 17, 174cm, Yes, Straw Hat Pirates, Chapter 1
+Roronoa Zoro, 19, 181cm, No, Straw Hat Pirates, Chapter 3
+Nami, 18, 170cm, No, Straw Hat Pirates, Chapter 8
+Usopp, 17, 176cm, No, Straw Hat Pirates, Chapter 23
+Sanji, 19, 180cm, No, Straw Hat Pirates, Chapter 43
+Tony Tony Chopper, 15, 90cm, Yes, Straw Hat Pirates, Chapter 134
+Nico Robin, 28, 188cm, Yes, Straw Hat Pirates, Chapter 114
+Franky, 34, 240cm, No, Straw Hat Pirates, Chapter 329
+Brook, 88, 266cm, Yes, Straw Hat Pirates, Chapter 442
+Jinbe, 44, 301cm, No, Straw Hat Pirates, Chapter 528
+Gol D. Roger, 53, 274cm, No, Roger Pirates, Chapter 1
+Shanks, 27, 199cm, No, Red Hair Pirates, Chapter 1
+Buggy, 27, 192cm, Yes, Buggy Pirates, Chapter 9
+Marshall D. Teach, 38, 344cm, Yes, Blackbeard Pirates, Chapter 234
+Portgas D. Ace, 20, 185cm, Yes, Whitebeard Pirates, Chapter 154
+Edward Newgate, 72, 666cm, Yes, Whitebeard Pirates, Chapter 234
+Trafalgar Law, 24, 191cm, Yes, Heart Pirates, Chapter 498
+Eustass Kid, 23, 205cm, Yes, Kid Pirates, Chapter 498
+Boa Hancock, 29, 191cm, Yes, Kuja Pirates, Chapter 516
+Dracule Mihawk, 43, 198cm, No, None, Chapter 50
+Smoker, 34, 209cm, Yes, Marines, Chapter 98
+Tashigi, 23, 170cm, No, Marines, Chapter 98
+Crocodile, 44, 253cm, Yes, Baroque Works, Chapter 126
+Enel, 39, 266cm, Yes, Skypiea, Chapter 254
+Donquixote Doflamingo, 38, 305cm, Yes, Donquixote Pirates, Chapter 233
+Charlotte Linlin, 63, 880cm, Yes, Big Mom Pirates, Chapter 651
+Kaido, 59, 710cm, Yes, Beasts Pirates, Chapter 795
+Yamato, 28, 263cm, Yes, Beasts Pirates, Chapter 971
+Coby, 16, 175cm, No, Marines, Chapter 1
+Alvida, 25, 198cm, Yes, Alvida Pirates, Chapter 2
+Axe-Hand Morgan, 40, 222cm, No, Marines, Chapter 2
+Helmeppo, 16, 178cm, No, Marines, Chapter 2
+Boodle, 55, 175cm, No, Shells Town, Chapter 3
+Toto, 30, 165cm, No, Shells Town, Chapter 3
+Kaya, 8, 158cm, No, Syrup Village, Chapter 4
+Merry, 35, 188cm, No, Syrup Village, Chapter 4
+Nojiko, 20, 157cm, No, Cocoyashi Village, Chapter 8
+Genzo, 38, 195cm, No, Cocoyashi Village, Chapter 8
+Kuro, 38, 184cm, No, Kuro Pirates, Chapter 24
+Jango, 35, 170cm, No, Black Cat Pirates, Chapter 24
+Fullbody, 26, 188cm, No, Marines, Chapter 24
+Sham, 28, 185cm, No, Buggy Pirates, Chapter 9
+Cabaji, 24, 191cm, No, Buggy Pirates, Chapter 9
+Richie, 8, 120cm, No, Buggy Pirates, Chapter 9
+Zeff, 59, 273cm, No, Baratie, Chapter 44
+Patty, 45, 193cm, No, Baratie, Chapter 44
+Carne, 42, 188cm, No, Baratie, Chapter 44
+Don Krieg, 45, 300cm, No, Don Krieg Pirates, Chapter 66
+Gin, 32, 200cm, No, Don Krieg Pirates, Chapter 66
+Pearl, 30, 228cm, No, Don Krieg Pirates, Chapter 67
+Hatchan, 36, 245cm, No, Arlong Pirates, Chapter 73
+Chew, 28, 175cm, No, Black Cat Pirates, Chapter 24
+Soro, 32, 182cm, No, Black Cat Pirates, Chapter 24
+Nyuka, 32, 192cm, No, Arlong Pirates, Chapter 73
+Takoyaki, 28, 185cm, No, Arlong Pirates, Chapter 73
+Rika, 10, 130cm, No, Cocoyashi Village, Chapter 8
+Wapol, 15, 166cm, No, Drum Kingdom, Chapter 130
+Dalton, 34, 270cm, No, Drum Kingdom, Chapter 130
+Kureha, 139, 160cm, No, Sakura Kingdom, Chapter 130
+Chess, 25, 188cm, No, Wapol Pirates, Chapter 130
+Musshulu, 29, 195cm, No, Wapol Pirates, Chapter 130
+Igaram, 48, 223cm, No, Arabasta, Chapter 155
+Vivi, 16, 169cm, No, Arabasta, Chapter 155
+Cobra, 55, 215cm, No, Arabasta, Chapter 156
+Chaka, 36, 209cm, Yes, Arabasta, Chapter 160
+Pell, 35, 208cm, Yes, Arabasta, Chapter 160
+Conis, 18, 176cm, No, Skypiea, Chapter 253
+Moyle, 28, 188cm, No, Skypiea, Chapter 253
+Gan Fall, 60, 245cm, No, Skypiea, Chapter 253
+Shura, 32, 192cm, Yes, Skypiea, Chapter 264
+Satori, 28, 185cm, Yes, Skypiea, Chapter 264
+Hotori, 24, 180cm, Yes, Skypiea, Chapter 264
+Kotori, 24, 180cm, Yes, Skypiea, Chapter 264
+Wyper, 26, 185cm, No, Skypiea, Chapter 260
+Bellamy, 24, 246cm, No, Bellamy Pirates, Chapter 222
+Sarquiss, 23, 195cm, No, Bellamy Pirates, Chapter 222
+Raki, 17, 165cm, No, Jaya, Chapter 223
+Masira, 42, 236cm, No, Masira Crew, Chapter 236
+Shoujou, 44, 248cm, No, Shoujou Crew, Chapter 237
+Paulie, 24, 191cm, No, Galley-La, Chapter 329
+Kaku, 24, 223cm, Yes, Galley-La, Chapter 329
+Iceburg, 35, 233cm, No, Galley-La, Chapter 329
+Tyrannosaurus, 52, 191cm, No, Galley-La, Chapter 329
+Rob Lucci, 25, 226cm, Yes, Galley-La, Chapter 330
+Spandam, 34, 173cm, No, Galley-La, Chapter 330
+Kalifa, 24, 198cm, Yes, Galley-La, Chapter 330
+Kumadori, 33, 243cm, Yes, Galley-La, Chapter 330
+Blueno, 43, 220cm, Yes, Galley-La, Chapter 330
+Sengoku, 54, 277cm, No, Marines, Chapter 1
+Aokiji, 36, 303cm, Yes, Marines, Chapter 306
+Akainu, 55, 264cm, Yes, Marines, Chapter 302
+Kizaru, 61, 277cm, Yes, Marines, Chapter 385
+Garp, 61, 261cm, No, Marines, Chapter 1
+Sabo, 12, 150cm, No, High Town, Chapter 585
+Koala, 14, 152cm, No, Revolutionary Army, Chapter 596
+Ivankov, 54, 243cm, Yes, Revolutionary Army, Chapter 525
+Dragon, 52, 257cm, No, Revolutionary Army, Chapter 100
