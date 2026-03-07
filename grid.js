@@ -32,6 +32,64 @@ const getDateString = () => {
     return today.toISOString().split('T')[0];
 };
 
+// --- Statistics Functions ---
+const loadStats = () => {
+    try {
+        const s = JSON.parse(localStorage.getItem(STATS_KEY) || 'null');
+        if (s && typeof s === 'object') return s;
+    } catch (e) {}
+    return {
+        // Wordle stats
+        wordleGamesPlayed: 0,
+        wordleGamesWon: 0,
+        totalWordleGuessesForWins: 0,
+        // Grid stats
+        gridGamesPlayed: 0,
+        gridGamesWon: 0,
+        totalGridIncorrectGuessesLeft: 0,
+        // Shared stats
+        consecutiveDaysPlayed: 0,
+        lastPlayedDate: null
+    };
+};
+
+const saveStats = (stats) => {
+    localStorage.setItem(STATS_KEY, JSON.stringify(stats));
+};
+
+const updateStatsOnGridWin = () => {
+    const stats = loadStats();
+    const today = getDateString();
+    
+    stats.gridGamesWon = (stats.gridGamesWon || 0) + 1;
+    stats.totalGridIncorrectGuessesLeft = (stats.totalGridIncorrectGuessesLeft || 0) + gridState.incorrectGuessesLeft;
+    
+    // Update consecutive days (check if any game was played today)
+    const wordleGuessDate = localStorage.getItem(DAILY_SUBMISSION_KEY);
+    const wasAnyGamePlayedToday = wordleGuessDate === today;
+    
+    if (stats.lastPlayedDate) {
+        const lastDate = new Date(stats.lastPlayedDate);
+        const currentDate = new Date(today);
+        const diffDays = Math.floor((currentDate - lastDate) / (1000 * 60 * 60 * 24));
+        
+        if (diffDays === 1) {
+            // Consecutive day
+            stats.consecutiveDaysPlayed = (stats.consecutiveDaysPlayed || 0) + 1;
+        } else if (diffDays > 1 || diffDays < 0) {
+            // Streak broken
+            stats.consecutiveDaysPlayed = 1;
+        }
+        // If diffDays === 0, same day - don't increment
+    } else {
+        // First time playing
+        stats.consecutiveDaysPlayed = 1;
+    }
+    
+    stats.lastPlayedDate = today;
+    saveStats(stats);
+};
+
 // Check if a guess was made today (to either wordle or grid game)
 const hasGuessBeenMadeToday = () => {
     const today = getDateString();
@@ -243,6 +301,15 @@ const loadGridConfig = () => {
 // Mark that a guess was made today
 const markGuessDate = () => {
     const today = getDateString();
+    const gridGuessDateBefore = localStorage.getItem(GRID_GUESS_DATE_KEY);
+    
+    // Track gridGamesPlayed - increment only on first guess of the day
+    if (gridGuessDateBefore !== today) {
+        const stats = loadStats();
+        stats.gridGamesPlayed = (stats.gridGamesPlayed || 0) + 1;
+        saveStats(stats);
+    }
+    
     localStorage.setItem(GRID_GUESS_DATE_KEY, today);
 };
 
@@ -632,6 +699,7 @@ const placeGuess = (cell, character) => {
         // Check if won
         if (checkWin()) {
             gridState.completed = true;
+            updateStatsOnGridWin();
             showToast('🎉 Congratulations! You won!');
         }
     } else {
@@ -886,27 +954,37 @@ const updateStatsPanelUI = () => {
     const stats = loadStats();
     if (!container) return;
 
-    if (!stats || stats.gamesPlayed === 0) {
+    const totalGamesPlayed = (stats.wordleGamesPlayed || 0) + (stats.gridGamesPlayed || 0);
+    if (!stats || totalGamesPlayed === 0) {
         container.textContent = 'No data yet, play a game first!';
         return;
     }
 
-    const avg = stats.gamesWon > 0 ? (stats.totalGuessesForWins / stats.gamesWon).toFixed(2) : 'N/A';
+    const wordleAvg = stats.wordleGamesWon > 0 ? (stats.totalWordleGuessesForWins / stats.wordleGamesWon).toFixed(2) : 'N/A';
+    const gridAvg = stats.gridGamesWon > 0 ? (stats.totalGridIncorrectGuessesLeft / stats.gridGamesWon).toFixed(2) : 'N/A';
     const consecutiveDays = stats.consecutiveDaysPlayed || 0;
 
     container.innerHTML = `
         <div class="stats-grid">
             <div class="stat-tile">
-                <div class="stat-label">Games Played</div>
-                <div class="stat-value">${stats.gamesPlayed}</div>
+                <div class="stat-label">Total Games Played</div>
+                <div class="stat-value">${totalGamesPlayed}</div>
             </div>
             <div class="stat-tile">
-                <div class="stat-label">Games Won</div>
-                <div class="stat-value">${stats.gamesWon}</div>
+                <div class="stat-label">-Dle Games Won</div>
+                <div class="stat-value">${stats.wordleGamesWon || 0}</div>
             </div>
             <div class="stat-tile">
-                <div class="stat-label">Avg Guesses</div>
-                <div class="stat-value">${avg}</div>
+                <div class="stat-label">-Dle Game Avg Guesses</div>
+                <div class="stat-value">${wordleAvg}</div>
+            </div>
+            <div class="stat-tile">
+                <div class="stat-label">Grid Games Won</div>
+                <div class="stat-value">${stats.gridGamesWon || 0}</div>
+            </div>
+            <div class="stat-tile">
+                <div class="stat-label">Avg Grid Tries Left</div>
+                <div class="stat-value">${gridAvg}</div>
             </div>
             <div class="stat-tile">
                 <div class="stat-label">Days in a Row</div>
@@ -915,12 +993,4 @@ const updateStatsPanelUI = () => {
         </div>
     `;
 };
-
-// Load stats from localStorage
-const loadStats = () => {
-    try {
-        const s = JSON.parse(localStorage.getItem(STATS_KEY) || 'null');
-        if (s && typeof s === 'object') return s;
-    } catch (e) {}
-    return { gamesPlayed: 0, gamesWon: 0, totalGuessesForWins: 0, consecutiveDaysPlayed: 0, lastPlayedDate: null };
-};
+// Load stats from localStorage - Already defined earlier in the file

@@ -277,7 +277,19 @@ const loadStats = () => {
         const s = JSON.parse(localStorage.getItem(STATS_KEY) || 'null');
         if (s && typeof s === 'object') return s;
     } catch (e) {}
-    return { gamesPlayed: 0, gamesWon: 0, totalGuessesForWins: 0, consecutiveDaysPlayed: 0, lastPlayedDate: null };
+    return {
+        // Wordle stats
+        wordleGamesPlayed: 0,
+        wordleGamesWon: 0,
+        totalWordleGuessesForWins: 0,
+        // Grid stats
+        gridGamesPlayed: 0,
+        gridGamesWon: 0,
+        totalGridIncorrectGuessesLeft: 0,
+        // Shared stats
+        consecutiveDaysPlayed: 0,
+        lastPlayedDate: null
+    };
 }
 
 const saveStats = (stats) => {
@@ -368,10 +380,10 @@ const updateStatsOnGameEnd = (won) => {
     const stats = loadStats();
     const today = getDateString();
     
-    stats.gamesPlayed = (stats.gamesPlayed || 0) + 1;
+    stats.wordleGamesPlayed = (stats.wordleGamesPlayed || 0) + 1;
     if (won) {
-        stats.gamesWon = (stats.gamesWon || 0) + 1;
-        stats.totalGuessesForWins = (stats.totalGuessesForWins || 0) + history.length;
+        stats.wordleGamesWon = (stats.wordleGamesWon || 0) + 1;
+        stats.totalWordleGuessesForWins = (stats.totalWordleGuessesForWins || 0) + history.length;
     }
     
     // Update consecutive days
@@ -402,31 +414,41 @@ const updateStatsPanelUI = () => {
     const stats = loadStats();
     if (!container) return;
 
-    if (!stats || stats.gamesPlayed === 0) {
+    const totalGamesPlayed = (stats.wordleGamesPlayed || 0) + (stats.gridGamesPlayed || 0);
+    if (!stats || totalGamesPlayed === 0) {
         container.textContent = 'No data yet, play a game first!';
         return;
     }
 
-    const avg = stats.gamesWon > 0 ? (stats.totalGuessesForWins / stats.gamesWon).toFixed(2) : 'N/A';
+    const wordleAvg = stats.wordleGamesWon > 0 ? (stats.totalWordleGuessesForWins / stats.wordleGamesWon).toFixed(2) : 'N/A';
+    const gridAvg = stats.gridGamesWon > 0 ? (stats.totalGridIncorrectGuessesLeft / stats.gridGamesWon).toFixed(2) : 'N/A';
     const consecutiveDays = stats.consecutiveDaysPlayed || 0;
 
     container.innerHTML = `
         <div class="stats-grid">
             <div class="stat-tile">
-                <div class="stat-label">Games Played</div>
-                <div class="stat-value">${stats.gamesPlayed}</div>
+                <div class="stat-label">Total Games Played</div>
+                <div class="stat-value">${totalGamesPlayed}</div>
             </div>
             <div class="stat-tile">
-                <div class="stat-label">Games Won</div>
-                <div class="stat-value">${stats.gamesWon}</div>
-            </div>
-            <div class="stat-tile">
-                <div class="stat-label">Avg Guesses</div>
-                <div class="stat-value">${avg}</div>
-            </div>
-            <div class="stat-tile">
-                <div class="stat-label">Days in a Row</div>
+                <div class="stat-label">Daily Streak</div>
                 <div class="stat-value">${consecutiveDays}</div>
+            </div>
+            <div class="stat-tile">
+                <div class="stat-label">-Dle Games Won</div>
+                <div class="stat-value">${stats.wordleGamesWon || 0}</div>
+            </div>
+            <div class="stat-tile">
+                <div class="stat-label">Grid Games Won</div>
+                <div class="stat-value">${stats.gridGamesWon || 0}</div>
+            </div>
+            <div class="stat-tile">
+                <div class="stat-label">Avg Grid Tries Left</div>
+                <div class="stat-value">${gridAvg}</div>
+            </div>
+            <div class="stat-tile">
+                <div class="stat-label">-Dle Avg Guesses</div>
+                <div class="stat-value">${wordleAvg}</div>
             </div>
         </div>
     `;
@@ -803,7 +825,7 @@ const checkGuess = (guessEntry, answerEntry) => {
             // use the normalized series key here as well for consistency
             const seriesKey = currentSeries.toLowerCase().replace(/\s+/g, '');
             if (seriesKey === 'naruto') {
-                rankOrder = ['kage', 'leader', 'missing-nin', 'jonin', 'chunin', 'genin'];
+                rankOrder = ['kage', 'leader', 'jinchuriki', 'missing-nin', 'jonin', 'chunin', 'genin'];
             }
 
             const g = normalizeClue(guessClue);
