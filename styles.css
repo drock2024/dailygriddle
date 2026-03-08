@@ -757,6 +757,7 @@ main {
 
 .grid-row {
     display: contents;
+    padding-bottom: 1rem;
 }
 
 .grid-cell {
