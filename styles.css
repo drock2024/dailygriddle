@@ -618,11 +618,17 @@ main {
 
 /* Mobile styles for horizontal scrolling (show only three columns) */
 @media (max-width: 600px) {
+    .guess-input-wrapper {
+        max-width: 600px;
+        width: 100%;
+        padding: 0 0.5rem;
+        box-sizing: border-box;
+    }
     /* wrap both labels and board in a scrollable container */
     .board-scroll-wrapper {
         overflow-x: scroll; /* force scrollbar so position is visible */
         -webkit-overflow-scrolling: touch;
-        max-width: 360px; /* three tiles + two gaps + horizontal padding */
+        max-width: 350px; /* three tiles + two gaps + horizontal padding */
         width: 100%;
         box-sizing: border-box;
         scrollbar-width: thin;
@@ -855,31 +861,6 @@ main {
     .grid-wrapper {
         grid-template-columns: 60px 1fr 1fr 1fr;
         grid-auto-rows: max-content;
-        gap: 4px;
-        padding: 0.5rem;
-    }
-
-    .grid-corner,
-    .grid-row-header {
-        width: 60px;
-    }
-
-    .grid-col-header,
-    .grid-row-header {
-        font-size: 0.7rem;
-        min-height: 50px;
-        padding: 0.25rem;
-    }
-
-    .grid-cell {
-        font-size: 0.75rem;
-        min-height: 60px;
-    }
-}
-
-@media (max-width: 480px) {
-    .grid-wrapper {
-        grid-auto-rows: max-content;
         gap: 3px;
         padding: 0.25rem;
     }
@@ -898,7 +879,6 @@ main {
 
     .grid-cell {
         font-size: 0.7rem;
-        min-height: 45px7rem;
         min-height: 0;
         aspect-ratio: 1;
         padding: 0.25rem;
