@@ -22,6 +22,7 @@ const GRID_CONFIG_KEY = 'sf_grid_config';
 const GRID_GUESS_DATE_KEY = 'sf_grid_guess_date';
 const GRID_FAVORITES_KEY = 'sf_grid_favorites';
 const DAILY_SUBMISSION_KEY = 'sf_daily_submission_date'; // Track wordle submissions
+const GRID_STATE_KEY = 'sf_grid_state'; // Track grid guesses and game progress
 let seriesRules = [];
 let availableSeries = [];
 
@@ -298,6 +299,76 @@ const loadGridConfig = () => {
     return null;
 };
 
+// Save grid state (guesses and game progress) for today
+const saveGridState = () => {
+    const today = getDateString();
+    const gridStateToSave = {
+        date: today,
+        guesses: gridState.guesses,
+        incorrectGuessesLeft: gridState.incorrectGuessesLeft,
+        isLocked: gridState.isLocked,
+        completed: gridState.completed
+    };
+    localStorage.setItem(GRID_STATE_KEY, JSON.stringify(gridStateToSave));
+};
+
+// Load grid state for today if it exists
+const loadGridState = () => {
+    const today = getDateString();
+    try {
+        const saved = localStorage.getItem(GRID_STATE_KEY);
+        if (!saved) return null;
+        
+        const state = JSON.parse(saved);
+        
+        // Return if it's from today
+        if (state && state.date === today) {
+            console.log('Loaded grid state from storage for', today);
+            return state;
+        }
+    } catch (e) {
+        console.error('Error loading grid state:', e);
+    }
+    return null;
+};
+
+// Restore grid state from loaded state
+const restoreGridState = (state) => {
+    if (!state) return false;
+    
+    // Restore game variables
+    gridState.guesses = state.guesses || {};
+    gridState.incorrectGuessesLeft = state.incorrectGuessesLeft || 3;
+    gridState.isLocked = state.isLocked || false;
+    gridState.completed = state.completed || false;
+    
+    // Restore grid UI
+    const cells = document.querySelectorAll('.grid-cell');
+    cells.forEach(cell => {
+        const row = parseInt(cell.dataset.row);
+        const col = parseInt(cell.dataset.col);
+        const key = `${row}-${col}`;
+        
+        if (gridState.guesses[key]) {
+            const character = gridState.guesses[key];
+            const charName = typeof character === 'string' ? character : character.Name;
+            cell.textContent = charName;
+            cell.classList.add('filled');
+        }
+    });
+    
+    // Update display
+    updateIncorrectGuessesDisplay();
+    
+    // Disable input if locked
+    const input = document.querySelector('#grid-guess-input');
+    if (input) {
+        input.disabled = gridState.isLocked;
+    }
+    
+    return true;
+};
+
 // Mark that a guess was made today
 const markGuessDate = () => {
     const today = getDateString();
@@ -414,6 +485,12 @@ const setupGridUI = () => {
                 header.dataset.value = data.value;
             }
         });
+    }
+    
+    // Restore grid state from today if available
+    const savedGridState = loadGridState();
+    if (savedGridState) {
+        restoreGridState(savedGridState);
     }
 };
 
@@ -703,7 +780,10 @@ const placeGuess = (cell, character) => {
         cell.textContent = character.Name;
         cell.classList.add('filled');
         cell.classList.remove('selected');
-        gridState.guesses[`${row}-${col}`] = character;
+        gridState.guesses[`${row}-${col}`] = character.Name;
+        
+        // Save state after placing guess
+        saveGridState();
         
         showToast(`✓ ${character.Name}`);
         
@@ -711,6 +791,8 @@ const placeGuess = (cell, character) => {
         if (checkWin()) {
             gridState.completed = true;
             updateStatsOnGridWin();
+            // Save state after winning
+            saveGridState();
             showToast('🎉 Congratulations! You won!');
         }
     } else {
@@ -720,6 +802,9 @@ const placeGuess = (cell, character) => {
         // Incorrect guess - decrement counter
         gridState.incorrectGuessesLeft--;
         updateIncorrectGuessesDisplay();
+        
+        // Save state after incorrect guess
+        saveGridState();
         
         cell.classList.add('invalid');
         showToast(`✗ Character does not match (${gridState.incorrectGuessesLeft} left)`);
@@ -735,6 +820,8 @@ const placeGuess = (cell, character) => {
             if (input) {
                 input.disabled = true;
             }
+            // Save state after locking
+            saveGridState();
         }
     }
 };
