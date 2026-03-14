@@ -1,80 +1,802 @@
-Name, Number, Height, Weight, Type, Generation
-Bulbasaur, 1, 70cm, 6.9kg, Grass, Gen 1
-Ivysaur, 2, 100cm, 13.0kg, Grass, Gen 1
-Venusaur, 3, 200cm, 100.0kg, Grass, Gen 1
-Charmander, 4, 60cm, 8.5kg, Fire, Gen 1
-Charmeleon, 5, 110cm, 19.0kg, Fire, Gen 1
-Charizard, 6, 170cm, 90.5kg, Fire, Gen 1
-Squirtle, 7, 50cm, 9.0kg, Water, Gen 1
-Wartortle, 8, 100cm, 22.5kg, Water, Gen 1
-Blastoise, 9, 160cm, 85.5kg, Water, Gen 1
-Caterpie, 10, 30cm, 2.9kg, Bug, Gen 1
-Pikachu, 25, 40cm, 6.0kg, Electric, Gen 1
-Raichu, 26, 80cm, 30.0kg, Electric, Gen 1
-Sandshrew, 27, 60cm, 12.0kg, Ground, Gen 1
-Nidoran♀, 29, 40cm, 7.0kg, Poison, Gen 1
-Clefairy, 35, 60cm, 7.5kg, Fairy, Gen 1
-Vulpix, 37, 60cm, 9.9kg, Fire, Gen 1
-Jigglypuff, 39, 50cm, 5.5kg, Fairy, Gen 1
-Zubat, 41, 80cm, 7.5kg, Poison, Gen 1
-Oddish, 43, 50cm, 5.4kg, Grass, Gen 1
-Psyduck, 54, 80cm, 19.6kg, Water, Gen 1
-Growlithe, 58, 70cm, 19.0kg, Fire, Gen 1
-Poliwag, 60, 60cm, 12.4kg, Water, Gen 1
-Abra, 63, 90cm, 19.5kg, Psychic, Gen 1
-Machop, 66, 80cm, 19.5kg, Fighting, Gen 1
-Geodude, 74, 40cm, 20.0kg, Rock, Gen 1
-Ponyta, 77, 100cm, 30.0kg, Fire, Gen 1
-Slowpoke, 79, 120cm, 36.0kg, Water, Gen 1
-Magnemite, 81, 30cm, 6.0kg, Electric, Gen 1
-Gastly, 92, 130cm, 0.1kg, Ghost, Gen 1
-Onix, 95, 880cm, 210.0kg, Rock, Gen 1
-Cubone, 104, 40cm, 6.5kg, Ground, Gen 1
-Eevee, 133, 30cm, 6.5kg, Normal, Gen 1
-Vaporeon, 134, 100cm, 29.0kg, Water, Gen 1
-Jolteon, 135, 80cm, 24.5kg, Electric, Gen 1
-Flareon, 136, 90cm, 25.0kg, Fire, Gen 1
-Dratini, 147, 180cm, 3.3kg, Dragon, Gen 1
-Mew, 151, 40cm, 4.0kg, Psychic, Gen 1
-Chikorita, 152, 90cm, 6.4kg, Grass, Gen 2
-Cyndaquil, 155, 50cm, 7.9kg, Fire, Gen 2
-Totodile, 158, 60cm, 9.5kg, Water, Gen 2
-Togepi, 175, 30cm, 1.5kg, Fairy, Gen 2
-Mareep, 179, 60cm, 7.8kg, Electric, Gen 2
-Marill, 183, 40cm, 8.5kg, Water, Gen 2
-Houndour, 228, 60cm, 10.8kg, Dark, Gen 2
-Larvitar, 246, 60cm, 72.0kg, Rock, Gen 2
-Treecko, 252, 50cm, 5.0kg, Grass, Gen 3
-Torchic, 255, 40cm, 2.5kg, Fire, Gen 3
-Mudkip, 258, 40cm, 7.6kg, Water, Gen 3
-Ralts, 280, 40cm, 6.6kg, Psychic, Gen 3
-Aron, 304, 40cm, 60.0kg, Steel, Gen 3
-Trapinch, 328, 70cm, 15.0kg, Ground, Gen 3
-Swablu, 333, 40cm, 1.2kg, Normal, Gen 3
-Absol, 359, 120cm, 47.0kg, Dark, Gen 3
-Bagon, 371, 60cm, 42.1kg, Dragon, Gen 3
-Beldum, 374, 60cm, 95.2kg, Steel, Gen 3
-Turtwig, 387, 40cm, 10.2kg, Grass, Gen 4
-Chimchar, 390, 50cm, 6.2kg, Fire, Gen 4
-Piplup, 393, 40cm, 5.2kg, Water, Gen 4
-Starly, 396, 30cm, 2.0kg, Flying, Gen 4
-Shinx, 403, 50cm, 9.5kg, Electric, Gen 4
-Gible, 443, 70cm, 20.5kg, Dragon, Gen 4
-Riolu, 447, 70cm, 20.2kg, Fighting, Gen 4
-Snivy, 495, 60cm, 8.1kg, Grass, Gen 5
-Tepig, 498, 50cm, 9.9kg, Fire, Gen 5
-Oshawott, 501, 50cm, 5.9kg, Water, Gen 5
-Zorua, 570, 70cm, 12.5kg, Dark, Gen 5
-Litwick, 607, 30cm, 3.1kg, Ghost, Gen 5
-Chespin, 650, 40cm, 9.0kg, Grass, Gen 6
-Fennekin, 653, 40cm, 9.4kg, Fire, Gen 6
-Froakie, 656, 30cm, 7.0kg, Water, Gen 6
-Rowlet, 722, 30cm, 1.5kg, Grass, Gen 7
-Litten, 725, 40cm, 4.3kg, Fire, Gen 7
-Popplio, 728, 40cm, 7.5kg, Water, Gen 7
-Grookey, 810, 30cm, 5.0kg, Grass, Gen 8
-Scorbunny, 813, 30cm, 4.5kg, Fire, Gen 8
-Sobble, 816, 30cm, 4.0kg, Water, Gen 8
-Sprigatito, 906, 40cm, 4.1kg, Grass, Gen 9
-Fuecoco, 909, 40cm, 9.8kg, Fire, Gen 9
-Quaxly, 912, 50cm, 6.1kg, Water, Gen 9
+Name,Legendary,Height,Weight,Type,Generation
+Bulbasaur,False,70cm,6.9kg,grass,Gen 1
+Ivysaur,False,100cm,13kg,grass,Gen 1
+Venusaur,False,200cm,100kg,grass,Gen 1
+Charmander,False,60cm,8.5kg,fire,Gen 1
+Charmeleon,False,110cm,19kg,fire,Gen 1
+Charizard,False,170cm,90.5kg,fire,Gen 1
+Squirtle,False,50cm,9kg,water,Gen 1
+Wartortle,False,100cm,22.5kg,water,Gen 1
+Blastoise,False,160cm,85.5kg,water,Gen 1
+Caterpie,False,30cm,2.9kg,bug,Gen 1
+Metapod,False,70cm,9.9kg,bug,Gen 1
+Butterfree,False,110cm,32kg,bug,Gen 1
+Weedle,False,30cm,3.2kg,bug,Gen 1
+Kakuna,False,60cm,10kg,bug,Gen 1
+Beedrill,False,100cm,29.5kg,bug,Gen 1
+Pidgey,False,30cm,1.8kg,normal,Gen 1
+Pidgeotto,False,110cm,30kg,normal,Gen 1
+Pidgeot,False,150cm,39.5kg,normal,Gen 1
+Rattata,False,0cm,kg,normal,Gen 1
+Raticate,False,0cm,kg,normal,Gen 1
+Spearow,False,30cm,2kg,normal,Gen 1
+Fearow,False,120cm,38kg,normal,Gen 1
+Ekans,False,200cm,6.9kg,poison,Gen 1
+Arbok,False,350cm,65kg,poison,Gen 1
+Pikachu,False,40cm,6kg,electric,Gen 1
+Raichu,False,0cm,kg,electric,Gen 1
+Sandshrew,False,0cm,kg,ground,Gen 1
+Sandslash,False,0cm,kg,ground,Gen 1
+Nidoran♀,False,40cm,7kg,poison,Gen 1
+Nidorina,False,80cm,20kg,poison,Gen 1
+Nidoqueen,False,130cm,60kg,poison,Gen 1
+Nidoran♂,False,50cm,9kg,poison,Gen 1
+Nidorino,False,90cm,19.5kg,poison,Gen 1
+Nidoking,False,140cm,62kg,poison,Gen 1
+Clefairy,False,60cm,7.5kg,fairy,Gen 1
+Clefable,False,130cm,40kg,fairy,Gen 1
+Vulpix,False,0cm,kg,fire,Gen 1
+Ninetales,False,0cm,kg,fire,Gen 1
+Jigglypuff,False,50cm,5.5kg,normal,Gen 1
+Wigglytuff,False,100cm,12kg,normal,Gen 1
+Zubat,False,80cm,7.5kg,poison,Gen 1
+Golbat,False,160cm,55kg,poison,Gen 1
+Oddish,False,50cm,5.4kg,grass,Gen 1
+Gloom,False,80cm,8.6kg,grass,Gen 1
+Vileplume,False,120cm,18.6kg,grass,Gen 1
+Paras,False,30cm,5.4kg,bug,Gen 1
+Parasect,False,100cm,29.5kg,bug,Gen 1
+Venonat,False,100cm,30kg,bug,Gen 1
+Venomoth,False,150cm,12.5kg,bug,Gen 1
+Diglett,False,0cm,kg,ground,Gen 1
+Dugtrio,False,0cm,kg,ground,Gen 1
+Meowth,False,0cm,kg,normal,Gen 1
+Persian,False,0cm,kg,normal,Gen 1
+Psyduck,False,80cm,19.6kg,water,Gen 1
+Golduck,False,170cm,76.6kg,water,Gen 1
+Mankey,False,50cm,28kg,fighting,Gen 1
+Primeape,False,100cm,32kg,fighting,Gen 1
+Growlithe,False,70cm,19kg,fire,Gen 1
+Arcanine,False,190cm,155kg,fire,Gen 1
+Poliwag,False,60cm,12.4kg,water,Gen 1
+Poliwhirl,False,100cm,20kg,water,Gen 1
+Poliwrath,False,130cm,54kg,water,Gen 1
+Abra,False,90cm,19.5kg,psychic,Gen 1
+Kadabra,False,130cm,56.5kg,psychic,Gen 1
+Alakazam,False,150cm,48kg,psychic,Gen 1
+Machop,False,80cm,19.5kg,fighting,Gen 1
+Machoke,False,150cm,70.5kg,fighting,Gen 1
+Machamp,False,160cm,130kg,fighting,Gen 1
+Bellsprout,False,70cm,4kg,grass,Gen 1
+Weepinbell,False,100cm,6.4kg,grass,Gen 1
+Victreebel,False,170cm,15.5kg,grass,Gen 1
+Tentacool,False,90cm,45.5kg,water,Gen 1
+Tentacruel,False,160cm,55kg,water,Gen 1
+Geodude,False,0cm,kg,rock,Gen 1
+Graveler,False,0cm,kg,rock,Gen 1
+Golem,False,0cm,kg,rock,Gen 1
+Ponyta,False,100cm,30kg,fire,Gen 1
+Rapidash,False,170cm,95kg,fire,Gen 1
+Slowpoke,False,120cm,36kg,water,Gen 1
+Slowbro,False,160cm,78.5kg,water,Gen 1
+Magnemite,False,30cm,6kg,electric,Gen 1
+Magneton,False,100cm,60kg,electric,Gen 1
+Farfetch'd,False,80cm,15kg,normal,Gen 1
+Doduo,False,140cm,39.2kg,normal,Gen 1
+Dodrio,False,180cm,85.2kg,normal,Gen 1
+Seel,False,110cm,90kg,water,Gen 1
+Dewgong,False,170cm,120kg,water,Gen 1
+Grimer,False,0cm,kg,poison,Gen 1
+Muk,False,0cm,kg,poison,Gen 1
+Shellder,False,30cm,4kg,water,Gen 1
+Cloyster,False,150cm,132.5kg,water,Gen 1
+Gastly,False,130cm,0.1kg,ghost,Gen 1
+Haunter,False,160cm,0.1kg,ghost,Gen 1
+Gengar,False,150cm,40.5kg,ghost,Gen 1
+Onix,False,880cm,210kg,rock,Gen 1
+Drowzee,False,100cm,32.4kg,psychic,Gen 1
+Hypno,False,160cm,75.6kg,psychic,Gen 1
+Krabby,False,40cm,6.5kg,water,Gen 1
+Kingler,False,130cm,60kg,water,Gen 1
+Voltorb,False,50cm,10.4kg,electric,Gen 1
+Electrode,False,120cm,66.6kg,electric,Gen 1
+Exeggcute,False,40cm,2.5kg,grass,Gen 1
+Exeggutor,False,0cm,kg,grass,Gen 1
+Cubone,False,40cm,6.5kg,ground,Gen 1
+Marowak,False,0cm,kg,ground,Gen 1
+Hitmonlee,False,150cm,49.8kg,fighting,Gen 1
+Hitmonchan,False,140cm,50.2kg,fighting,Gen 1
+Lickitung,False,120cm,65.5kg,normal,Gen 1
+Koffing,False,60cm,1kg,poison,Gen 1
+Weezing,False,120cm,9.5kg,poison,Gen 1
+Rhyhorn,False,100cm,115kg,ground,Gen 1
+Rhydon,False,190cm,120kg,ground,Gen 1
+Chansey,False,110cm,34.6kg,normal,Gen 1
+Tangela,False,100cm,35kg,grass,Gen 1
+Kangaskhan,False,220cm,80kg,normal,Gen 1
+Horsea,False,40cm,8kg,water,Gen 1
+Seadra,False,120cm,25kg,water,Gen 1
+Goldeen,False,60cm,15kg,water,Gen 1
+Seaking,False,130cm,39kg,water,Gen 1
+Staryu,False,80cm,34.5kg,water,Gen 1
+Starmie,False,110cm,80kg,water,Gen 1
+Mr. Mime,False,130cm,54.5kg,psychic,Gen 1
+Scyther,False,150cm,56kg,bug,Gen 1
+Jynx,False,140cm,40.6kg,ice,Gen 1
+Electabuzz,False,110cm,30kg,electric,Gen 1
+Magmar,False,130cm,44.5kg,fire,Gen 1
+Pinsir,False,150cm,55kg,bug,Gen 1
+Tauros,False,140cm,88.4kg,normal,Gen 1
+Magikarp,False,90cm,10kg,water,Gen 1
+Gyarados,False,650cm,235kg,water,Gen 1
+Lapras,False,250cm,220kg,water,Gen 1
+Ditto,False,30cm,4kg,normal,Gen 1
+Eevee,False,30cm,6.5kg,normal,Gen 1
+Vaporeon,False,100cm,29kg,water,Gen 1
+Jolteon,False,80cm,24.5kg,electric,Gen 1
+Flareon,False,90cm,25kg,fire,Gen 1
+Porygon,False,80cm,36.5kg,normal,Gen 1
+Omanyte,False,40cm,7.5kg,rock,Gen 1
+Omastar,False,100cm,35kg,rock,Gen 1
+Kabuto,False,50cm,11.5kg,rock,Gen 1
+Kabutops,False,130cm,40.5kg,rock,Gen 1
+Aerodactyl,False,180cm,59kg,rock,Gen 1
+Snorlax,False,210cm,460kg,normal,Gen 1
+Articuno,True,170cm,55.4kg,ice,Gen 1
+Zapdos,True,160cm,52.6kg,electric,Gen 1
+Moltres,True,200cm,60kg,fire,Gen 1
+Dratini,False,180cm,3.3kg,dragon,Gen 1
+Dragonair,False,400cm,16.5kg,dragon,Gen 1
+Dragonite,False,220cm,210kg,dragon,Gen 1
+Mewtwo,True,200cm,122kg,psychic,Gen 1
+Mew,True,40cm,4kg,psychic,Gen 1
+Chikorita,False,90cm,6.4kg,grass,Gen 2
+Bayleef,False,120cm,15.8kg,grass,Gen 2
+Meganium,False,180cm,100.5kg,grass,Gen 2
+Cyndaquil,False,50cm,7.9kg,fire,Gen 2
+Quilava,False,90cm,19kg,fire,Gen 2
+Typhlosion,False,170cm,79.5kg,fire,Gen 2
+Totodile,False,60cm,9.5kg,water,Gen 2
+Croconaw,False,110cm,25kg,water,Gen 2
+Feraligatr,False,230cm,88.8kg,water,Gen 2
+Sentret,False,80cm,6kg,normal,Gen 2
+Furret,False,180cm,32.5kg,normal,Gen 2
+Hoothoot,False,70cm,21.2kg,normal,Gen 2
+Noctowl,False,160cm,40.8kg,normal,Gen 2
+Ledyba,False,100cm,10.8kg,bug,Gen 2
+Ledian,False,140cm,35.6kg,bug,Gen 2
+Spinarak,False,50cm,8.5kg,bug,Gen 2
+Ariados,False,110cm,33.5kg,bug,Gen 2
+Crobat,False,180cm,75kg,poison,Gen 2
+Chinchou,False,50cm,12kg,water,Gen 2
+Lanturn,False,120cm,22.5kg,water,Gen 2
+Pichu,False,30cm,2kg,electric,Gen 2
+Cleffa,False,30cm,3kg,fairy,Gen 2
+Igglybuff,False,30cm,1kg,normal,Gen 2
+Togepi,False,30cm,1.5kg,fairy,Gen 2
+Togetic,False,60cm,3.2kg,fairy,Gen 2
+Natu,False,20cm,2kg,psychic,Gen 2
+Xatu,False,150cm,15kg,psychic,Gen 2
+Mareep,False,60cm,7.8kg,electric,Gen 2
+Flaaffy,False,80cm,13.3kg,electric,Gen 2
+Ampharos,False,140cm,61.5kg,electric,Gen 2
+Bellossom,False,40cm,5.8kg,grass,Gen 2
+Marill,False,40cm,8.5kg,water,Gen 2
+Azumarill,False,80cm,28.5kg,water,Gen 2
+Sudowoodo,False,120cm,38kg,rock,Gen 2
+Politoed,False,110cm,33.9kg,water,Gen 2
+Hoppip,False,40cm,0.5kg,grass,Gen 2
+Skiploom,False,60cm,1kg,grass,Gen 2
+Jumpluff,False,80cm,3kg,grass,Gen 2
+Aipom,False,80cm,11.5kg,normal,Gen 2
+Sunkern,False,30cm,1.8kg,grass,Gen 2
+Sunflora,False,80cm,8.5kg,grass,Gen 2
+Yanma,False,120cm,38kg,bug,Gen 2
+Wooper,False,40cm,8.5kg,water,Gen 2
+Quagsire,False,140cm,75kg,water,Gen 2
+Espeon,False,90cm,26.5kg,psychic,Gen 2
+Umbreon,False,100cm,27kg,dark,Gen 2
+Murkrow,False,50cm,2.1kg,dark,Gen 2
+Slowking,False,200cm,79.5kg,water,Gen 2
+Misdreavus,False,70cm,1kg,ghost,Gen 2
+Unown,False,50cm,5kg,psychic,Gen 2
+Wobbuffet,False,130cm,28.5kg,psychic,Gen 2
+Girafarig,False,150cm,41.5kg,normal,Gen 2
+Pineco,False,60cm,7.2kg,bug,Gen 2
+Forretress,False,120cm,125.8kg,bug,Gen 2
+Dunsparce,False,150cm,14kg,normal,Gen 2
+Gligar,False,110cm,64.8kg,ground,Gen 2
+Steelix,False,920cm,400kg,steel,Gen 2
+Snubbull,False,60cm,7.8kg,fairy,Gen 2
+Granbull,False,140cm,48.7kg,fairy,Gen 2
+Qwilfish,False,50cm,3.9kg,water,Gen 2
+Scizor,False,180cm,118kg,bug,Gen 2
+Shuckle,False,60cm,20.5kg,bug,Gen 2
+Heracross,False,150cm,54kg,bug,Gen 2
+Sneasel,False,90cm,28kg,dark,Gen 2
+Teddiursa,False,60cm,8.8kg,normal,Gen 2
+Ursaring,False,180cm,125.8kg,normal,Gen 2
+Slugma,False,70cm,35kg,fire,Gen 2
+Magcargo,False,80cm,55kg,fire,Gen 2
+Swinub,False,40cm,6.5kg,ice,Gen 2
+Piloswine,False,110cm,55.8kg,ice,Gen 2
+Corsola,False,60cm,5kg,water,Gen 2
+Remoraid,False,60cm,12kg,water,Gen 2
+Octillery,False,90cm,28.5kg,water,Gen 2
+Delibird,False,90cm,16kg,ice,Gen 2
+Mantine,False,210cm,220kg,water,Gen 2
+Skarmory,False,170cm,50.5kg,steel,Gen 2
+Houndour,False,60cm,10.8kg,dark,Gen 2
+Houndoom,False,140cm,35kg,dark,Gen 2
+Kingdra,False,180cm,152kg,water,Gen 2
+Phanpy,False,50cm,33.5kg,ground,Gen 2
+Donphan,False,110cm,120kg,ground,Gen 2
+Porygon2,False,60cm,32.5kg,normal,Gen 2
+Stantler,False,140cm,71.2kg,normal,Gen 2
+Smeargle,False,120cm,58kg,normal,Gen 2
+Tyrogue,False,70cm,21kg,fighting,Gen 2
+Hitmontop,False,140cm,48kg,fighting,Gen 2
+Smoochum,False,40cm,6kg,ice,Gen 2
+Elekid,False,60cm,23.5kg,electric,Gen 2
+Magby,False,70cm,21.4kg,fire,Gen 2
+Miltank,False,120cm,75.5kg,normal,Gen 2
+Blissey,False,150cm,46.8kg,normal,Gen 2
+Raikou,True,190cm,178kg,electric,Gen 2
+Entei,True,210cm,198kg,fire,Gen 2
+Suicune,True,200cm,187kg,water,Gen 2
+Larvitar,False,60cm,72kg,rock,Gen 2
+Pupitar,False,120cm,152kg,rock,Gen 2
+Tyranitar,False,200cm,202kg,rock,Gen 2
+Lugia,True,520cm,216kg,psychic,Gen 2
+Ho-Oh,True,380cm,199kg,fire,Gen 2
+Celebi,True,60cm,5kg,psychic,Gen 2
+Treecko,False,50cm,5kg,grass,Gen 3
+Grovyle,False,90cm,21.6kg,grass,Gen 3
+Sceptile,False,170cm,52.2kg,grass,Gen 3
+Torchic,False,40cm,2.5kg,fire,Gen 3
+Combusken,False,90cm,19.5kg,fire,Gen 3
+Blaziken,False,190cm,52kg,fire,Gen 3
+Mudkip,False,40cm,7.6kg,water,Gen 3
+Marshtomp,False,70cm,28kg,water,Gen 3
+Swampert,False,150cm,81.9kg,water,Gen 3
+Poochyena,False,50cm,13.6kg,dark,Gen 3
+Mightyena,False,100cm,37kg,dark,Gen 3
+Zigzagoon,False,40cm,17.5kg,normal,Gen 3
+Linoone,False,50cm,32.5kg,normal,Gen 3
+Wurmple,False,30cm,3.6kg,bug,Gen 3
+Silcoon,False,60cm,10kg,bug,Gen 3
+Beautifly,False,100cm,28.4kg,bug,Gen 3
+Cascoon,False,70cm,11.5kg,bug,Gen 3
+Dustox,False,120cm,31.6kg,bug,Gen 3
+Lotad,False,50cm,2.6kg,water,Gen 3
+Lombre,False,120cm,32.5kg,water,Gen 3
+Ludicolo,False,150cm,55kg,water,Gen 3
+Seedot,False,50cm,4kg,grass,Gen 3
+Nuzleaf,False,100cm,28kg,grass,Gen 3
+Shiftry,False,130cm,59.6kg,grass,Gen 3
+Taillow,False,30cm,2.3kg,normal,Gen 3
+Swellow,False,70cm,19.8kg,normal,Gen 3
+Wingull,False,60cm,9.5kg,water,Gen 3
+Pelipper,False,120cm,28kg,water,Gen 3
+Ralts,False,40cm,6.6kg,psychic,Gen 3
+Kirlia,False,80cm,20.2kg,psychic,Gen 3
+Gardevoir,False,160cm,48.4kg,psychic,Gen 3
+Surskit,False,50cm,1.7kg,bug,Gen 3
+Masquerain,False,80cm,3.6kg,bug,Gen 3
+Shroomish,False,40cm,4.5kg,grass,Gen 3
+Breloom,False,120cm,39.2kg,grass,Gen 3
+Slakoth,False,80cm,24kg,normal,Gen 3
+Vigoroth,False,140cm,46.5kg,normal,Gen 3
+Slaking,False,200cm,130.5kg,normal,Gen 3
+Nincada,False,50cm,5.5kg,bug,Gen 3
+Ninjask,False,80cm,12kg,bug,Gen 3
+Shedinja,False,80cm,1.2kg,bug,Gen 3
+Whismur,False,60cm,16.3kg,normal,Gen 3
+Loudred,False,100cm,40.5kg,normal,Gen 3
+Exploud,False,150cm,84kg,normal,Gen 3
+Makuhita,False,100cm,86.4kg,fighting,Gen 3
+Hariyama,False,230cm,253.8kg,fighting,Gen 3
+Azurill,False,20cm,2kg,normal,Gen 3
+Nosepass,False,100cm,97kg,rock,Gen 3
+Skitty,False,60cm,11kg,normal,Gen 3
+Delcatty,False,110cm,32.6kg,normal,Gen 3
+Sableye,False,50cm,11kg,dark,Gen 3
+Mawile,False,60cm,11.5kg,steel,Gen 3
+Aron,False,40cm,60kg,steel,Gen 3
+Lairon,False,90cm,120kg,steel,Gen 3
+Aggron,False,210cm,360kg,steel,Gen 3
+Meditite,False,60cm,11.2kg,fighting,Gen 3
+Medicham,False,130cm,31.5kg,fighting,Gen 3
+Electrike,False,60cm,15.2kg,electric,Gen 3
+Manectric,False,150cm,40.2kg,electric,Gen 3
+Plusle,False,40cm,4.2kg,electric,Gen 3
+Minun,False,40cm,4.2kg,electric,Gen 3
+Volbeat,False,70cm,17.7kg,bug,Gen 3
+Illumise,False,60cm,17.7kg,bug,Gen 3
+Roselia,False,30cm,2kg,grass,Gen 3
+Gulpin,False,40cm,10.3kg,poison,Gen 3
+Swalot,False,170cm,80kg,poison,Gen 3
+Carvanha,False,80cm,20.8kg,water,Gen 3
+Sharpedo,False,180cm,88.8kg,water,Gen 3
+Wailmer,False,200cm,130kg,water,Gen 3
+Wailord,False,1450cm,398kg,water,Gen 3
+Numel,False,70cm,24kg,fire,Gen 3
+Camerupt,False,190cm,220kg,fire,Gen 3
+Torkoal,False,50cm,80.4kg,fire,Gen 3
+Spoink,False,70cm,30.6kg,psychic,Gen 3
+Grumpig,False,90cm,71.5kg,psychic,Gen 3
+Spinda,False,110cm,5kg,normal,Gen 3
+Trapinch,False,70cm,15kg,ground,Gen 3
+Vibrava,False,110cm,15.3kg,ground,Gen 3
+Flygon,False,200cm,82kg,ground,Gen 3
+Cacnea,False,40cm,51.3kg,grass,Gen 3
+Cacturne,False,130cm,77.4kg,grass,Gen 3
+Swablu,False,40cm,1.2kg,normal,Gen 3
+Altaria,False,110cm,20.6kg,dragon,Gen 3
+Zangoose,False,130cm,40.3kg,normal,Gen 3
+Seviper,False,270cm,52.5kg,poison,Gen 3
+Lunatone,False,100cm,168kg,rock,Gen 3
+Solrock,False,120cm,154kg,rock,Gen 3
+Barboach,False,40cm,1.9kg,water,Gen 3
+Whiscash,False,90cm,23.6kg,water,Gen 3
+Corphish,False,60cm,11.5kg,water,Gen 3
+Crawdaunt,False,110cm,32.8kg,water,Gen 3
+Baltoy,False,50cm,21.5kg,ground,Gen 3
+Claydol,False,150cm,108kg,ground,Gen 3
+Lileep,False,100cm,23.8kg,rock,Gen 3
+Cradily,False,150cm,60.4kg,rock,Gen 3
+Anorith,False,70cm,12.5kg,rock,Gen 3
+Armaldo,False,150cm,68.2kg,rock,Gen 3
+Feebas,False,60cm,7.4kg,water,Gen 3
+Milotic,False,620cm,162kg,water,Gen 3
+Castform,False,30cm,0.8kg,normal,Gen 3
+Kecleon,False,100cm,22kg,normal,Gen 3
+Shuppet,False,60cm,2.3kg,ghost,Gen 3
+Banette,False,110cm,12.5kg,ghost,Gen 3
+Duskull,False,80cm,15kg,ghost,Gen 3
+Dusclops,False,160cm,30.6kg,ghost,Gen 3
+Tropius,False,200cm,100kg,grass,Gen 3
+Chimecho,False,60cm,1kg,psychic,Gen 3
+Absol,False,120cm,47kg,dark,Gen 3
+Wynaut,False,60cm,14kg,psychic,Gen 3
+Snorunt,False,70cm,16.8kg,ice,Gen 3
+Glalie,False,150cm,256.5kg,ice,Gen 3
+Spheal,False,80cm,39.5kg,ice,Gen 3
+Sealeo,False,110cm,87.6kg,ice,Gen 3
+Walrein,False,140cm,150.6kg,ice,Gen 3
+Clamperl,False,40cm,52.5kg,water,Gen 3
+Huntail,False,170cm,27kg,water,Gen 3
+Gorebyss,False,180cm,22.6kg,water,Gen 3
+Relicanth,False,100cm,23.4kg,water,Gen 3
+Luvdisc,False,60cm,8.7kg,water,Gen 3
+Bagon,False,60cm,42.1kg,dragon,Gen 3
+Shelgon,False,110cm,110.5kg,dragon,Gen 3
+Salamence,False,150cm,102.6kg,dragon,Gen 3
+Beldum,False,60cm,95.2kg,steel,Gen 3
+Metang,False,120cm,202.5kg,steel,Gen 3
+Metagross,False,160cm,550kg,steel,Gen 3
+Regirock,True,170cm,230kg,rock,Gen 3
+Regice,True,180cm,175kg,ice,Gen 3
+Registeel,True,190cm,205kg,steel,Gen 3
+Latias,True,140cm,40kg,dragon,Gen 3
+Latios,True,200cm,60kg,dragon,Gen 3
+Kyogre,True,450cm,352kg,water,Gen 3
+Groudon,True,350cm,950kg,ground,Gen 3
+Rayquaza,True,700cm,206.5kg,dragon,Gen 3
+Jirachi,True,30cm,1.1kg,steel,Gen 3
+Deoxys,True,170cm,60.8kg,psychic,Gen 3
+Turtwig,False,40cm,10.2kg,grass,Gen 4
+Grotle,False,110cm,97kg,grass,Gen 4
+Torterra,False,220cm,310kg,grass,Gen 4
+Chimchar,False,50cm,6.2kg,fire,Gen 4
+Monferno,False,90cm,22kg,fire,Gen 4
+Infernape,False,120cm,55kg,fire,Gen 4
+Piplup,False,40cm,5.2kg,water,Gen 4
+Prinplup,False,80cm,23kg,water,Gen 4
+Empoleon,False,170cm,84.5kg,water,Gen 4
+Starly,False,30cm,2kg,normal,Gen 4
+Staravia,False,60cm,15.5kg,normal,Gen 4
+Staraptor,False,120cm,24.9kg,normal,Gen 4
+Bidoof,False,50cm,20kg,normal,Gen 4
+Bibarel,False,100cm,31.5kg,normal,Gen 4
+Kricketot,False,30cm,2.2kg,bug,Gen 4
+Kricketune,False,100cm,25.5kg,bug,Gen 4
+Shinx,False,50cm,9.5kg,electric,Gen 4
+Luxio,False,90cm,30.5kg,electric,Gen 4
+Luxray,False,140cm,42kg,electric,Gen 4
+Budew,False,20cm,1.2kg,grass,Gen 4
+Roserade,False,90cm,14.5kg,grass,Gen 4
+Cranidos,False,90cm,31.5kg,rock,Gen 4
+Rampardos,False,160cm,102.5kg,rock,Gen 4
+Shieldon,False,50cm,57kg,rock,Gen 4
+Bastiodon,False,130cm,149.5kg,rock,Gen 4
+Burmy,False,20cm,3.4kg,bug,Gen 4
+Wormadam,False,50cm,6.5kg,bug,Gen 4
+Mothim,False,90cm,23.3kg,bug,Gen 4
+Combee,False,30cm,5.5kg,bug,Gen 4
+Vespiquen,False,120cm,38.5kg,bug,Gen 4
+Pachirisu,False,40cm,3.9kg,electric,Gen 4
+Buizel,False,70cm,29.5kg,water,Gen 4
+Floatzel,False,110cm,33.5kg,water,Gen 4
+Cherubi,False,40cm,3.3kg,grass,Gen 4
+Cherrim,False,50cm,9.3kg,grass,Gen 4
+Shellos,False,30cm,6.3kg,water,Gen 4
+Gastrodon,False,90cm,29.9kg,water,Gen 4
+Ambipom,False,120cm,20.3kg,normal,Gen 4
+Drifloon,False,40cm,1.2kg,ghost,Gen 4
+Drifblim,False,120cm,15kg,ghost,Gen 4
+Buneary,False,40cm,5.5kg,normal,Gen 4
+Lopunny,False,120cm,33.3kg,normal,Gen 4
+Mismagius,False,90cm,4.4kg,ghost,Gen 4
+Honchkrow,False,90cm,27.3kg,dark,Gen 4
+Glameow,False,50cm,3.9kg,normal,Gen 4
+Purugly,False,100cm,43.8kg,normal,Gen 4
+Chingling,False,20cm,0.6kg,psychic,Gen 4
+Stunky,False,40cm,19.2kg,poison,Gen 4
+Skuntank,False,100cm,38kg,poison,Gen 4
+Bronzor,False,50cm,60.5kg,steel,Gen 4
+Bronzong,False,130cm,187kg,steel,Gen 4
+Bonsly,False,50cm,15kg,rock,Gen 4
+Mime Jr.,False,60cm,13kg,psychic,Gen 4
+Happiny,False,60cm,24.4kg,normal,Gen 4
+Chatot,False,50cm,1.9kg,normal,Gen 4
+Spiritomb,False,100cm,108kg,ghost,Gen 4
+Gible,False,70cm,20.5kg,dragon,Gen 4
+Gabite,False,140cm,56kg,dragon,Gen 4
+Garchomp,False,190cm,95kg,dragon,Gen 4
+Munchlax,False,60cm,105kg,normal,Gen 4
+Riolu,False,70cm,20.2kg,fighting,Gen 4
+Lucario,False,120cm,54kg,fighting,Gen 4
+Hippopotas,False,80cm,49.5kg,ground,Gen 4
+Hippowdon,False,200cm,300kg,ground,Gen 4
+Skorupi,False,80cm,12kg,poison,Gen 4
+Drapion,False,130cm,61.5kg,poison,Gen 4
+Croagunk,False,70cm,23kg,poison,Gen 4
+Toxicroak,False,130cm,44.4kg,poison,Gen 4
+Carnivine,False,140cm,27kg,grass,Gen 4
+Finneon,False,40cm,7kg,water,Gen 4
+Lumineon,False,120cm,24kg,water,Gen 4
+Mantyke,False,100cm,65kg,water,Gen 4
+Snover,False,100cm,50.5kg,grass,Gen 4
+Abomasnow,False,220cm,135.5kg,grass,Gen 4
+Weavile,False,110cm,34kg,dark,Gen 4
+Magnezone,False,120cm,180kg,electric,Gen 4
+Lickilicky,False,170cm,140kg,normal,Gen 4
+Rhyperior,False,240cm,282.8kg,ground,Gen 4
+Tangrowth,False,200cm,128.6kg,grass,Gen 4
+Electivire,False,180cm,138.6kg,electric,Gen 4
+Magmortar,False,160cm,68kg,fire,Gen 4
+Togekiss,False,150cm,38kg,fairy,Gen 4
+Yanmega,False,190cm,51.5kg,bug,Gen 4
+Leafeon,False,100cm,25.5kg,grass,Gen 4
+Glaceon,False,80cm,25.9kg,ice,Gen 4
+Gliscor,False,200cm,42.5kg,ground,Gen 4
+Mamoswine,False,250cm,291kg,ice,Gen 4
+Porygon-Z,False,90cm,34kg,normal,Gen 4
+Gallade,False,160cm,52kg,psychic,Gen 4
+Probopass,False,140cm,340kg,rock,Gen 4
+Dusknoir,False,220cm,106.6kg,ghost,Gen 4
+Froslass,False,130cm,26.6kg,ice,Gen 4
+Rotom,False,30cm,0.3kg,electric,Gen 4
+Uxie,True,30cm,0.3kg,psychic,Gen 4
+Mesprit,True,30cm,0.3kg,psychic,Gen 4
+Azelf,True,30cm,0.3kg,psychic,Gen 4
+Dialga,True,540cm,683kg,steel,Gen 4
+Palkia,True,420cm,336kg,water,Gen 4
+Heatran,True,170cm,430kg,fire,Gen 4
+Regigigas,True,370cm,420kg,normal,Gen 4
+Giratina,True,450cm,750kg,ghost,Gen 4
+Cresselia,True,150cm,85.6kg,psychic,Gen 4
+Phione,False,40cm,3.1kg,water,Gen 4
+Manaphy,True,30cm,1.4kg,water,Gen 4
+Darkrai,True,150cm,50.5kg,dark,Gen 4
+Shaymin,True,20cm,2.1kg,grass,Gen 4
+Arceus,True,320cm,320kg,normal,Gen 4
+Victini,True,40cm,4kg,psychic,Gen 5
+Snivy,False,60cm,8.1kg,grass,Gen 5
+Servine,False,80cm,16kg,grass,Gen 5
+Serperior,False,330cm,63kg,grass,Gen 5
+Tepig,False,50cm,9.9kg,fire,Gen 5
+Pignite,False,100cm,55.5kg,fire,Gen 5
+Emboar,False,160cm,150kg,fire,Gen 5
+Oshawott,False,50cm,5.9kg,water,Gen 5
+Dewott,False,80cm,24.5kg,water,Gen 5
+Samurott,False,150cm,94.6kg,water,Gen 5
+Patrat,False,50cm,11.6kg,normal,Gen 5
+Watchog,False,110cm,27kg,normal,Gen 5
+Lillipup,False,40cm,4.1kg,normal,Gen 5
+Herdier,False,90cm,14.7kg,normal,Gen 5
+Stoutland,False,120cm,61kg,normal,Gen 5
+Purrloin,False,40cm,10.1kg,dark,Gen 5
+Liepard,False,110cm,37.5kg,dark,Gen 5
+Pansage,False,60cm,10.5kg,grass,Gen 5
+Simisage,False,110cm,30.5kg,grass,Gen 5
+Pansear,False,60cm,11kg,fire,Gen 5
+Simisear,False,100cm,28kg,fire,Gen 5
+Panpour,False,60cm,13.5kg,water,Gen 5
+Simipour,False,100cm,29kg,water,Gen 5
+Munna,False,60cm,23.3kg,psychic,Gen 5
+Musharna,False,110cm,60.5kg,psychic,Gen 5
+Pidove,False,30cm,2.1kg,normal,Gen 5
+Tranquill,False,60cm,15kg,normal,Gen 5
+Unfezant,False,120cm,29kg,normal,Gen 5
+Blitzle,False,80cm,29.8kg,electric,Gen 5
+Zebstrika,False,160cm,79.5kg,electric,Gen 5
+Roggenrola,False,40cm,18kg,rock,Gen 5
+Boldore,False,90cm,102kg,rock,Gen 5
+Gigalith,False,170cm,260kg,rock,Gen 5
+Woobat,False,40cm,2.1kg,psychic,Gen 5
+Swoobat,False,90cm,10.5kg,psychic,Gen 5
+Drilbur,False,30cm,8.5kg,ground,Gen 5
+Excadrill,False,70cm,40.4kg,ground,Gen 5
+Audino,False,110cm,31kg,normal,Gen 5
+Timburr,False,60cm,12.5kg,fighting,Gen 5
+Gurdurr,False,120cm,40kg,fighting,Gen 5
+Conkeldurr,False,140cm,87kg,fighting,Gen 5
+Tympole,False,50cm,4.5kg,water,Gen 5
+Palpitoad,False,80cm,17kg,water,Gen 5
+Seismitoad,False,150cm,62kg,water,Gen 5
+Throh,False,130cm,55.5kg,fighting,Gen 5
+Sawk,False,140cm,51kg,fighting,Gen 5
+Sewaddle,False,30cm,2.5kg,bug,Gen 5
+Swadloon,False,50cm,7.3kg,bug,Gen 5
+Leavanny,False,120cm,20.5kg,bug,Gen 5
+Venipede,False,40cm,5.3kg,bug,Gen 5
+Whirlipede,False,120cm,58.5kg,bug,Gen 5
+Scolipede,False,250cm,200.5kg,bug,Gen 5
+Cottonee,False,30cm,0.6kg,grass,Gen 5
+Whimsicott,False,70cm,6.6kg,grass,Gen 5
+Petilil,False,50cm,6.6kg,grass,Gen 5
+Lilligant,False,110cm,16.3kg,grass,Gen 5
+Basculin,False,100cm,18kg,water,Gen 5
+Sandile,False,70cm,15.2kg,ground,Gen 5
+Krokorok,False,100cm,33.4kg,ground,Gen 5
+Krookodile,False,150cm,96.3kg,ground,Gen 5
+Darumaka,False,60cm,37.5kg,fire,Gen 5
+Darmanitan,False,130cm,92.9kg,fire,Gen 5
+Maractus,False,100cm,28kg,grass,Gen 5
+Dwebble,False,30cm,14.5kg,bug,Gen 5
+Crustle,False,140cm,200kg,bug,Gen 5
+Scraggy,False,60cm,11.8kg,dark,Gen 5
+Scrafty,False,110cm,30kg,dark,Gen 5
+Sigilyph,False,140cm,14kg,psychic,Gen 5
+Yamask,False,50cm,1.5kg,ghost,Gen 5
+Cofagrigus,False,170cm,76.5kg,ghost,Gen 5
+Tirtouga,False,70cm,16.5kg,water,Gen 5
+Carracosta,False,120cm,81kg,water,Gen 5
+Archen,False,50cm,9.5kg,rock,Gen 5
+Archeops,False,140cm,32kg,rock,Gen 5
+Trubbish,False,60cm,31kg,poison,Gen 5
+Garbodor,False,190cm,107.3kg,poison,Gen 5
+Zorua,False,70cm,12.5kg,dark,Gen 5
+Zoroark,False,160cm,81.1kg,dark,Gen 5
+Minccino,False,40cm,5.8kg,normal,Gen 5
+Cinccino,False,50cm,7.5kg,normal,Gen 5
+Gothita,False,40cm,5.8kg,psychic,Gen 5
+Gothorita,False,70cm,18kg,psychic,Gen 5
+Gothitelle,False,150cm,44kg,psychic,Gen 5
+Solosis,False,30cm,1kg,psychic,Gen 5
+Duosion,False,60cm,8kg,psychic,Gen 5
+Reuniclus,False,100cm,20.1kg,psychic,Gen 5
+Ducklett,False,50cm,5.5kg,water,Gen 5
+Swanna,False,130cm,24.2kg,water,Gen 5
+Vanillite,False,40cm,5.7kg,ice,Gen 5
+Vanillish,False,110cm,41kg,ice,Gen 5
+Vanilluxe,False,130cm,57.5kg,ice,Gen 5
+Deerling,False,60cm,19.5kg,normal,Gen 5
+Sawsbuck,False,190cm,92.5kg,normal,Gen 5
+Emolga,False,40cm,5kg,electric,Gen 5
+Karrablast,False,50cm,5.9kg,bug,Gen 5
+Escavalier,False,100cm,33kg,bug,Gen 5
+Foongus,False,20cm,1kg,grass,Gen 5
+Amoonguss,False,60cm,10.5kg,grass,Gen 5
+Frillish,False,120cm,33kg,water,Gen 5
+Jellicent,False,220cm,135kg,water,Gen 5
+Alomomola,False,120cm,31.6kg,water,Gen 5
+Joltik,False,10cm,0.6kg,bug,Gen 5
+Galvantula,False,80cm,14.3kg,bug,Gen 5
+Ferroseed,False,60cm,18.8kg,grass,Gen 5
+Ferrothorn,False,100cm,110kg,grass,Gen 5
+Klink,False,30cm,21kg,steel,Gen 5
+Klang,False,60cm,51kg,steel,Gen 5
+Klinklang,False,60cm,81kg,steel,Gen 5
+Tynamo,False,20cm,0.3kg,electric,Gen 5
+Eelektrik,False,120cm,22kg,electric,Gen 5
+Eelektross,False,210cm,80.5kg,electric,Gen 5
+Elgyem,False,50cm,9kg,psychic,Gen 5
+Beheeyem,False,100cm,34.5kg,psychic,Gen 5
+Litwick,False,30cm,3.1kg,ghost,Gen 5
+Lampent,False,60cm,13kg,ghost,Gen 5
+Chandelure,False,100cm,34.3kg,ghost,Gen 5
+Axew,False,60cm,18kg,dragon,Gen 5
+Fraxure,False,100cm,36kg,dragon,Gen 5
+Haxorus,False,180cm,105.5kg,dragon,Gen 5
+Cubchoo,False,50cm,8.5kg,ice,Gen 5
+Beartic,False,260cm,260kg,ice,Gen 5
+Cryogonal,False,110cm,148kg,ice,Gen 5
+Shelmet,False,40cm,7.7kg,bug,Gen 5
+Accelgor,False,80cm,25.3kg,bug,Gen 5
+Stunfisk,False,70cm,11kg,ground,Gen 5
+Mienfoo,False,90cm,20kg,fighting,Gen 5
+Mienshao,False,140cm,35.5kg,fighting,Gen 5
+Druddigon,False,160cm,139kg,dragon,Gen 5
+Golett,False,100cm,92kg,ground,Gen 5
+Golurk,False,280cm,330kg,ground,Gen 5
+Pawniard,False,50cm,10.2kg,dark,Gen 5
+Bisharp,False,160cm,70kg,dark,Gen 5
+Bouffalant,False,160cm,94.6kg,normal,Gen 5
+Rufflet,False,50cm,10.5kg,normal,Gen 5
+Braviary,False,150cm,41kg,normal,Gen 5
+Vullaby,False,50cm,9kg,dark,Gen 5
+Mandibuzz,False,120cm,39.5kg,dark,Gen 5
+Heatmor,False,140cm,58kg,fire,Gen 5
+Durant,False,30cm,33kg,bug,Gen 5
+Deino,False,80cm,17.3kg,dark,Gen 5
+Zweilous,False,140cm,50kg,dark,Gen 5
+Hydreigon,False,180cm,160kg,dark,Gen 5
+Larvesta,False,110cm,28.8kg,bug,Gen 5
+Volcarona,False,160cm,46kg,bug,Gen 5
+Cobalion,True,210cm,250kg,steel,Gen 5
+Terrakion,True,190cm,260kg,rock,Gen 5
+Virizion,True,200cm,200kg,grass,Gen 5
+Tornadus,True,150cm,63kg,flying,Gen 5
+Thundurus,True,150cm,61kg,electric,Gen 5
+Reshiram,True,320cm,330kg,dragon,Gen 5
+Zekrom,True,290cm,345kg,dragon,Gen 5
+Landorus,True,150cm,68kg,ground,Gen 5
+Kyurem,True,300cm,325kg,dragon,Gen 5
+Keldeo,True,140cm,48.5kg,water,Gen 5
+Meloetta,True,60cm,6.5kg,normal,Gen 5
+Genesect,True,150cm,82.5kg,bug,Gen 5
+Chespin,False,40cm,9kg,grass,Gen 6
+Quilladin,False,70cm,29kg,grass,Gen 6
+Chesnaught,False,160cm,90kg,grass,Gen 6
+Fennekin,False,40cm,9.4kg,fire,Gen 6
+Braixen,False,100cm,14.5kg,fire,Gen 6
+Delphox,False,150cm,39kg,fire,Gen 6
+Froakie,False,30cm,7kg,water,Gen 6
+Frogadier,False,60cm,10.9kg,water,Gen 6
+Greninja,False,150cm,40kg,water,Gen 6
+Bunnelby,False,40cm,5kg,normal,Gen 6
+Diggersby,False,100cm,42.4kg,normal,Gen 6
+Fletchling,False,30cm,1.7kg,normal,Gen 6
+Fletchinder,False,70cm,16kg,fire,Gen 6
+Talonflame,False,120cm,24.5kg,fire,Gen 6
+Scatterbug,False,30cm,2.5kg,bug,Gen 6
+Spewpa,False,30cm,8.4kg,bug,Gen 6
+Vivillon,False,120cm,17kg,bug,Gen 6
+Litleo,False,60cm,13.5kg,fire,Gen 6
+Pyroar,False,150cm,81.5kg,fire,Gen 6
+Flabébé,False,10cm,0.1kg,fairy,Gen 6
+Floette,False,20cm,0.9kg,fairy,Gen 6
+Florges,False,110cm,10kg,fairy,Gen 6
+Skiddo,False,90cm,31kg,grass,Gen 6
+Gogoat,False,170cm,91kg,grass,Gen 6
+Pancham,False,60cm,8kg,fighting,Gen 6
+Pangoro,False,210cm,136kg,fighting,Gen 6
+Furfrou,False,120cm,28kg,normal,Gen 6
+Espurr,False,30cm,3.5kg,psychic,Gen 6
+Meowstic,False,60cm,8.5kg,psychic,Gen 6
+Honedge,False,80cm,2kg,steel,Gen 6
+Doublade,False,80cm,4.5kg,steel,Gen 6
+Aegislash,False,170cm,53kg,steel,Gen 6
+Spritzee,False,20cm,0.5kg,fairy,Gen 6
+Aromatisse,False,80cm,15.5kg,fairy,Gen 6
+Swirlix,False,40cm,3.5kg,fairy,Gen 6
+Slurpuff,False,80cm,5kg,fairy,Gen 6
+Inkay,False,40cm,3.5kg,dark,Gen 6
+Malamar,False,150cm,47kg,dark,Gen 6
+Binacle,False,50cm,31kg,rock,Gen 6
+Barbaracle,False,130cm,96kg,rock,Gen 6
+Skrelp,False,50cm,7.3kg,poison,Gen 6
+Dragalge,False,180cm,81.5kg,poison,Gen 6
+Clauncher,False,50cm,8.3kg,water,Gen 6
+Clawitzer,False,130cm,35.3kg,water,Gen 6
+Helioptile,False,50cm,6kg,electric,Gen 6
+Heliolisk,False,100cm,21kg,electric,Gen 6
+Tyrunt,False,80cm,26kg,rock,Gen 6
+Tyrantrum,False,250cm,270kg,rock,Gen 6
+Amaura,False,130cm,25.2kg,rock,Gen 6
+Aurorus,False,270cm,225kg,rock,Gen 6
+Sylveon,False,100cm,23.5kg,fairy,Gen 6
+Hawlucha,False,80cm,21.5kg,fighting,Gen 6
+Dedenne,False,20cm,2.2kg,electric,Gen 6
+Carbink,False,30cm,5.7kg,rock,Gen 6
+Goomy,False,30cm,2.8kg,dragon,Gen 6
+Sliggoo,False,80cm,17.5kg,dragon,Gen 6
+Goodra,False,200cm,150.5kg,dragon,Gen 6
+Klefki,False,20cm,3kg,steel,Gen 6
+Phantump,False,40cm,7kg,ghost,Gen 6
+Trevenant,False,150cm,71kg,ghost,Gen 6
+Pumpkaboo,False,80cm,15kg,ghost,Gen 6
+Gourgeist,False,170cm,39kg,ghost,Gen 6
+Bergmite,False,100cm,99.5kg,ice,Gen 6
+Avalugg,False,200cm,505kg,ice,Gen 6
+Noibat,False,50cm,8kg,flying,Gen 6
+Noivern,False,150cm,85kg,flying,Gen 6
+Xerneas,True,300cm,215kg,fairy,Gen 6
+Yveltal,True,580cm,203kg,dark,Gen 6
+Zygarde,True,500cm,284.6kg,dragon,Gen 6
+Diancie,True,70cm,8.8kg,rock,Gen 6
+Hoopa,True,0cm,kg,psychic,Gen 6
+Volcanion,True,170cm,195kg,fire,Gen 6
+Rowlet,False,30cm,1.5kg,grass,Gen 7
+Dartrix,False,70cm,16kg,grass,Gen 7
+Decidueye,False,160cm,36.6kg,grass,Gen 7
+Litten,False,40cm,4.3kg,fire,Gen 7
+Torracat,False,70cm,25kg,fire,Gen 7
+Incineroar,False,180cm,83kg,fire,Gen 7
+Popplio,False,40cm,7.5kg,water,Gen 7
+Brionne,False,60cm,17.5kg,water,Gen 7
+Primarina,False,180cm,44kg,water,Gen 7
+Pikipek,False,30cm,1.2kg,normal,Gen 7
+Trumbeak,False,60cm,14.8kg,normal,Gen 7
+Toucannon,False,110cm,26kg,normal,Gen 7
+Yungoos,False,40cm,6kg,normal,Gen 7
+Gumshoos,False,70cm,14.2kg,normal,Gen 7
+Grubbin,False,40cm,4.4kg,bug,Gen 7
+Charjabug,False,50cm,10.5kg,bug,Gen 7
+Vikavolt,False,150cm,45kg,bug,Gen 7
+Crabrawler,False,60cm,7kg,fighting,Gen 7
+Crabominable,False,170cm,180kg,fighting,Gen 7
+Oricorio,False,60cm,3.4kg,fire,Gen 7
+Cutiefly,False,10cm,0.2kg,bug,Gen 7
+Ribombee,False,20cm,0.5kg,bug,Gen 7
+Rockruff,False,50cm,9.2kg,rock,Gen 7
+Lycanroc,False,0cm,kg,rock,Gen 7
+Wishiwashi,False,20cm,0.3kg,water,Gen 7
+Mareanie,False,40cm,8kg,poison,Gen 7
+Toxapex,False,70cm,14.5kg,poison,Gen 7
+Mudbray,False,100cm,110kg,ground,Gen 7
+Mudsdale,False,250cm,920kg,ground,Gen 7
+Dewpider,False,30cm,4kg,water,Gen 7
+Araquanid,False,180cm,82kg,water,Gen 7
+Fomantis,False,30cm,1.5kg,grass,Gen 7
+Lurantis,False,90cm,18.5kg,grass,Gen 7
+Morelull,False,20cm,1.5kg,grass,Gen 7
+Shiinotic,False,100cm,11.5kg,grass,Gen 7
+Salandit,False,60cm,4.8kg,poison,Gen 7
+Salazzle,False,120cm,22.2kg,poison,Gen 7
+Stufful,False,50cm,6.8kg,normal,Gen 7
+Bewear,False,210cm,135kg,normal,Gen 7
+Bounsweet,False,30cm,3.2kg,grass,Gen 7
+Steenee,False,70cm,8.2kg,grass,Gen 7
+Tsareena,False,120cm,21.4kg,grass,Gen 7
+Comfey,False,10cm,0.3kg,fairy,Gen 7
+Oranguru,False,150cm,76kg,normal,Gen 7
+Passimian,False,200cm,82.8kg,fighting,Gen 7
+Wimpod,False,50cm,12kg,bug,Gen 7
+Golisopod,False,200cm,108kg,bug,Gen 7
+Sandygast,False,50cm,70kg,ghost,Gen 7
+Palossand,False,130cm,250kg,ghost,Gen 7
+Pyukumuku,False,30cm,1.2kg,water,Gen 7
+Type: Null,False,190cm,120.5kg,normal,Gen 7
+Silvally,False,230cm,100.5kg,normal,Gen 7
+Minior,False,30cm,40kg,rock,Gen 7
+Komala,False,40cm,19.9kg,normal,Gen 7
+Turtonator,False,200cm,212kg,fire,Gen 7
+Togedemaru,False,30cm,3.3kg,electric,Gen 7
+Mimikyu,False,20cm,0.7kg,ghost,Gen 7
+Bruxish,False,90cm,19kg,water,Gen 7
+Drampa,False,300cm,185kg,normal,Gen 7
+Dhelmise,False,390cm,210kg,ghost,Gen 7
+Jangmo-o,False,60cm,29.7kg,dragon,Gen 7
+Hakamo-o,False,120cm,47kg,dragon,Gen 7
+Kommo-o,False,160cm,78.2kg,dragon,Gen 7
+Tapu Koko,True,180cm,20.5kg,electric,Gen 7
+Tapu Lele,True,120cm,18.6kg,psychic,Gen 7
+Tapu Bulu,True,190cm,45.5kg,grass,Gen 7
+Tapu Fini,True,130cm,21.2kg,water,Gen 7
+Cosmog,True,20cm,0.1kg,psychic,Gen 7
+Cosmoem,True,10cm,999.9kg,psychic,Gen 7
+Solgaleo,True,340cm,230kg,psychic,Gen 7
+Lunala,True,400cm,120kg,psychic,Gen 7
+Nihilego,True,120cm,55.5kg,rock,Gen 7
+Buzzwole,True,240cm,333.6kg,bug,Gen 7
+Pheromosa,True,180cm,25kg,bug,Gen 7
+Xurkitree,True,380cm,100kg,electric,Gen 7
+Celesteela,True,920cm,999.9kg,steel,Gen 7
+Kartana,True,30cm,0.1kg,grass,Gen 7
+Guzzlord,True,550cm,888kg,dark,Gen 7
+Necrozma,True,240cm,230kg,psychic,Gen 7
+Magearna,True,100cm,80.5kg,steel,Gen 7

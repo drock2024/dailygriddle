@@ -900,7 +900,7 @@ const matchesValue = (charValue, categoryValue, category) => {
     }
     
     // For Age: check if number falls in range
-    if (category === 'Age') {
+    if (category === 'Age' || category === 'Weight') {
         if (charVal.toLowerCase() === 'unknown') return false;
         
         const age = parseInt(charVal);
