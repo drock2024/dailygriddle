@@ -1,4 +1,4 @@
-Name, Birth Year, Height, Race, Realm, Debut
+Name, Birth Year, Height, Species, Realm, Debut
 Frodo Baggins, 2968, 106cm, Hobbit, Shire, Fellowship of the Ring
 Samwise Gamgee, 2980, 106cm, Hobbit, Shire, Fellowship of the Ring
 Gandalf, 2019, 180cm, Maia, Valinor, Fellowship of the Ring
@@ -29,3 +29,73 @@ Thorin Oakenshield, 2746, 140cm, Dwarf, Erebor, Fellowship of the Ring
 Bilbo Baggins, 2890, 105cm, Hobbit, Shire, Fellowship of the Ring
 Radagast, Unknown, 175cm, Maia, Rhosgobel, Fellowship of the Ring
 Shelob, Unknown, 800cm, Spider, Mordor, Two Towers
+Tom Bombadil, Unknown, 198cm, Unknown, Old Forest, Fellowship of the Ring
+Goldberry, Unknown, 170cm, River-spirit, Old Forest, Fellowship of the Ring
+Fatty Bolger, 2980, 108cm, Hobbit, Shire, Fellowship of the Ring
+Lobelia Sackville-Baggins, 2920, 102cm, Hobbit, Shire, Fellowship of the Ring
+Lotho Sackville-Baggins, 2962, 104cm, Hobbit, Shire, Return of the King
+Mouth of Sauron, Unknown, 195cm, Human, Mordor, Return of the King
+Gothmog, Unknown, 185cm, Orc, Mordor, Return of the King
+Grima Wormtongue, 2978, 175cm, Human, Rohan, Two Towers
+Ugluk, Unknown, 175cm, Uruk-hai, Isengard, Two Towers
+Grishnakh, Unknown, 165cm, Orc, Mordor, Two Towers
+Lurtz, Unknown, 185cm, Uruk-hai, Isengard, Fellowship of the Ring
+Beregond, Unknown, 183cm, Human, Gondor, Return of the King
+Bergil, Unknown, 130cm, Human, Gondor, Return of the King
+Ioreth, Unknown, 165cm, Human, Gondor, Return of the King
+Dernhelm, 2995, 170cm, Human, Rohan, Return of the King
+Hama, Unknown, 182cm, Human, Rohan, Two Towers
+Gamling, Unknown, 180cm, Human, Rohan, Two Towers
+Erkenbrand, Unknown, 185cm, Human, Rohan, Two Towers
+Elfhelm, Unknown, 183cm, Human, Rohan, Return of the King
+Imrahil, 2955, 190cm, Human, Gondor, Return of the King
+Forlong, Unknown, 188cm, Human, Gondor, Return of the King
+Angbor, Unknown, 185cm, Human, Gondor, Return of the King
+Dior, 470, 185cm, Half-elven, Doriath, Fellowship of the Ring
+Gloin, 2783, 138cm, Dwarf, Erebor, Fellowship of the Ring
+Oin, 2774, 135cm, Dwarf, Erebor, Fellowship of the Ring
+Bifur, Unknown, 135cm, Dwarf, Erebor, The Hobbit
+Bofur, Unknown, 138cm, Dwarf, Erebor, The Hobbit
+Bombur, Unknown, 155cm, Dwarf, Erebor, The Hobbit
+Dori, Unknown, 137cm, Dwarf, Erebor, The Hobbit
+Nori, Unknown, 133cm, Dwarf, Erebor, The Hobbit
+Ori, Unknown, 130cm, Dwarf, Erebor, The Hobbit
+Fili, 2859, 138cm, Dwarf, Erebor, The Hobbit
+Kili, 2864, 137cm, Dwarf, Erebor, The Hobbit
+Dain Ironfoot, 2767, 150cm, Dwarf, Iron Hills, The Hobbit
+Thranduil, Unknown, 190cm, Elf, Mirkwood, The Hobbit
+Tauriel, Unknown, 175cm, Elf, Mirkwood, The Hobbit
+Bard the Bowman, Unknown, 188cm, Human, Lake-town, The Hobbit
+Bain, Unknown, 155cm, Human, Lake-town, The Hobbit
+Master of Lake-town, Unknown, 178cm, Human, Lake-town, The Hobbit
+Smaug, Unknown, Unknown, Dragon, Erebor, The Hobbit
+Azog, Unknown, 183cm, Orc, Gundabad, The Hobbit
+Bolg, Unknown, 195cm, Orc, Gundabad, The Hobbit
+Goblin King, Unknown, 300cm, Goblin, Goblin-town, The Hobbit
+Bert, Unknown, 350cm, Troll, Trollshaws, The Hobbit
+William, Unknown, 360cm, Troll, Trollshaws, The Hobbit
+Tom, Unknown, 345cm, Troll, Trollshaws, The Hobbit
+Beorn, Unknown, 183cm, Skin-changer, Vales of Anduin, The Hobbit
+Roac, Unknown, Unknown, Raven, Erebor, The Hobbit
+Lindir, Unknown, 183cm, Elf, Rivendell, The Hobbit
+Alfrid, Unknown, 173cm, Human, Lake-town, The Hobbit
+Narzug, Unknown, 175cm, Orc, Gundabad, The Hobbit
+Gerontius Took, 2760, 104cm, Hobbit, Shire, Fellowship of the Ring
+Celebrimbor, Unknown, 188cm, Elf, Eregion, Fellowship of the Ring
+Gil-galad, Unknown, 195cm, Elf, Lindon, Fellowship of the Ring
+Cirdan, Unknown, 192cm, Elf, Grey Havens, Fellowship of the Ring
+Erestor, Unknown, 185cm, Elf, Rivendell, Fellowship of the Ring
+Elladan, 130, 188cm, Half-elven, Rivendell, Fellowship of the Ring
+Elrohir, 130, 188cm, Half-elven, Rivendell, Fellowship of the Ring
+Rosie Cotton, 2984, 100cm, Hobbit, Shire, Return of the King
+Gaffer Gamgee, 2942, 104cm, Hobbit, Shire, Fellowship of the Ring
+Ted Sandyman, 2970, 105cm, Hobbit, Shire, Fellowship of the Ring
+Glorfindel, 1, 198cm, Elf, Rivendell, Fellowship of the Ring
+Quickbeam, Unknown, 480cm, Ent, Fangorn, Two Towers
+Shadowfax, Unknown, 160cm, Horse, Rohan, Two Towers
+Bill the Pony, Unknown, 140cm, Horse, Shire, Fellowship of the Ring
+Orophin, Unknown, 183cm, Elf, Lothlorien, Fellowship of the Ring
+Rumil, Unknown, 182cm, Elf, Lothlorien, Fellowship of the Ring
+Ulfang, Unknown, 185cm, Human, Rhun, The Hobbit
+Drogo Baggins, 2908, 105cm, Hobbit, Shire, Fellowship of the Ring
+Primula Baggins, 2920, 100cm, Hobbit, Shire, Fellowship of the Ring
